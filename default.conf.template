@@ -1,0 +1,9 @@
+server {
+  listen $PORT default_server;
+  root /usr/share/nginx/html;
+  
+
+  location / {
+    index  index.html index.htm;
+  }
+}
