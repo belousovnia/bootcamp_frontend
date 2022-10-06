@@ -45,6 +45,10 @@
     "typescript": "^4.5.5",
     "vite": "^2.9.12"
   },
+  "engines": {
+    "yarn": ">=1.22",
+    "node": ">=16.0.0"
+  },
   "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,scss,less}": [
