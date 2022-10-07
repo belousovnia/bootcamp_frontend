@@ -27,13 +27,6 @@
 yarn install
 ```
 
-Далее установите необходимые `git` хуки:
-
-```
-npx husky add .husky/pre-commit "npx lint-staged"
-git add .husky/pre-commit
-```
-
 И наконец запустите `dev` сервер командой
 
 ```
