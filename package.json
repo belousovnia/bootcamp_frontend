@@ -7,7 +7,7 @@
     "serve": "vite preview",
     "lint:fix": "eslint ./src --ext .jsx,.js,.ts,.tsx --fix --ignore-path ./.gitignore",
     "lint:format": "prettier --write \"./**/*.{js,jsx,ts,tsx,css,md,json}\" ",
-    "lint": "yarn lint:format && yarn lint:fix ",
+    "lint": "yarn lint:format && yarn lint:fix",
     "type-check": "tsc",
     "test": "jest",
     "prepare": "husky install"
@@ -52,10 +52,10 @@
   "license": "MIT",
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,scss,less}": [
-      "npm run lint:format"
+      "prettier --write"
     ],
     "*.{js,jsx,ts,tsx}": [
-      "npm run lint:fix"
+      "eslint --fix --color"
     ]
   }
 }
