@@ -12,6 +12,7 @@ export default defineConfig({
       '@features': path.resolve(__dirname, './src/features'),
       '@infrastructure': path.resolve(__dirname, './src/infrastructure'),
       '@screens': path.resolve(__dirname, './src/screens'),
+      '@ui-library': path.resolve(__dirname, './src/ui-library'),
     },
   },
 });
