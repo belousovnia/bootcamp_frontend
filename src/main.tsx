@@ -7,15 +7,18 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { queryClient } from '@infrastructure/query-client';
 import Routing from '@infrastructure/routing/routing';
+import { AppThemeProvider } from '@infrastructure/theme';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routing />
-      </BrowserRouter>
+      <AppThemeProvider>
+        <BrowserRouter>
+          <Routing />
+        </BrowserRouter>
+      </AppThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );
