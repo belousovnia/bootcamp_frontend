@@ -16,14 +16,23 @@ export const QuizGuard = ({ children }: QuizGuardProps) => {
   ]);
 
   useEffect(() => {
-    if (step && quizState === 'not-active') {
+    if (quizState === 'not-active') {
       navigate(`/quiz`, { replace: true });
+      return;
+    }
+
+    if (quizState === 'completed') {
+      navigate(`/quiz/finish`, { replace: true });
       return;
     }
 
     if (step && quizState === 'in-progress' && parseInt(step) > currentStep) {
       navigate(`/quiz/step/${currentStep}`, { replace: true });
       return;
+    }
+
+    if (!step && quizState === 'in-progress') {
+      navigate(`/quiz/step/${currentStep}`, { replace: true });
     }
   }, [currentStep, navigate, step]);
 

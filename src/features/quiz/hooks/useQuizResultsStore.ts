@@ -3,8 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { QuizAnswerTag } from '../quiz.entity';
 
 type Answer = {
-  tag: QuizAnswerTag;
-  index: number;
+  number: number;
 };
 
 interface State {
@@ -32,7 +31,7 @@ export const useQuizResultsStore = create<State & Actions>()(
         error: null,
         quizState: 'not-active',
         answers: [],
-        currentStep: 0,
+        currentStep: 1,
         setQuizState: (quizState) => set({ quizState }),
         setCurrentStep: (step) => set({ currentStep: step }),
         setStepAnswer: (step, answer) => {

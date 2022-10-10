@@ -1,3 +1,4 @@
+import { useQuizResultsStore } from '@features/quiz/hooks';
 import {
   Button,
   Card,
@@ -7,31 +8,41 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { MouseEventHandler } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const QuizStartCard = () => {
   const navigate = useNavigate();
+  const setQuizState = useQuizResultsStore((state) => state.setQuizState);
+  const setCurrentStep = useQuizResultsStore((state) => state.setCurrentStep);
+
+  const handleStartQuiz: MouseEventHandler<HTMLButtonElement> = (e) => {
+    setQuizState('in-progress');
+    navigate('/quiz/step/1');
+
+    e.preventDefault();
+  };
 
   return (
-    <Card component="section">
+    <Card component="section" sx={{ maxWidth: 800, m: 'auto' }}>
       <CardHeader
-        title="Подобрать IT Профессию"
+        title="Подобрать IT направление"
         titleTypographyProps={{ component: 'h1', variant: 'h3' }}
         component="header"
       />
-      <CardContent sx={{ maxWidth: 400, pt: 1 }}>
-        <Typography variant="body1" component="p">
-          Ответьте на 30 вопросов и узнайте наиболее подходящее для вас IT направление
+      <CardContent style={{ paddingTop: 0 }}>
+        <Typography variant="body1" component="p" style={{ maxWidth: 400 }}>
+          Ответьте на 10 вопросов и узнайте наиболее подходящее для вас IT направление
         </Typography>
       </CardContent>
-      <CardActions sx={{ mt: 3 }}>
+      <CardActions style={{ marginTop: 20 }}>
         <Button
           variant="contained"
           color="primary"
           size="large"
           fullWidth
           sx={{ py: 2 }}
-          onClick={() => navigate('/quiz/step/1')}
+          onClick={handleStartQuiz}
         >
           Начать тестирование
         </Button>

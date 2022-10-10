@@ -13,7 +13,7 @@ import AppBar from '@mui/material/AppBar';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import Menu from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   AccountCircle,
   Search,
@@ -21,6 +21,7 @@ import {
   SearchRounded,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useQuizResultsStore } from '@features/quiz/hooks';
 
 type NavLink = {
   title: string;
@@ -63,6 +64,22 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+
+  const [currentStep, quizState] = useQuizResultsStore((state) => [
+    state.currentStep,
+    state.quizState,
+  ]);
+
+  const quizPath = useMemo(() => {
+    if (quizState === 'in-progress') {
+      return `/quiz/step/${currentStep}`;
+    }
+    if (quizState === 'completed') {
+      return '/quiz/finish';
+    }
+    return '/quiz';
+  }, [currentStep, quizState]);
+
   return (
     <AppBar
       position="static"
@@ -100,7 +117,7 @@ export const Header = () => {
                   <Button
                     key={link.title}
                     component={Link}
-                    to={link.path}
+                    to={link.path.includes('quiz') ? quizPath : link.path}
                     variant={link.variant}
                     sx={{ py: 1 }}
                   >

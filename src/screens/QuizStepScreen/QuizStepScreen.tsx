@@ -1,6 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { QuizStepCard } from '@features/quiz/components/QuizStepCard';
 
 export const QuizStepScreen = () => {
-  const { step } = useParams();
-  return <h1>Quiz Step {step}</h1>;
+  return <QuizStepCard />;
 };

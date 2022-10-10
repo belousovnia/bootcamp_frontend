@@ -6,16 +6,16 @@ export type QuizAnswerTag =
   | 'administering';
 
 type VariantQuestion = {
-  question: string;
+  text: string;
   variants: Array<{ text: string; tag: QuizAnswerTag }>;
 };
 
-type Question = VariantQuestion;
+export type QuizQuestion = VariantQuestion;
 
 export type Quiz = {
   id: number;
   title: string;
   description: string;
   updatedAt: string;
-  questions: Question[];
+  questions: QuizQuestion[];
 };

@@ -4,6 +4,7 @@ import { MainScreen, TestScreen } from '@screens/index';
 import { QuizScreen } from '@screens/QuizScreen';
 import { QuizStepScreen } from '@screens/QuizStepScreen';
 import { QuizGuard } from '@features/quiz/components/QuizGuard';
+import { QuizFinishScreen } from '@screens/QuizFinishScreen';
 
 export const Routing = () => {
   return (
@@ -25,6 +26,14 @@ export const Routing = () => {
             element={
               <QuizGuard>
                 <QuizStepScreen />
+              </QuizGuard>
+            }
+          />
+          <Route
+            path={'quiz/finish'}
+            element={
+              <QuizGuard>
+                <QuizFinishScreen />
               </QuizGuard>
             }
           />

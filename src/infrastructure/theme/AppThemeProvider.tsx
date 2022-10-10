@@ -42,6 +42,29 @@ let theme = createTheme({
       fontWeight: 700,
     },
   },
+  components: {
+    MuiCardHeader: {
+      defaultProps: {
+        sx: {
+          p: { lg: 3 },
+        },
+      },
+    },
+    MuiCardContent: {
+      defaultProps: {
+        sx: {
+          px: { lg: 3 },
+        },
+      },
+    },
+    MuiCardActions: {
+      defaultProps: {
+        sx: {
+          p: { lg: 2 },
+        },
+      },
+    },
+  },
 });
 
 theme = responsiveFontSizes(theme);
