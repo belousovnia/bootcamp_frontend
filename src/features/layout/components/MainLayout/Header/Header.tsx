@@ -64,7 +64,11 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   return (
-    <AppBar position="static" color="transparent" sx={{ py: 1 }}>
+    <AppBar
+      position="static"
+      color="transparent"
+      sx={{ py: 1, backgroundColor: 'background.paper' }}
+    >
       <Container>
         <Toolbar sx={{ justifyContent: 'space-between' }} disableGutters>
           <StyledLeftStack>
@@ -93,7 +97,13 @@ export const Header = () => {
             >
               {navLinks.map((link) => (
                 <li key={link.title}>
-                  <Button key={link.title} variant={link.variant} sx={{ py: 1 }}>
+                  <Button
+                    key={link.title}
+                    component={Link}
+                    to={link.path}
+                    variant={link.variant}
+                    sx={{ py: 1 }}
+                  >
                     {link.title}
                   </Button>
                 </li>
