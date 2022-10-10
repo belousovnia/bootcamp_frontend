@@ -20,6 +20,7 @@
       "@features/*": ["features/*"],
       "@screens/*": ["screens/*"],
       "@infrastructure/*": ["infrastructure/*"],
+      "@ui-library/*": ["ui-library/*"],
     }
   },
   "include": ["src"],
