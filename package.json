@@ -15,13 +15,16 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@faker-js/faker": "^7.5.0",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.8",
     "@tanstack/react-query": "^4.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.36.1",
-    "react-router-dom": "^6.4.1"
+    "react-router-dom": "^6.4.1",
+    "wretch": "^2.1.4",
+    "zustand": "^4.1.2"
   },
   "devDependencies": {
     "@mswjs/data": "^0.10.2",
