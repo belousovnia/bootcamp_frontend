@@ -1,3 +1,5 @@
+import { AccountCircle } from '@mui/icons-material';
+import Menu from '@mui/icons-material/Menu';
 import {
   Button,
   Container,
@@ -5,21 +7,13 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemButton,
+  Stack,
+  Toolbar,
 } from '@mui/material';
-import { Stack } from '@mui/material';
-import { Toolbar } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
-import Menu from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import {
-  AccountCircle,
-  Search,
-  SearchOutlined,
-  SearchRounded,
-} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 type NavLink = {
@@ -30,8 +24,7 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   { title: 'Направления', path: '/directions', variant: 'text' },
-  { title: 'Профессии', path: '/about', variant: 'text' },
-  { title: 'Курсы', path: '/contacts', variant: 'text' },
+  { title: 'Курсы', path: '/courses', variant: 'text' },
   { title: 'Пройти тест', path: '/quiz', variant: 'contained' },
 ];
 
