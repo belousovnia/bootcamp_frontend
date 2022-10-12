@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { MouseEventHandler } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { SurveyCard } from '../SurveyCard';
 
 export const SurveyStartCard = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const SurveyStartCard = () => {
   };
 
   return (
-    <Card component="section" sx={{ maxWidth: 800, m: 'auto' }}>
+    <SurveyCard component="section">
       <CardHeader
         title="Подобрать IT направление"
         titleTypographyProps={{ component: 'h1', variant: 'h3' }}
@@ -47,6 +48,6 @@ export const SurveyStartCard = () => {
           Начать тестирование
         </Button>
       </CardActions>
-    </Card>
+    </SurveyCard>
   );
 };

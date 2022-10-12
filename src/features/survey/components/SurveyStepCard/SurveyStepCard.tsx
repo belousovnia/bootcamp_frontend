@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { MouseEventHandler, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { SurveyCard } from '../SurveyCard';
 import { SurveyProgress } from '../SurveyProgress';
 import { SurveyStepBody } from './SurveyStepBody';
 
@@ -87,7 +88,7 @@ export const SurveyStepCard = () => {
   };
 
   return (
-    <Card component="section" sx={{ maxWidth: 800, m: 'auto' }}>
+    <SurveyCard component="section">
       <CardHeader
         title="Подобрать IT направление"
         titleTypographyProps={{ component: 'h1', variant: 'h3' }}
@@ -135,6 +136,6 @@ export const SurveyStepCard = () => {
           </CardActions>
         </>
       )}
-    </Card>
+    </SurveyCard>
   );
 };

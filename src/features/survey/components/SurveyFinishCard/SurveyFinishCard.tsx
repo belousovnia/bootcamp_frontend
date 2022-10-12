@@ -1,14 +1,15 @@
 import { Card, CardContent, CardHeader } from '@mui/material';
+import { SurveyCard } from '../SurveyCard';
 
 export const SurveyFinishCard = () => {
   return (
-    <Card component="section" sx={{ maxWidth: 800, m: 'auto' }}>
+    <SurveyCard component="section">
       <CardHeader
         title="FinishCard"
         titleTypographyProps={{ component: 'h1', variant: 'h3' }}
         component="header"
       />
       <CardContent>content</CardContent>
-    </Card>
+    </SurveyCard>
   );
 };
