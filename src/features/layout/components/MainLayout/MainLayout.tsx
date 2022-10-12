@@ -8,7 +8,7 @@ export const MainLayout = () => {
     <>
       <Header />
       <main>
-        <Container sx={{ pt: 3 }}>
+        <Container sx={{ pt: 5, pb: 3 }}>
           <Outlet />
         </Container>
       </main>

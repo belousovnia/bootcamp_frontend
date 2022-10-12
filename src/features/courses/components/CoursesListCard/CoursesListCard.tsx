@@ -6,9 +6,7 @@ import {
   CardActionArea,
   CardActions,
   CardContent,
-  CardHeader,
   CardMedia,
-  styled,
   Typography,
 } from '@mui/material';
 import dayjs from 'dayjs';

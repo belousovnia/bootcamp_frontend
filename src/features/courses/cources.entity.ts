@@ -1,4 +1,4 @@
-type Provider = {
+export type CourseProvider = {
   id: string;
   name: string;
   description: string;
@@ -9,17 +9,22 @@ type Provider = {
   };
 };
 
-type CourseTag = {
+export type CourseTag = {
   id: string;
   name: string;
 };
 
-type Direction = {
+export type CourseComplexity = {
   id: string;
   name: string;
 };
 
-type Image = {
+export type CourseProfession = {
+  id: string;
+  name: string;
+};
+
+type CourseImage = {
   url: string;
   width: number;
   height: number;
@@ -28,10 +33,23 @@ type Image = {
 export type CourseShort = {
   name: string;
   id: string;
-  image: Image;
-  provider: Provider;
+  image: CourseImage;
+  provider: CourseProvider;
   updatedAt: string;
   dateStart: string;
   dateEnd: string;
-  direction: Direction;
+  profession: CourseProfession;
+};
+
+export type CourseFull = {
+  name: string;
+  id: string;
+  description: string;
+  complexity: CourseComplexity;
+  image: CourseImage;
+  provider: CourseProvider;
+  updatedAt: string;
+  dateStart: string;
+  dateEnd: string;
+  profession: CourseProfession;
 };

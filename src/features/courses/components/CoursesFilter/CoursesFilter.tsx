@@ -15,9 +15,9 @@ import {
 } from '@mui/material';
 
 export type FilterOptions = {
-  directionId?: string;
+  professionId?: string;
   search?: string;
-  tagId?: string;
+  complexityId?: string;
   sortBy?: CoursesSortBy;
 };
 
@@ -31,14 +31,14 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
     onChange({ ...options, search: event.target.value });
   };
 
-  const handleDirectionChange = (event: SelectChangeEvent<string>) => {
+  const handleProfessionChange = (event: SelectChangeEvent<string>) => {
     console.log(event.target.value);
-    onChange({ ...options, directionId: event.target.value });
+    onChange({ ...options, professionId: event.target.value });
   };
 
-  const handleTagChange = (event: SelectChangeEvent<string>) => {
+  const handleComplexityChange = (event: SelectChangeEvent<string>) => {
     console.log(event.target.value);
-    onChange({ ...options, tagId: event.target.value });
+    onChange({ ...options, complexityId: event.target.value });
   };
 
   const handleSortbyChange = (event: SelectChangeEvent<string>) => {
@@ -62,14 +62,14 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
           </Grid>
           <Grid item xs={12} sm={4} lg={3}>
             <FormControl fullWidth>
-              <InputLabel id="course-direction">Направление</InputLabel>
+              <InputLabel id="course-profession">Профессия</InputLabel>
               <Select
-                labelId="course-direction"
-                id="course-direction"
-                label="Направление"
+                labelId="course-profession"
+                id="course-profession"
+                label="Профессия"
                 defaultValue=""
-                value={options.directionId}
-                onChange={handleDirectionChange}
+                value={options.professionId}
+                onChange={handleProfessionChange}
               >
                 <MenuItem value="">
                   <em>Не выбрано</em>
@@ -83,21 +83,20 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
 
           <Grid item xs={12} sm={4} lg={3}>
             <FormControl fullWidth>
-              <InputLabel id="course-tag">Метки</InputLabel>
+              <InputLabel id="course-complexity">Сложность</InputLabel>
               <Select
-                labelId="course-tag"
-                id="course-tag"
-                label="Теги"
+                labelId="course-complexity"
+                id="course-complexity"
+                label="Сложность"
                 defaultValue=""
-                value={options.tagId}
-                onChange={handleTagChange}
+                value={options.complexityId}
+                onChange={handleComplexityChange}
               >
                 <MenuItem value="">
                   <em>Не выбрано</em>
                 </MenuItem>
-                <MenuItem value={10}>Python</MenuItem>
-                <MenuItem value={20}>Java</MenuItem>
-                <MenuItem value={30}>Photoshop</MenuItem>
+                <MenuItem value={10}>Для новичков</MenuItem>
+                <MenuItem value={20}>Для опытных</MenuItem>
               </Select>
             </FormControl>
           </Grid>

@@ -11,7 +11,7 @@ export const CoursesScreen = () => {
       <Typography variant="subtitle1" component={'h2'} sx={{ mt: 1, mb: 1 }}>
         Лучшие курсы от лидеров рынка
       </Typography>
-      <Box sx={{ mt: 3, pb: 3 }}>
+      <Box sx={{ mt: 3 }}>
         <CoursesView />
       </Box>
     </section>

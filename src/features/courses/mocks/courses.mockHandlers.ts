@@ -1,7 +1,16 @@
 import { faker } from '@faker-js/faker';
 import { rest } from 'msw';
-import { CoursesListArgs, CoursesListResponse } from '../courses.service';
-import { generateShortCourses, shortCourseFixtures } from './courses.fixtures';
+import {
+  CourseDetailsArgs,
+  CourseDetailsResponse,
+  CoursesListArgs,
+  CoursesListResponse,
+} from '../courses.service';
+import {
+  fullCourseFixture,
+  generateShortCourses,
+  shortCourseFixtures,
+} from './courses.fixtures';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -51,9 +60,6 @@ export const coursesMockHandlers = [
         Number(page) * ITEMS_PER_PAGE,
       );
 
-      console.log(page, search, sortBy, courses.length);
-      console.log('mocked courses', courses);
-
       return res(
         ctx.delay(500),
         ctx.status(200),
@@ -63,6 +69,18 @@ export const coursesMockHandlers = [
             total: TOTAL,
           },
           courses,
+        }),
+      );
+    },
+  ),
+  rest.get<null, any, CourseDetailsResponse | FakeErrorJSON>(
+    `/api/courses/:id`,
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          course: fullCourseFixture,
         }),
       );
     },
