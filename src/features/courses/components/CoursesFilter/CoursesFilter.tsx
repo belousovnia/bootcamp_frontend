@@ -56,6 +56,7 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
               variant="outlined"
               label="Поиск по названию курса"
               onChange={handleSearchChange}
+              value={options.search}
               fullWidth
             />
           </Grid>
@@ -66,6 +67,8 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
                 labelId="course-direction"
                 id="course-direction"
                 label="Направление"
+                defaultValue=""
+                value={options.directionId}
                 onChange={handleDirectionChange}
               >
                 <MenuItem value="">
@@ -85,6 +88,8 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
                 labelId="course-tag"
                 id="course-tag"
                 label="Теги"
+                defaultValue=""
+                value={options.tagId}
                 onChange={handleTagChange}
               >
                 <MenuItem value="">
@@ -104,6 +109,7 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
                 labelId="course-sortby"
                 id="course-sortby"
                 label="Сортировать по:"
+                value={options.sortBy}
                 onChange={handleSortbyChange}
                 defaultValue="date-start"
               >

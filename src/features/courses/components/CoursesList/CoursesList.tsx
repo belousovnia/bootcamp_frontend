@@ -1,10 +1,10 @@
-import { Course } from '@features/courses/cources.entity';
+import { CourseShort } from '@features/courses/cources.entity';
 import { CoursesSortBy } from '@features/courses/courses.service';
 import { Grid } from '@mui/material';
 import { CoursesListCard } from '../CoursesListCard';
 
 interface CoursesListProps {
-  items: Course[];
+  items: CourseShort[];
 }
 
 export const CoursesList = ({ items }: CoursesListProps) => {

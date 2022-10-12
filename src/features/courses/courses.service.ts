@@ -1,4 +1,4 @@
-import { Course } from './cources.entity';
+import { CourseShort } from './cources.entity';
 import wretch from 'wretch';
 
 export type CoursesSortBy = 'date-start' | 'date-end';
@@ -11,7 +11,7 @@ export type CoursesListArgs = {
 };
 
 export type CoursesListResponse = {
-  courses: Course[];
+  courses: CourseShort[];
   pagination: {
     page: number;
     total: number;
@@ -22,5 +22,5 @@ export const fetchCourses = (args: CoursesListArgs): Promise<CoursesListResponse
   const params = new URLSearchParams(args);
   console.log(params.toString());
 
-  return wretch(`/api/courses?${params}`).get().json();
+  return wretch(`/api/courses?${params.toString()}`).get().json();
 };

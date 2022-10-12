@@ -25,17 +25,12 @@ type Image = {
   height: number;
 };
 
-export type Course = {
+export type CourseShort = {
   name: string;
   id: string;
   image: Image;
-  description: string;
-  tags: CourseTag[];
   provider: Provider;
   updatedAt: string;
-  innerRating: number;
-  isProfessional: boolean;
-  isArchived: boolean;
   dateStart: string;
   dateEnd: string;
   direction: Direction;
