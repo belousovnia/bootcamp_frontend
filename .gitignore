@@ -5,5 +5,3 @@ dist-ssr
 *.local
 node_modules/*
 .idea
-
-public/mockServiceWorker.js
