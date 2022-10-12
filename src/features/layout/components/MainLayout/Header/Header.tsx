@@ -21,7 +21,7 @@ import {
   SearchRounded,
 } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useQuizResultsStore } from '@features/quiz/hooks';
+import { useSurveyResultsStore } from '@features/survey/hooks';
 
 type NavLink = {
   title: string;
@@ -33,7 +33,7 @@ const navLinks: NavLink[] = [
   { title: 'Направления', path: '/directions', variant: 'text' },
   { title: 'Профессии', path: '/about', variant: 'text' },
   { title: 'Курсы', path: '/contacts', variant: 'text' },
-  { title: 'Пройти тест', path: '/quiz', variant: 'contained' },
+  { title: 'Пройти тест', path: '/survey', variant: 'contained' },
 ];
 
 const StyledNav = styled('nav')(({ theme }) => ({
@@ -65,20 +65,20 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  const [currentStep, quizState] = useQuizResultsStore((state) => [
+  const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
-    state.quizState,
+    state.surveyState,
   ]);
 
-  const quizPath = useMemo(() => {
-    if (quizState === 'in-progress') {
-      return `/quiz/step/${currentStep}`;
+  const surveyPath = useMemo(() => {
+    if (surveyState === 'in-progress') {
+      return `/survey/step/${currentStep}`;
     }
-    if (quizState === 'completed') {
-      return '/quiz/finish';
+    if (surveyState === 'completed') {
+      return '/survey/finish';
     }
-    return '/quiz';
-  }, [currentStep, quizState]);
+    return '/survey';
+  }, [currentStep, surveyState]);
 
   return (
     <AppBar
@@ -117,7 +117,7 @@ export const Header = () => {
                   <Button
                     key={link.title}
                     component={Link}
-                    to={link.path.includes('quiz') ? quizPath : link.path}
+                    to={link.path.includes('survey') ? surveyPath : link.path}
                     variant={link.variant}
                     sx={{ py: 1 }}
                   >

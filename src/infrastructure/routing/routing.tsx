@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import { MainLayout } from '@features/layout';
 import { MainScreen, TestScreen } from '@screens/index';
-import { QuizScreen } from '@screens/QuizScreen';
-import { QuizStepScreen } from '@screens/QuizStepScreen';
-import { QuizGuard } from '@features/quiz/components/QuizGuard';
-import { QuizFinishScreen } from '@screens/QuizFinishScreen';
+import { SurveyScreen } from '@screens/SurveyScreen';
+import { SurveyStepScreen } from '@screens/SurveyStepScreen';
+import { SurveyGuard } from '@features/survey/components/SurveyGuard';
+import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 
 export const Routing = () => {
   return (
@@ -14,27 +14,27 @@ export const Routing = () => {
           <Route index element={<MainScreen />} />
           <Route path={'test'} element={<TestScreen />} />
           <Route
-            path={'quiz'}
+            path={'survey'}
             element={
-              <QuizGuard>
-                <QuizScreen />
-              </QuizGuard>
+              <SurveyGuard>
+                <SurveyScreen />
+              </SurveyGuard>
             }
           />
           <Route
-            path={'quiz/step/:step'}
+            path={'survey/step/:step'}
             element={
-              <QuizGuard>
-                <QuizStepScreen />
-              </QuizGuard>
+              <SurveyGuard>
+                <SurveyStepScreen />
+              </SurveyGuard>
             }
           />
           <Route
-            path={'quiz/finish'}
+            path={'survey/finish'}
             element={
-              <QuizGuard>
-                <QuizFinishScreen />
-              </QuizGuard>
+              <SurveyGuard>
+                <SurveyFinishScreen />
+              </SurveyGuard>
             }
           />
         </Route>
