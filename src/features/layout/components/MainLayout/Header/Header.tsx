@@ -24,9 +24,8 @@ type NavLink = {
 };
 
 const navLinks: NavLink[] = [
-  { title: 'Направления', path: '/directions', variant: 'text' },
-  { title: 'Профессии', path: '/about', variant: 'text' },
-  { title: 'Курсы', path: '/contacts', variant: 'text' },
+  { title: 'Профессии', path: '/professions', variant: 'text' },
+  { title: 'Курсы', path: '/courses', variant: 'text' },
   { title: 'Пройти тест', path: '/survey', variant: 'contained' },
 ];
 
@@ -143,6 +142,8 @@ export const Header = () => {
                   justifyContent: 'flex-start',
                   borderRadius: 0,
                 }}
+                component={Link}
+                to={link.path}
                 variant={link.variant}
               >
                 {link.title}
