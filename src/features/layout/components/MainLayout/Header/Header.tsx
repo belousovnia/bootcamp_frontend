@@ -1,3 +1,4 @@
+import { useSurveyResultsStore } from '@features/survey/hooks';
 import { AccountCircle } from '@mui/icons-material';
 import Menu from '@mui/icons-material/Menu';
 import {
@@ -13,7 +14,7 @@ import {
 import AppBar from '@mui/material/AppBar';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 type NavLink = {
@@ -25,7 +26,7 @@ type NavLink = {
 const navLinks: NavLink[] = [
   { title: 'Профессии', path: '/professions', variant: 'text' },
   { title: 'Курсы', path: '/courses', variant: 'text' },
-  { title: 'Пройти тест', path: '/quiz', variant: 'contained' },
+  { title: 'Пройти тест', path: '/survey', variant: 'contained' },
 ];
 
 const StyledNav = styled('nav')(({ theme }) => ({
@@ -56,6 +57,22 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+
+  const [currentStep, surveyState] = useSurveyResultsStore((state) => [
+    state.currentStep,
+    state.surveyState,
+  ]);
+
+  const surveyPath = useMemo(() => {
+    if (surveyState === 'in-progress') {
+      return `/survey/step/${currentStep}`;
+    }
+    if (surveyState === 'completed') {
+      return '/survey/finish';
+    }
+    return '/survey';
+  }, [currentStep, surveyState]);
+
   return (
     <AppBar
       position="static"
@@ -93,7 +110,7 @@ export const Header = () => {
                   <Button
                     key={link.title}
                     component={Link}
-                    to={link.path}
+                    to={link.path.includes('survey') ? surveyPath : link.path}
                     variant={link.variant}
                     sx={{ py: 1 }}
                   >
