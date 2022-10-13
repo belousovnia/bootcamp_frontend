@@ -1,9 +1,25 @@
+import { Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
+import { AdminSidebar } from './AdminSidebar';
 
 export const AdminLayout = () => {
+  const navItems = [
+    { path: '/admin/users', title: 'Пользователи' },
+    { path: '/admin/courses', title: 'Курсы' },
+    { path: '/admin/professions', title: 'Профессии' },
+    { path: '/admin/course-providers', title: 'Создатели курсов' },
+  ];
+
   return (
     <section>
-      <Outlet />
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
+          <AdminSidebar navItems={navItems} />
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Outlet />
+        </Grid>
+      </Grid>
     </section>
   );
 };
