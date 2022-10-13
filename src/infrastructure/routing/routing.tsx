@@ -8,6 +8,7 @@ import { SurveyScreen } from '@screens/SurveyScreen';
 import { SurveyStepScreen } from '@screens/SurveyStepScreen';
 import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
+import { AdminLayout } from '@features/layout/components/AdminLayout';
 
 export const Routing = () => {
   return (
@@ -43,6 +44,8 @@ export const Routing = () => {
               </SurveyGuard>
             }
           />
+
+          <Route path={'admin/*'} element={<AdminLayout />}></Route>
         </Route>
       </Routes>
     </>
