@@ -1,13 +1,15 @@
-import { faker } from '@faker-js/faker';
 import { rest } from 'msw';
 import {
-  CourseDetailsArgs,
   CourseDetailsResponse,
+  CourseProviderResponse,
+  CourseProvidersListResponse,
   CoursesListArgs,
   CoursesListResponse,
 } from '../courses.service';
 import {
+  courseProviderFullFixture as fullCourseProviderFixture,
   fullCourseFixture,
+  generateShortCourseProviders,
   generateShortCourses,
   shortCourseFixtures,
 } from './courses.fixtures';
@@ -19,6 +21,7 @@ type FakeErrorJSON = {
 };
 
 const generated = generateShortCourses(200);
+const generatedShortCourseProviders = generateShortCourseProviders(100);
 
 export const coursesMockHandlers = [
   // @NOTE: По какой-то причине MSW не принимает опциональные параметры.
@@ -81,6 +84,34 @@ export const coursesMockHandlers = [
         ctx.status(200),
         ctx.json({
           course: fullCourseFixture,
+        }),
+      );
+    },
+  ),
+  rest.get<null, any, CourseProvidersListResponse | FakeErrorJSON>(
+    `/api/course-providers`,
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          providers: generatedShortCourseProviders,
+          pagination: {
+            page: 1,
+            total: generatedShortCourseProviders.length,
+          },
+        }),
+      );
+    },
+  ),
+  rest.get<null, any, CourseProviderResponse | FakeErrorJSON>(
+    `/api/course-providers/:id`,
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          provider: fullCourseProviderFixture,
         }),
       );
     },

@@ -1,5 +1,10 @@
 import { faker } from '@faker-js/faker';
-import { CourseFull, CourseShort } from '../cources.entity';
+import {
+  CourseFull,
+  CourseProviderFull,
+  CourseProviderShort,
+  CourseShort,
+} from '../cources.entity';
 
 export const shortCourseFixtures: CourseShort[] = [
   {
@@ -89,6 +94,15 @@ export const fullCourseFixture: CourseFull = {
   },
 };
 
+export const courseProviderFullFixture: CourseProviderFull = {
+  id: faker.datatype.uuid(),
+  name: 'Мобильное электронное образование',
+  url: 'http://habr.ru',
+  coverUrl: '/images/logo-adidas.png',
+  shortDescription: 'Краткое описание',
+  description: 'Описание',
+};
+
 export const generateShortCourses = (count: number): CourseShort[] => {
   return Array.from({ length: count }, () => {
     return {
@@ -120,6 +134,15 @@ export const generateShortCourses = (count: number): CourseShort[] => {
           height: 40,
         },
       },
+    };
+  });
+};
+
+export const generateShortCourseProviders = (count: number): CourseProviderShort[] => {
+  return Array.from({ length: count }, () => {
+    return {
+      id: faker.datatype.uuid(),
+      name: faker.lorem.words(2),
     };
   });
 };

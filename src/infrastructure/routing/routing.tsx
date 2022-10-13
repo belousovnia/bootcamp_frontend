@@ -9,6 +9,8 @@ import { SurveyStepScreen } from '@screens/SurveyStepScreen';
 import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { AdminLayout } from '@features/layout/components/AdminLayout';
+import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 
 export const Routing = () => {
   return (
@@ -45,7 +47,13 @@ export const Routing = () => {
             }
           />
 
-          <Route path={'admin/*'} element={<AdminLayout />}></Route>
+          <Route path={'admin/*'} element={<AdminLayout />}>
+            <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
+            <Route
+              path={'course-providers/:id/edit'}
+              element={<AdminCourseProviderEditScreen />}
+            />
+          </Route>
         </Route>
       </Routes>
     </>
