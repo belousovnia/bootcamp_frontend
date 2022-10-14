@@ -1,6 +1,5 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Menu from '@mui/icons-material/Menu';
+import { Menu, AccountCircle } from '@mui/icons-material';
 import {
   Button,
   Container,
@@ -10,17 +9,11 @@ import {
   ListItem,
   Stack,
   Toolbar,
+  AppBar,
 } from '@mui/material';
-import { Button, Container, Drawer, IconButton, List, ListItem } from '@mui/material';
-import { Stack } from '@mui/material';
-import { Toolbar } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
-import Menu from '@mui/icons-material/Menu';
-import { useState } from 'react';
-import { AccountCircle } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@features/auth';
 

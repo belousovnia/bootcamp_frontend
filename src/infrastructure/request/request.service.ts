@@ -24,7 +24,8 @@ requestService.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (
-      error.response.status == 401 &&
+      error &&
+      error.response?.status == 401 &&
       error.config &&
       !originalRequest.config._retry &&
       refreshToken
