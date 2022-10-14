@@ -1,5 +1,5 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import { AccountCircle } from '@mui/icons-material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/icons-material/Menu';
 import {
   Button,
@@ -47,6 +47,7 @@ const StyledLeftStack = styled('div')(({ theme }) => ({
 const StyledLogoLink = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   transition: 'all 0.3s ease',
+  color: 'inherit',
   '&:hover': {
     opacity: 0.7,
   },
