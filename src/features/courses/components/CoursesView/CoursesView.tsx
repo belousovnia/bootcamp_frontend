@@ -15,6 +15,7 @@ export const CoursesView = () => {
   });
 
   const { courses, pagination, error, isLoading } = useCourses(page, options);
+  console.log(courses);
 
   const handleFilterChange = (filterOptions: FilterOptions) => {
     setOptions((prev) => ({ ...prev, ...filterOptions }));

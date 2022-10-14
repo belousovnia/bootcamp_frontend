@@ -1,6 +1,5 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Menu from '@mui/icons-material/Menu';
+import { Menu, AccountCircle } from '@mui/icons-material';
 import {
   Button,
   Container,
@@ -10,12 +9,13 @@ import {
   ListItem,
   Stack,
   Toolbar,
+  AppBar,
 } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuthStore } from '@features/auth';
 
 type NavLink = {
   title: string;
@@ -74,6 +74,7 @@ export const Header = () => {
     return '/survey';
   }, [currentStep, surveyState]);
 
+  const isLogged = useAuthStore((store) => store.isAuth);
   return (
     <AppBar
       position="static"
@@ -121,10 +122,33 @@ export const Header = () => {
               ))}
             </Stack>
           </StyledNav>
-          <Stack direction="row">
-            <IconButton size="large" edge="end">
-              <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
-            </IconButton>
+          <Stack direction="row" spacing={'0.5rem'}>
+            {isLogged ? (
+              <IconButton size="large" edge="end">
+                <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
+              </IconButton>
+            ) : (
+              <>
+                <Button
+                  size={'small'}
+                  component={Link}
+                  to={'/login'}
+                  variant={'outlined'}
+                  sx={{ py: 1 }}
+                >
+                  Войти
+                </Button>
+                <Button
+                  size={'small'}
+                  component={Link}
+                  to={'/registration'}
+                  variant={'outlined'}
+                  sx={{ py: 1 }}
+                >
+                  Регистрация
+                </Button>
+              </>
+            )}
           </Stack>
         </Toolbar>
       </Container>

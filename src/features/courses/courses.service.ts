@@ -1,4 +1,5 @@
-import wretch from 'wretch';
+import { requestService } from '@infrastructure/request';
+import { AxiosResponse } from 'axios';
 import {
   CourseFull,
   CourseProviderFull,
@@ -23,10 +24,10 @@ export type CoursesListResponse = {
   };
 };
 
-export const fetchCourses = (args: CoursesListArgs): Promise<CoursesListResponse> => {
-  const params = new URLSearchParams(args);
-
-  return wretch(`/api/courses?${params.toString()}`).get().json();
+export const fetchCourses = (
+  args: CoursesListArgs,
+): Promise<AxiosResponse<CoursesListResponse>> => {
+  return requestService.get(`courses`, { params: args });
 };
 
 export type CourseDetailsResponse = {
@@ -37,8 +38,10 @@ export type CourseDetailsArgs = {
   id: string;
 };
 
-export const fetchCourse = (args: CourseDetailsArgs): Promise<CourseDetailsResponse> => {
-  return wretch(`/api/courses/${args.id}`).get().json();
+export const fetchCourse = (
+  args: CourseDetailsArgs,
+): Promise<AxiosResponse<CourseDetailsResponse>> => {
+  return requestService.get(`courses/${args.id}`);
 };
 
 export type CourseDeleteResponse = {
@@ -50,8 +53,10 @@ export type CourseDeleteArgs = {
   id: string;
 };
 
-export const deleteCourse = (args: CourseDeleteArgs): Promise<CourseDeleteResponse> => {
-  return wretch(`/api/courses/${args.id}`).delete().json();
+export const deleteCourse = (
+  args: CourseDeleteArgs,
+): Promise<AxiosResponse<CourseDeleteResponse>> => {
+  return requestService.delete(`/api/courses/${args.id}`);
 };
 
 export type CourseUpdateArgs = { id: string; changes: Partial<CourseFull> };
@@ -61,7 +66,7 @@ export type CourseUpdateResponse = {
 };
 
 export const updateCourse = (args: CourseUpdateArgs): Promise<CourseProviderResponse> => {
-  return wretch(`/api/courses/${args.id}`).post(args.changes).json();
+  return requestService.post(`/api/courses/${args.id}`, args);
 };
 
 export type CourseProvidersListArgs = {
@@ -78,9 +83,8 @@ export type CourseProvidersListResponse = {
 
 export const fetchCourseProviders = (
   args: CourseProvidersListArgs,
-): Promise<CourseProvidersListResponse> => {
-  const params = new URLSearchParams(args);
-  return wretch(`/api/course-providers/?${params.toString()}`).get().json();
+): Promise<AxiosResponse<CourseProvidersListResponse>> => {
+  return requestService.get(`course-providers`, { params: args });
 };
 
 export type CourseProviderCreateArgs = Omit<CourseProviderFull, 'id'>;
@@ -92,8 +96,8 @@ export type CourseProviderCreateResponse = {
 
 export const createCourseProvider = (
   args: CourseProviderCreateArgs,
-): Promise<CourseProviderResponse> => {
-  return wretch(`/api/course-providers/new`).post(args).json();
+): Promise<AxiosResponse<CourseProviderResponse>> => {
+  return requestService.post(`course-providers`, args);
 };
 
 export type CourseProviderListArgs = {
@@ -106,8 +110,8 @@ export type CourseProviderResponse = {
 
 export const fetchCourseProvider = (
   args: CourseProviderListArgs,
-): Promise<CourseProviderResponse> => {
-  return wretch(`/api/course-providers/${args.id}`).get().json();
+): Promise<AxiosResponse<CourseProviderResponse>> => {
+  return requestService.get(`course-providers/${args.id}`);
 };
 
 export type CourseProviderUpdateArgs = Omit<CourseProviderFull, 'id'>;
@@ -118,8 +122,8 @@ export type CourseProviderUpdateResponse = {
 
 export const updateCourseProvider = (
   args: CourseDetailsArgs,
-): Promise<CourseProviderResponse> => {
-  return wretch(`/api/course-providers/${args.id}`).post(args).json();
+): Promise<AxiosResponse<CourseProviderUpdateResponse>> => {
+  return requestService.post(`course-providers/${args.id}`, args);
 };
 
 export type CourseProviderDeleteArgs = Omit<CourseProviderFull, 'id'>;
@@ -130,6 +134,6 @@ export type CourseProviderDeleteResponse = {
 
 export const deleteCourseProvider = (
   args: CourseDetailsArgs,
-): Promise<CourseProviderResponse> => {
-  return wretch(`/api/course-providers/${args.id}`).delete().json();
+): Promise<AxiosResponse<CourseProviderDeleteResponse>> => {
+  return requestService.delete(`course-providers/${args.id}`);
 };

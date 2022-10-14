@@ -1,7 +1,6 @@
 import { MainLayout } from '@features/layout';
 import { CourseScreen } from '@screens/CourseScreen';
 import { CoursesScreen } from '@screens/CoursesScreen';
-import { MainScreen, TestScreen } from '@screens/index';
 import { PageScreen } from '@screens/PageScreen';
 import { Route, Routes } from 'react-router-dom';
 import { SurveyScreen } from '@screens/SurveyScreen';
@@ -14,6 +13,7 @@ import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProvide
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
 import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
 import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
+import { MainScreen, TestScreen, LoginScreen, RegistrationScreen } from '@screens/index';
 
 export const Routing = () => {
   return (
@@ -63,6 +63,8 @@ export const Routing = () => {
             <Route path={'courses'} element={<AdminCoursesScreen />} />
             <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
           </Route>
+          <Route path={'login'} element={<LoginScreen />} />
+          <Route path={'registration'} element={<RegistrationScreen />} />
         </Route>
       </Routes>
     </>

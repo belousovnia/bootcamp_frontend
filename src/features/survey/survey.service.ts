@@ -1,3 +1,7 @@
-export const fetchSurvey = () => {
-  return fetch('/api/survey').then((res) => res.json());
+import { requestService } from '@infrastructure/request';
+import { AxiosResponse } from 'axios';
+import { Survey } from './survey.entity';
+
+export const fetchSurvey = (): Promise<AxiosResponse<Survey>> => {
+  return requestService.get(`survey`);
 };

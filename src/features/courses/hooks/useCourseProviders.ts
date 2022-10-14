@@ -4,7 +4,10 @@ import { CourseProvidersListResponse, fetchCourseProviders } from '../courses.se
 export const useCourseProviders = (page: string) => {
   const { data, error, isLoading } = useQuery<CourseProvidersListResponse>(
     ['course-providers', page],
-    () => fetchCourseProviders({ page }),
+    async () => {
+      const { data } = await fetchCourseProviders({ page });
+      return data;
+    },
   );
 
   return {
