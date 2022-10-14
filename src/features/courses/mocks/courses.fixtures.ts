@@ -98,7 +98,8 @@ export const courseProviderFullFixture: CourseProviderFull = {
   id: faker.datatype.uuid(),
   name: 'Мобильное электронное образование',
   url: 'http://habr.ru',
-  coverUrl: '/images/logo-adidas.png',
+  coverUrl:
+    'https://www.silvermedia.ru/upload/resize_cache/iblock/196/75_75_1/2800374.jpg',
   shortDescription: 'Краткое описание',
   description: 'Описание',
 };

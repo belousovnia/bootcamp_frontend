@@ -49,7 +49,7 @@ export type CourseProvidersListResponse = {
   providers: CourseProviderShort[];
   pagination: {
     page: number;
-    total: number;
+    totalPages: number;
   };
 };
 
@@ -58,6 +58,19 @@ export const fetchCourseProviders = (
 ): Promise<CourseProvidersListResponse> => {
   const params = new URLSearchParams(args);
   return wretch(`/api/course-providers/?${params.toString()}`).get().json();
+};
+
+export type CourseProviderCreateArgs = Omit<CourseProviderFull, 'id'>;
+
+export type CourseProviderCreateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const createCourseProvider = (
+  args: CourseProviderCreateArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/new`).post(args).json();
 };
 
 export type CourseProviderListArgs = {
@@ -72,4 +85,28 @@ export const fetchCourseProvider = (
   args: CourseProviderListArgs,
 ): Promise<CourseProviderResponse> => {
   return wretch(`/api/course-providers/${args.id}`).get().json();
+};
+
+export type CourseProviderUpdateArgs = Omit<CourseProviderFull, 'id'>;
+export type CourseProviderUpdateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const updateCourseProvider = (
+  args: CourseDetailsArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/${args.id}`).post(args).json();
+};
+
+export type CourseProviderDeleteArgs = Omit<CourseProviderFull, 'id'>;
+export type CourseProviderDeleteResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const deleteCourseProvider = (
+  args: CourseDetailsArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/${args.id}`).delete().json();
 };
