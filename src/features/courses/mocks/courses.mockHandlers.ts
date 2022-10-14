@@ -8,6 +8,8 @@ import {
   CourseProviderUpdateArgs,
   CoursesListArgs,
   CoursesListResponse,
+  CourseUpdateArgs,
+  CourseUpdateResponse,
 } from '../courses.service';
 import {
   courseProviderFullFixture as fullCourseProviderFixture,
@@ -50,16 +52,21 @@ export const coursesMockHandlers = [
       if (sortBy) {
         courses = courses.sort((a, b) => {
           if (sortBy === 'date-start') {
-            return new Date(a.dateStart).getTime() - new Date(b.dateStart).getTime();
+            return (
+              new Date(a.startMskDateTime).getTime() -
+              new Date(b.startMskDateTime).getTime()
+            );
           }
           if (sortBy === 'date-end') {
-            return new Date(a.dateEnd).getTime() - new Date(b.dateEnd).getTime();
+            return (
+              new Date(a.endMskDateTime).getTime() - new Date(b.endMskDateTime).getTime()
+            );
           }
           return 0;
         });
       }
 
-      const TOTAL = courses.length;
+      const TOTAL_PAGES = Math.floor(courses.length / ITEMS_PER_PAGE);
 
       courses = courses.slice(
         (Number(page) - 1) * ITEMS_PER_PAGE,
@@ -72,7 +79,7 @@ export const coursesMockHandlers = [
         ctx.json({
           pagination: {
             page: 1,
-            total: TOTAL,
+            totalPages: TOTAL_PAGES,
           },
           courses,
         }),
@@ -91,6 +98,21 @@ export const coursesMockHandlers = [
       );
     },
   ),
+
+  rest.post<CourseUpdateArgs, { id: string }, CourseUpdateResponse | FakeErrorJSON>(
+    `/api/courses/:id`,
+    async (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Курс успешно обновлен',
+        }),
+      );
+    },
+  ),
+
   rest.get<null, any, CourseProvidersListResponse | FakeErrorJSON>(
     `/api/course-providers`,
     (req, res, ctx) => {
@@ -124,6 +146,7 @@ export const coursesMockHandlers = [
       );
     },
   ),
+
   rest.post<
     CourseProviderUpdateArgs,
     { id: string },

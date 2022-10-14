@@ -22,13 +22,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import {
-  MutationFunction,
-  Updater,
-  useMutation,
-  useQueryClient,
-  UseQueryResult,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -151,7 +145,7 @@ export const CourseProvidersTable = () => {
           severity="success"
           sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
         >
-          Создатель курса успешно удален
+          Курс успешно удален
         </Alert>
       </Snackbar>
     </>

@@ -1,9 +1,9 @@
-import { CourseProviderShort } from '@features/courses/cources.entity';
+import { CourseShort } from '@features/courses/cources.entity';
 import {
-  CourseProvidersListResponse,
+  CoursesListResponse,
   deleteCourseProvider,
 } from '@features/courses/courses.service';
-import { useCourseProviders } from '@features/courses/hooks/useCourseProviders';
+import { useCourses } from '@features/courses/hooks/useCourses';
 import { Delete, Edit } from '@mui/icons-material';
 import {
   Alert,
@@ -22,13 +22,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import {
-  MutationFunction,
-  Updater,
-  useMutation,
-  useQueryClient,
-  UseQueryResult,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -41,14 +35,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export const CourseProvidersTable = () => {
+export const CoursesTable = () => {
   const [page, setPage] = useState(1);
   const client = useQueryClient();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const { courseProviders, pagination, isLoading, error } = useCourseProviders(
-    page.toString(),
-  );
+  const { courses, pagination, isLoading, error } = useCourses(page, {});
 
   const {
     mutate,
@@ -62,25 +54,22 @@ export const CourseProvidersTable = () => {
     },
     {
       onMutate: async (idToDelete) => {
-        await client.cancelQueries(['course-providers', page.toString()]);
-        const previousCourseProvidersData = client.getQueryData([
-          'course-providers',
-          page.toString(),
-        ]);
-        client.setQueryData<CourseProvidersListResponse | undefined>(
-          ['course-providers', page.toString()],
+        await client.cancelQueries(['courses', page]);
+        const previousCoursesData = client.getQueryData(['courses', page]);
+        client.setQueryData<CoursesListResponse | undefined>(
+          ['courses', page],
           (oldData) => {
             return (
               oldData && {
                 ...oldData,
-                providers: oldData.providers.filter(
-                  (item: CourseProviderShort) => item.id !== idToDelete,
+                courses: oldData.courses.filter(
+                  (item: CourseShort) => item.id !== idToDelete,
                 ),
               }
             );
           },
         );
-        return { previousCourseProvidersData };
+        return { previousCoursesData };
       },
     },
   );
@@ -92,7 +81,7 @@ export const CourseProvidersTable = () => {
       ) : (
         <>
           <Button variant="contained" component={Link} to="/admin/course-providers/new">
-            Добавить создателя курсов
+            Добавить курс
           </Button>
           <TableContainer component={Paper} sx={{ mt: 2 }}>
             <Table>
@@ -107,17 +96,17 @@ export const CourseProvidersTable = () => {
                   pointerEvents: isDeletionLoading ? 'none' : 1,
                 }}
               >
-                {courseProviders?.map((courseProvider) => (
-                  <TableRow key={courseProvider.id}>
-                    <StyledTableCell>{courseProvider.name}</StyledTableCell>
+                {courses?.map((course) => (
+                  <TableRow key={course.id}>
+                    <StyledTableCell>{course.name}</StyledTableCell>
                     <StyledTableCell width={80}>
                       <IconButton
                         component={Link}
-                        to={`/admin/course-providers/${courseProvider.id}/edit`}
+                        to={`/admin/courses/${course.id}/edit`}
                       >
                         <Edit />
                       </IconButton>
-                      <IconButton onClick={() => mutate(courseProvider.id)}>
+                      <IconButton onClick={() => mutate(course.id)}>
                         <Delete />
                       </IconButton>
                     </StyledTableCell>
@@ -151,7 +140,7 @@ export const CourseProvidersTable = () => {
           severity="success"
           sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
         >
-          Создатель курса успешно удален
+          Курс успешно удален
         </Alert>
       </Snackbar>
     </>

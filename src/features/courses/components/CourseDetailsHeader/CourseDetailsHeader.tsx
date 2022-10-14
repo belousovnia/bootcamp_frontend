@@ -1,14 +1,10 @@
-import {
-  CourseComplexity,
-  CourseProfession,
-  CourseTag,
-} from '@features/courses/cources.entity';
+import { CourseProfession } from '@features/courses/cources.entity';
 import { Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 
 interface CourseDetailsHeaderProps {
   title: string;
-  complexity: CourseComplexity;
+  isForAdvancedStudents: boolean;
   profession: CourseProfession;
   dateStart: string;
   dateEnd: string;
@@ -16,7 +12,7 @@ interface CourseDetailsHeaderProps {
 
 export const CourseDetailsHeader = ({
   title,
-  complexity,
+  isForAdvancedStudents,
   profession,
   dateStart,
   dateEnd,
@@ -42,7 +38,7 @@ export const CourseDetailsHeader = ({
             Сложность:
           </Typography>
           <Typography component={'p'} variant="subtitle1">
-            {complexity.name}
+            {isForAdvancedStudents ? 'Для продвинутых' : 'Для начинающих'}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>

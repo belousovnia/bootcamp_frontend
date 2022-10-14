@@ -19,7 +19,7 @@ export type CoursesListResponse = {
   courses: CourseShort[];
   pagination: {
     page: number;
-    total: number;
+    totalPages: number;
   };
 };
 
@@ -39,6 +39,29 @@ export type CourseDetailsArgs = {
 
 export const fetchCourse = (args: CourseDetailsArgs): Promise<CourseDetailsResponse> => {
   return wretch(`/api/courses/${args.id}`).get().json();
+};
+
+export type CourseDeleteResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export type CourseDeleteArgs = {
+  id: string;
+};
+
+export const deleteCourse = (args: CourseDeleteArgs): Promise<CourseDeleteResponse> => {
+  return wretch(`/api/courses/${args.id}`).delete().json();
+};
+
+export type CourseUpdateArgs = { id: string; changes: Partial<CourseFull> };
+export type CourseUpdateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const updateCourse = (args: CourseUpdateArgs): Promise<CourseProviderResponse> => {
+  return wretch(`/api/courses/${args.id}`).post(args.changes).json();
 };
 
 export type CourseProvidersListArgs = {

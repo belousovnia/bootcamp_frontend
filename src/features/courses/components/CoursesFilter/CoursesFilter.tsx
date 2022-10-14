@@ -32,24 +32,21 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
   };
 
   const handleProfessionChange = (event: SelectChangeEvent<string>) => {
-    console.log(event.target.value);
     onChange({ ...options, professionId: event.target.value });
   };
 
   const handleComplexityChange = (event: SelectChangeEvent<string>) => {
-    console.log(event.target.value);
     onChange({ ...options, complexityId: event.target.value });
   };
 
   const handleSortbyChange = (event: SelectChangeEvent<string>) => {
-    console.log(event.target.value);
     onChange({ ...options, sortBy: event.target.value as CoursesSortBy });
   };
 
   return (
     <Card>
-      <CardHeader title="Фильтры" />
-      <CardContent>
+      <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />
+      <CardContent sx={{ p: { md: 3 } }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={4} lg={3}>
             <TextField

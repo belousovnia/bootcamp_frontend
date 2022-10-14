@@ -12,6 +12,8 @@ import { AdminLayout } from '@features/layout/components/AdminLayout';
 import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
+import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
+import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
 
 export const Routing = () => {
   return (
@@ -58,6 +60,8 @@ export const Routing = () => {
               path={'course-providers/new'}
               element={<AdminCourseProviderNewScreen />}
             />
+            <Route path={'courses'} element={<AdminCoursesScreen />} />
+            <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
           </Route>
         </Route>
       </Routes>
