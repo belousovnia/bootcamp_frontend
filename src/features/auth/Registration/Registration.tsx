@@ -29,8 +29,6 @@ export const Registration = () => {
     commitRegistration(data);
   };
 
-  // const password isValid useMemo(() => function, input);
-
   const commitRegistration = async (user: FieldValues) => {
     try {
       await registration({
