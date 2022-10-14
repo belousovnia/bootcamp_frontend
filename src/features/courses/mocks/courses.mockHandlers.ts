@@ -1,13 +1,18 @@
-import { faker } from '@faker-js/faker';
 import { rest } from 'msw';
 import {
-  CourseDetailsArgs,
   CourseDetailsResponse,
+  CourseProviderCreateArgs,
+  CourseProviderCreateResponse,
+  CourseProviderResponse,
+  CourseProvidersListResponse,
+  CourseProviderUpdateArgs,
   CoursesListArgs,
   CoursesListResponse,
 } from '../courses.service';
 import {
+  courseProviderFullFixture as fullCourseProviderFixture,
   fullCourseFixture,
+  generateShortCourseProviders,
   generateShortCourses,
   shortCourseFixtures,
 } from './courses.fixtures';
@@ -19,6 +24,7 @@ type FakeErrorJSON = {
 };
 
 const generated = generateShortCourses(200);
+const generatedShortCourseProviders = generateShortCourseProviders(100);
 
 export const coursesMockHandlers = [
   // @NOTE: По какой-то причине MSW не принимает опциональные параметры.
@@ -85,4 +91,87 @@ export const coursesMockHandlers = [
       );
     },
   ),
+  rest.get<null, any, CourseProvidersListResponse | FakeErrorJSON>(
+    `/api/course-providers`,
+    (req, res, ctx) => {
+      const page = req.url.searchParams.get('page') || '1';
+      const sliced = generatedShortCourseProviders.slice(
+        (Number(page) - 1) * ITEMS_PER_PAGE,
+        Number(page) * ITEMS_PER_PAGE,
+      );
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          providers: sliced,
+          pagination: {
+            page: parseInt(page),
+            totalPages: Math.floor(generatedShortCourseProviders.length / ITEMS_PER_PAGE),
+          },
+        }),
+      );
+    },
+  ),
+  rest.get<null, any, CourseProviderResponse | FakeErrorJSON>(
+    `/api/course-providers/:id`,
+    (req, res, ctx) => {
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          provider: fullCourseProviderFixture,
+        }),
+      );
+    },
+  ),
+  rest.post<
+    CourseProviderUpdateArgs,
+    { id: string },
+    CourseProviderResponse | FakeErrorJSON
+  >(`/api/course-providers/:id`, (req, res, ctx) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        success: true,
+        message: 'Курс успешно обновлен',
+      }),
+    );
+  }),
+
+  rest.post<
+    CourseProviderCreateArgs,
+    { id: string },
+    CourseProviderCreateResponse | FakeErrorJSON
+  >(`/api/course-providers/new`, (req, res, ctx) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        success: true,
+        message: 'Курс успешно обновлен',
+      }),
+    );
+  }),
+
+  rest.delete<
+    CourseProviderUpdateArgs,
+    { id: string },
+    CourseProviderResponse | FakeErrorJSON
+  >(`/api/course-providers/:id`, (req, res, ctx) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+    return res(
+      ctx.delay(500),
+      ctx.status(200),
+      ctx.json({
+        success: true,
+        message: 'Курс успешно удален',
+      }),
+    );
+  }),
 ];

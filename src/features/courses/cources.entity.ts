@@ -1,3 +1,17 @@
+export type CourseProviderShort = {
+  id: string;
+  name: string;
+};
+
+export type CourseProviderFull = {
+  id: string;
+  name: string;
+  url: string;
+  coverUrl?: string;
+  shortDescription: string;
+  description: string;
+};
+
 export type CourseProvider = {
   id: string;
   name: string;

@@ -1,5 +1,10 @@
-import { CourseFull, CourseShort } from './cources.entity';
 import wretch from 'wretch';
+import {
+  CourseFull,
+  CourseProviderFull,
+  CourseProviderShort,
+  CourseShort,
+} from './cources.entity';
 
 export type CoursesSortBy = 'date-start' | 'date-end';
 
@@ -20,7 +25,6 @@ export type CoursesListResponse = {
 
 export const fetchCourses = (args: CoursesListArgs): Promise<CoursesListResponse> => {
   const params = new URLSearchParams(args);
-  console.log(params.toString());
 
   return wretch(`/api/courses?${params.toString()}`).get().json();
 };
@@ -35,4 +39,74 @@ export type CourseDetailsArgs = {
 
 export const fetchCourse = (args: CourseDetailsArgs): Promise<CourseDetailsResponse> => {
   return wretch(`/api/courses/${args.id}`).get().json();
+};
+
+export type CourseProvidersListArgs = {
+  page: string;
+};
+
+export type CourseProvidersListResponse = {
+  providers: CourseProviderShort[];
+  pagination: {
+    page: number;
+    totalPages: number;
+  };
+};
+
+export const fetchCourseProviders = (
+  args: CourseProvidersListArgs,
+): Promise<CourseProvidersListResponse> => {
+  const params = new URLSearchParams(args);
+  return wretch(`/api/course-providers/?${params.toString()}`).get().json();
+};
+
+export type CourseProviderCreateArgs = Omit<CourseProviderFull, 'id'>;
+
+export type CourseProviderCreateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const createCourseProvider = (
+  args: CourseProviderCreateArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/new`).post(args).json();
+};
+
+export type CourseProviderListArgs = {
+  id: string;
+};
+
+export type CourseProviderResponse = {
+  provider: CourseProviderFull;
+};
+
+export const fetchCourseProvider = (
+  args: CourseProviderListArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/${args.id}`).get().json();
+};
+
+export type CourseProviderUpdateArgs = Omit<CourseProviderFull, 'id'>;
+export type CourseProviderUpdateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const updateCourseProvider = (
+  args: CourseDetailsArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/${args.id}`).post(args).json();
+};
+
+export type CourseProviderDeleteArgs = Omit<CourseProviderFull, 'id'>;
+export type CourseProviderDeleteResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const deleteCourseProvider = (
+  args: CourseDetailsArgs,
+): Promise<CourseProviderResponse> => {
+  return wretch(`/api/course-providers/${args.id}`).delete().json();
 };
