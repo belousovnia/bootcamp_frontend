@@ -15,7 +15,6 @@ import { SurveyCard } from '../SurveyCard';
 export const SurveyStartCard = () => {
   const navigate = useNavigate();
   const setSurveyState = useSurveyResultsStore((state) => state.setSurveyState);
-  const setCurrentStep = useSurveyResultsStore((state) => state.setCurrentStep);
 
   const handleStartSurvey: MouseEventHandler<HTMLButtonElement> = (e) => {
     setSurveyState('in-progress');

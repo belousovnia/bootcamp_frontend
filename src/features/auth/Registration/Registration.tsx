@@ -14,7 +14,11 @@ import {
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyledBox } from '@features/auth/components';
 
-export const Registration = () => {
+interface RegistrationProps {
+  title?: string;
+}
+
+export const Registration = ({ title }: RegistrationProps) => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const [warningMessage, setWarningMessage] = useState<string>('');
 
@@ -28,8 +32,6 @@ export const Registration = () => {
     setWarningMessage('');
     commitRegistration(data);
   };
-
-  // const password isValid useMemo(() => function, input);
 
   const commitRegistration = async (user: FieldValues) => {
     try {
@@ -67,7 +69,9 @@ export const Registration = () => {
         alignItems: 'center',
       }}
     >
-      <Typography variant={'h4'}>Регистрация</Typography>
+      <Typography variant={'h4'} textAlign="center" maxWidth={470}>
+        {title ?? 'Регистрация'}
+      </Typography>
       <Paper
         sx={{
           display: 'flex',
