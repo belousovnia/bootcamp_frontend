@@ -12,6 +12,7 @@ import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersS
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
 import { MainScreen, TestScreen, LoginScreen, RegistrationScreen } from '@screens/index';
+import { UserLayout } from '@features/layout/components/UserLayout';
 
 export const Routing = () => {
   return (
@@ -48,6 +49,7 @@ export const Routing = () => {
             }
           />
 
+          {/* Admin */}
           <Route path={'admin/*'} element={<AdminLayout />}>
             <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
             <Route
@@ -59,6 +61,13 @@ export const Routing = () => {
               element={<AdminCourseProviderNewScreen />}
             />
           </Route>
+
+          {/* User */}
+          <Route path={'user/*'} element={<UserLayout />}>
+            <Route path={'recommendations'} element={<AdminCourseProvidersScreen />} />
+          </Route>
+
+          {/* Auth */}
           <Route path={'login'} element={<LoginScreen />} />
           <Route path={'registration'} element={<RegistrationScreen />} />
         </Route>
