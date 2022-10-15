@@ -10,7 +10,7 @@ import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
 import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
 import { CourseScreen } from '@screens/CourseScreen';
 import { CoursesScreen } from '@screens/CoursesScreen';
-import { LoginScreen, MainScreen, RegistrationScreen, TestScreen } from '@screens/index';
+import { LoginScreen, MainScreen, RegistrationScreen } from '@screens/index';
 import { PageScreen } from '@screens/PageScreen';
 import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { SurveyScreen } from '@screens/SurveyScreen';
@@ -25,7 +25,6 @@ export const Routing = () => {
       <Routes>
         <Route path={'/'} element={<MainLayout />}>
           <Route index element={<MainScreen />} />
-          <Route path={'test'} element={<TestScreen />} />
           <Route path={'courses'} element={<CoursesScreen />} />
           <Route path={'courses/:id'} element={<CourseScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />

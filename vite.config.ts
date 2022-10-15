@@ -13,6 +13,7 @@ export default defineConfig({
       '@infrastructure': path.resolve(__dirname, './src/infrastructure'),
       '@screens': path.resolve(__dirname, './src/screens'),
       '@ui-library': path.resolve(__dirname, './src/ui-library'),
+      '@utils': path.resolve(__dirname, './src/utils'),
     },
   },
 });
