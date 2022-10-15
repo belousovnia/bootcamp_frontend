@@ -46,6 +46,7 @@ export type CourseShort = {
   coverUrl: string;
   provider: CourseProviderShort;
   updatedAt: string;
+  isArchived: boolean;
   profession: CourseProfession;
 };
 
@@ -54,6 +55,7 @@ export type CourseFull = {
   id: string;
   description: string;
   coverUrl: string;
+  isArchived: boolean;
   url: string;
   provider: CourseProvider;
   updatedAt: string;

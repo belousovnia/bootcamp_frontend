@@ -66,7 +66,17 @@ export type CourseUpdateResponse = {
 };
 
 export const updateCourse = (args: CourseUpdateArgs): Promise<CourseProviderResponse> => {
-  return requestService.post(`/api/courses/${args.id}`, args);
+  return requestService.post(`courses/${args.id}`, args);
+};
+
+export type CourseCreateArgs = Partial<CourseFull>;
+export type CourseCreateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const createCourse = (args: CourseCreateArgs): Promise<CourseCreateResponse> => {
+  return requestService.post(`courses/new`, args);
 };
 
 export type CourseProvidersListArgs = {

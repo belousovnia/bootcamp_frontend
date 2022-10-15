@@ -80,7 +80,7 @@ export const CoursesTable = () => {
         <CircularProgress />
       ) : (
         <>
-          <Button variant="contained" component={Link} to="/admin/course-providers/new">
+          <Button variant="contained" component={Link} to="/admin/courses/new">
             Добавить курс
           </Button>
           <TableContainer component={Paper} sx={{ mt: 2 }}>

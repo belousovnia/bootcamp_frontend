@@ -1,5 +1,7 @@
 import { rest } from 'msw';
 import {
+  CourseCreateArgs,
+  CourseCreateResponse,
   CourseDetailsResponse,
   CourseProviderCreateArgs,
   CourseProviderCreateResponse,
@@ -108,6 +110,21 @@ export const coursesMockHandlers = [
         ctx.json({
           success: true,
           message: 'Курс успешно обновлен',
+        }),
+      );
+    },
+  ),
+
+  rest.post<CourseCreateArgs, CourseCreateResponse | FakeErrorJSON>(
+    `/api/courses/new`,
+    (req, res, ctx) => {
+      const { name, description } = req.body;
+      return res(
+        ctx.delay(500),
+        ctx.status(200),
+        ctx.json({
+          success: true,
+          message: 'Курс успешно cоздан',
         }),
       );
     },

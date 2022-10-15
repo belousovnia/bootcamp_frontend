@@ -1,19 +1,20 @@
 import { MainLayout } from '@features/layout';
-import { CourseScreen } from '@screens/CourseScreen';
-import { CoursesScreen } from '@screens/CoursesScreen';
-import { PageScreen } from '@screens/PageScreen';
-import { Route, Routes } from 'react-router-dom';
-import { SurveyScreen } from '@screens/SurveyScreen';
-import { SurveyStepScreen } from '@screens/SurveyStepScreen';
-import { SurveyGuard } from '@features/survey/components/SurveyGuard';
-import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { AdminLayout } from '@features/layout/components/AdminLayout';
-import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
-import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
+import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
 import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
-import { MainScreen, TestScreen, LoginScreen, RegistrationScreen } from '@screens/index';
+import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
+import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
+import { CourseScreen } from '@screens/CourseScreen';
+import { CoursesScreen } from '@screens/CoursesScreen';
+import { LoginScreen, MainScreen, RegistrationScreen, TestScreen } from '@screens/index';
+import { PageScreen } from '@screens/PageScreen';
+import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
+import { SurveyScreen } from '@screens/SurveyScreen';
+import { SurveyStepScreen } from '@screens/SurveyStepScreen';
+import { Route, Routes } from 'react-router-dom';
 
 export const Routing = () => {
   return (
@@ -51,6 +52,10 @@ export const Routing = () => {
           />
 
           <Route path={'admin/*'} element={<AdminLayout />}>
+            <Route path={'courses'} element={<AdminCoursesScreen />} />
+            <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
+            <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
+
             <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
             <Route
               path={'course-providers/:id/edit'}
@@ -60,8 +65,6 @@ export const Routing = () => {
               path={'course-providers/new'}
               element={<AdminCourseProviderNewScreen />}
             />
-            <Route path={'courses'} element={<AdminCoursesScreen />} />
-            <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
           </Route>
           <Route path={'login'} element={<LoginScreen />} />
           <Route path={'registration'} element={<RegistrationScreen />} />

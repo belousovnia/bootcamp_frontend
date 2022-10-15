@@ -15,6 +15,7 @@ export const shortCourseFixtures: CourseShort[] = [
     updatedAt: '2021-03-01T00:00:00.000Z',
     startMskDateTime: '2022-10-29T00:00:00.000Z',
     endMskDateTime: '2023-02-05T00:00:00.000Z',
+    isArchived: false,
     profession: {
       id: faker.datatype.uuid(),
       name: 'Программирование',
@@ -33,6 +34,7 @@ export const shortCourseFixtures: CourseShort[] = [
     updatedAt: '2021-03-01T00:00:00.000Z',
     startMskDateTime: '2022-10-28T00:00:00.000Z',
     endMskDateTime: '2023-02-11T00:00:00.000Z',
+    isArchived: false,
     profession: {
       id: faker.datatype.uuid(),
       name: 'Программирование',
@@ -64,10 +66,11 @@ export const fullCourseFixture: CourseFull = {
   },
   isForAdvancedStudents: false,
   updatedAt: '2021-03-01T00:00:00.000Z',
-  startMskDateTime: '2022-10-29T00:00:00.000Z',
-  endMskDateTime: '2023-02-05T00:00:00.000Z',
+  startMskDateTime: '2022-10-29T13:00',
+  endMskDateTime: '2023-02-05T20:00',
   isIndefinite: false,
-  internalRating: 4.5,
+  internalRating: 4,
+  isArchived: false,
   profession: {
     id: faker.datatype.uuid(),
     name: 'Программист',
@@ -92,6 +95,7 @@ export const generateShortCourses = (count: number): CourseShort[] => {
       url: faker.internet.url(),
       coverUrl: 'http://placekitten.com/g/672/320',
       updatedAt: '2021-03-01T00:00:00.000Z',
+      isArchived: false,
       startMskDateTime: faker.date
         .between('2022-10-28T00:00:00.000Z', '2023-01-01T00:00:00.000Z')
         .toISOString(),
