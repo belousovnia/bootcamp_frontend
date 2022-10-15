@@ -10,6 +10,7 @@ import {
   Stack,
   Toolbar,
   AppBar,
+  Box,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
@@ -128,13 +129,13 @@ export const Header = () => {
                 <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
               </IconButton>
             ) : (
-              <>
+              <Box display={{ xs: 'none', sm: 'flex' }}>
                 <Button
                   size={'small'}
                   component={Link}
                   to={'/login'}
                   variant={'outlined'}
-                  sx={{ py: 1 }}
+                  sx={{ py: 1, ml: 2 }}
                 >
                   Войти
                 </Button>
@@ -143,11 +144,11 @@ export const Header = () => {
                   component={Link}
                   to={'/registration'}
                   variant={'outlined'}
-                  sx={{ py: 1 }}
+                  sx={{ py: 1, ml: 2 }}
                 >
                   Регистрация
                 </Button>
-              </>
+              </Box>
             )}
           </Stack>
         </Toolbar>
@@ -155,7 +156,7 @@ export const Header = () => {
       <Drawer
         open={mobileDrawerOpen}
         onClose={() => setMobileDrawerOpen(false)}
-        sx={{ p: 3 }}
+        sx={{ p: 3, display: 'flex', flexDirection: 'column' }}
       >
         <List>
           {navLinks.map((link) => (
@@ -170,12 +171,37 @@ export const Header = () => {
                 component={Link}
                 to={link.path}
                 variant={link.variant}
+                onClick={() => setMobileDrawerOpen(false)}
               >
                 {link.title}
               </Button>
             </ListItem>
           ))}
         </List>
+        <Stack direction={'column'} sx={{ p: 2, mt: 'auto' }} spacing={2}>
+          <Button
+            size={'large'}
+            component={Link}
+            to={'/login'}
+            variant={'outlined'}
+            fullWidth
+            sx={{ py: 1 }}
+            onClick={() => setMobileDrawerOpen(false)}
+          >
+            Войти
+          </Button>
+          <Button
+            size={'large'}
+            component={Link}
+            to={'/registration'}
+            variant={'outlined'}
+            fullWidth
+            sx={{ py: 1 }}
+            onClick={() => setMobileDrawerOpen(false)}
+          >
+            Регистрация
+          </Button>
+        </Stack>
       </Drawer>
     </AppBar>
   );
