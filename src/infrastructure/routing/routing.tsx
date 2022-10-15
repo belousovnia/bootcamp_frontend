@@ -1,18 +1,20 @@
 import { MainLayout } from '@features/layout';
-import { CourseScreen } from '@screens/CourseScreen';
-import { CoursesScreen } from '@screens/CoursesScreen';
-import { PageScreen } from '@screens/PageScreen';
-import { Route, Routes } from 'react-router-dom';
-import { SurveyScreen } from '@screens/SurveyScreen';
-import { SurveyStepScreen } from '@screens/SurveyStepScreen';
-import { SurveyGuard } from '@features/survey/components/SurveyGuard';
-import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { AdminLayout } from '@features/layout/components/AdminLayout';
-import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { UserLayout } from '@features/layout/components/UserLayout';
+import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
-import { MainScreen, TestScreen, LoginScreen, RegistrationScreen } from '@screens/index';
-import { UserLayout } from '@features/layout/components/UserLayout';
+import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { CourseScreen } from '@screens/CourseScreen';
+import { CoursesScreen } from '@screens/CoursesScreen';
+import { LoginScreen, MainScreen, RegistrationScreen, TestScreen } from '@screens/index';
+import { PageScreen } from '@screens/PageScreen';
+import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
+import { SurveyScreen } from '@screens/SurveyScreen';
+import { SurveyStepScreen } from '@screens/SurveyStepScreen';
+import { UserAccountScreen } from '@screens/UserAccountScreen';
+import { UserRecommendationsScreen } from '@screens/UserRecommendationsScreen';
+import { Route, Routes } from 'react-router-dom';
 
 export const Routing = () => {
   return (
@@ -64,7 +66,8 @@ export const Routing = () => {
 
           {/* User */}
           <Route path={'user/*'} element={<UserLayout />}>
-            <Route path={'recommendations'} element={<AdminCourseProvidersScreen />} />
+            <Route path={'recommendations'} element={<UserRecommendationsScreen />} />
+            <Route path={'account'} element={<UserAccountScreen />} />
           </Route>
 
           {/* Auth */}

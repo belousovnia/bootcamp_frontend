@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fetchCurrentUser } from '../users.service';
 
 export const useCurrentUser = () => {
