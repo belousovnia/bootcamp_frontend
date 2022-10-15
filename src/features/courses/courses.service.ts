@@ -20,7 +20,7 @@ export type CoursesListResponse = {
   courses: CourseShort[];
   pagination: {
     page: number;
-    total: number;
+    totalPages: number;
   };
 };
 
@@ -42,6 +42,41 @@ export const fetchCourse = (
   args: CourseDetailsArgs,
 ): Promise<AxiosResponse<CourseDetailsResponse>> => {
   return requestService.get(`courses/${args.id}`);
+};
+
+export type CourseDeleteResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export type CourseDeleteArgs = {
+  id: string;
+};
+
+export const deleteCourse = (
+  args: CourseDeleteArgs,
+): Promise<AxiosResponse<CourseDeleteResponse>> => {
+  return requestService.delete(`/api/courses/${args.id}`);
+};
+
+export type CourseUpdateArgs = { id: string; changes: Partial<CourseFull> };
+export type CourseUpdateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const updateCourse = (args: CourseUpdateArgs): Promise<CourseProviderResponse> => {
+  return requestService.post(`courses/${args.id}`, args);
+};
+
+export type CourseCreateArgs = Partial<CourseFull>;
+export type CourseCreateResponse = {
+  type: 'success' | 'error';
+  message: string;
+};
+
+export const createCourse = (args: CourseCreateArgs): Promise<CourseCreateResponse> => {
+  return requestService.post(`courses/new`, args);
 };
 
 export type CourseProvidersListArgs = {

@@ -29,11 +29,11 @@ export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) =>
           <>
             <Box sx={{ mb: 5 }}>
               <CourseDetailsHeader
-                complexity={course.complexity}
+                isForAdvancedStudents={course.isForAdvancedStudents}
                 title={course.name}
                 profession={course.profession}
-                dateStart={course.dateStart}
-                dateEnd={course.dateEnd}
+                dateStart={course.startMskDateTime}
+                dateEnd={course.endMskDateTime}
               />
             </Box>
             <CourseDetailsContent description={course.description} />

@@ -4,7 +4,6 @@ import { AdminSidebar } from './AdminSidebar';
 
 export const AdminLayout = () => {
   const navItems = [
-    { path: '/admin/users', title: 'Пользователи' },
     { path: '/admin/courses', title: 'Курсы' },
     { path: '/admin/professions', title: 'Профессии' },
     { path: '/admin/course-providers', title: 'Создатели курсов' },

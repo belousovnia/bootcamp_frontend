@@ -8,6 +8,7 @@ export const useCourseProviders = (page: string) => {
       const { data } = await fetchCourseProviders({ page });
       return data;
     },
+    { staleTime: 1000 * 60 * 60 },
   );
 
   return {

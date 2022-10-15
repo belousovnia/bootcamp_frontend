@@ -5,6 +5,9 @@ import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
 import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
+import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
+import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
 import { CourseScreen } from '@screens/CourseScreen';
 import { CoursesScreen } from '@screens/CoursesScreen';
 import { LoginScreen, MainScreen, RegistrationScreen, TestScreen } from '@screens/index';
@@ -53,6 +56,10 @@ export const Routing = () => {
 
           {/* Admin */}
           <Route path={'admin/*'} element={<AdminLayout />}>
+            <Route path={'courses'} element={<AdminCoursesScreen />} />
+            <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
+            <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
+
             <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
             <Route
               path={'course-providers/:id/edit'}
