@@ -98,7 +98,7 @@ export const surveyFixture: Survey = {
           tag: 'development',
         },
         {
-          text: 'Укажу на то, чо это не моя ошибка',
+          text: 'Укажу на то, что это не моя ошибка',
           tag: 'testing',
         },
         {
