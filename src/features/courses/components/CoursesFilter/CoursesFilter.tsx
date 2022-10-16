@@ -13,11 +13,12 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
+import debounce from 'lodash.debounce';
 
 export type FilterOptions = {
   professionId?: string;
   search?: string;
-  complexityId?: string;
+  isForAdvancedStudents?: boolean;
   sortBy?: CoursesSortBy;
 };
 
@@ -35,8 +36,8 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
     onChange({ ...options, professionId: event.target.value });
   };
 
-  const handleComplexityChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, complexityId: event.target.value });
+  const handleIsForAdvancedChange = (event: SelectChangeEvent<string>) => {
+    onChange({ ...options, isForAdvancedStudents: event.target.value === 'yes' });
   };
 
   const handleSortbyChange = (event: SelectChangeEvent<string>) => {
@@ -52,8 +53,8 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
             <TextField
               variant="outlined"
               label="Поиск по названию курса"
-              onChange={handleSearchChange}
-              value={options.search}
+              onChange={debounce(handleSearchChange, 300)}
+              defaultValue={options.search}
               fullWidth
             />
           </Grid>
@@ -80,20 +81,19 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
 
           <Grid item xs={12} sm={4} lg={3}>
             <FormControl fullWidth>
-              <InputLabel id="course-complexity">Сложность</InputLabel>
+              <InputLabel id="course-for-advanced">Сложность</InputLabel>
               <Select
-                labelId="course-complexity"
-                id="course-complexity"
+                labelId="course-for-advanced"
+                id="course-for-advanced"
                 label="Сложность"
-                defaultValue=""
-                value={options.complexityId}
-                onChange={handleComplexityChange}
+                value={options.isForAdvancedStudents ? 'yes' : 'no'}
+                onChange={handleIsForAdvancedChange}
               >
                 <MenuItem value="">
                   <em>Не выбрано</em>
                 </MenuItem>
-                <MenuItem value={10}>Для новичков</MenuItem>
-                <MenuItem value={20}>Для опытных</MenuItem>
+                <MenuItem value={'no'}>Для новичков</MenuItem>
+                <MenuItem value={'yes'}>Для опытных</MenuItem>
               </Select>
             </FormControl>
           </Grid>
