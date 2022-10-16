@@ -7,15 +7,10 @@ interface CourseDetailsAsideProps {
 }
 
 export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
-  const { course, isLoading, error } = useCourse(courseId);
+  const { course } = useCourse(courseId);
   return (
     <aside>
       <>
-        {isLoading && (
-          <Box sx={{ mt: 2 }}>
-            <CircularProgress />
-          </Box>
-        )}
         {course && (
           <Stack spacing={8} direction="column">
             <Box>
@@ -31,6 +26,14 @@ export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
                   style={{ width: '100%', height: 'auto' }}
                 ></img>
               </Card>
+            </Box>
+            <Box>
+              <Typography component={'h5'} variant="h6" sx={{ mb: 2 }}>
+                Ссылка на курс
+              </Typography>
+              <Button variant="outlined" size="large" component={'a'} href={course.url}>
+                Открыть курс
+              </Button>
             </Box>
             <Box>
               <Typography
