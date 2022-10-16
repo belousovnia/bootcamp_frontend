@@ -63,8 +63,17 @@ yarn dev
 * [Axios](https://axios-http.com/) - библиотека для работы с сетью
 * [React Router](https://reactrouter.com/) - библиотека для работы с маршрутизацией
 * [Dayjs](https://day.js.org/) - библиотека для работы с датами
+
+### Общая инфраструктура
+* [ESLint](https://eslint.org/) - линтер для статического анализа кода
+* [Prettier](https://prettier.io/) - форматтер для единого стиля кода
+* [Husky](https://typicode.github.io/husky/#/) - библиотека для работы с git hooks
 * [MSW](https://mswjs.io/) - библиотека для работы с моковыми API
-* [Faker.js]() - библиотека для генерации фейковых данных
+* [Faker.js](https://fakerjs.dev/) - библиотека для генерации фейковых данных
+* [Github Actions](https://github.com/features/actions) - CI/CD
+* [Heroku](https://www.heroku.com/) - хостинг
+* [Docker](https://www.docker.com/) - контейнеризация
+* [Nginx](https://www.nginx.com/) - веб-сервер для отдачи статики
 
 ## Онлайн мониторинг
 TODO: заюзать [Sentry](https://sentry.io/welcome/) для мониторинга ошибок?
