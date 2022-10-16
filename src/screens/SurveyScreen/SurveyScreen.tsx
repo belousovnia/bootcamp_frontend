@@ -9,7 +9,7 @@ export const SurveyScreen = () => {
       <Helmet>
         <title>Подобрать IT профессию {APP_TITLE_WITH_SEPARATOR}</title>
       </Helmet>
-      <SurveyStartCard />;
+      <SurveyStartCard />
     </>
   );
 };
