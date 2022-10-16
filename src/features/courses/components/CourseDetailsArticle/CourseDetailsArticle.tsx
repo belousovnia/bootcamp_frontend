@@ -1,6 +1,7 @@
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { Alert, Box, CircularProgress } from '@mui/material';
+import { Alert, Box, Button, CircularProgress } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { CourseDetailsContent } from '../CourseDetailsContent';
 import { CourseDetailsHeader } from '../CourseDetailsHeader';
@@ -10,7 +11,10 @@ interface CourseDetailsArticleProps {
 }
 
 export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) => {
+  const [isDescriptionTruncated, setDescriptionTruncated] = useState(true);
   const { course, isLoading, error } = useCourse(courseId);
+
+  const truncationText = isDescriptionTruncated ? 'Раскрыть описание' : 'Скрыть описание';
 
   return (
     <article>
@@ -43,7 +47,13 @@ export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) =>
                 dateEnd={course.endMskDateTime}
               />
             </Box>
-            <CourseDetailsContent description={course.description} />
+            <CourseDetailsContent
+              description={course.description}
+              isTruncated={isDescriptionTruncated}
+            />
+            <Button onClick={() => setDescriptionTruncated((p) => !p)}>
+              {truncationText}
+            </Button>
           </>
         )}
         {error && (

@@ -1,19 +1,33 @@
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { TypographyContainer } from '@ui-library/components/TypographyContainer';
 
 interface CourseDetailsContentProps {
   description: string;
+  isTruncated?: boolean;
 }
 
-export const CourseDetailsContent = ({ description }: CourseDetailsContentProps) => {
+export const CourseDetailsContent = ({
+  description,
+  isTruncated = false,
+}: CourseDetailsContentProps) => {
+  const truncatedSx = {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 5,
+    WebkitBoxOrient: 'vertical',
+    mb: 2,
+  };
+
   return (
     <>
-      <Typography component={'h2'} variant="h4" sx={{ mb: 1 }}>
+      <Typography component={'h2'} variant="h4" sx={{ mb: 3 }}>
         Описание курса
       </Typography>
-      <div
+      <TypographyContainer
         dangerouslySetInnerHTML={{ __html: description }}
-        style={{ lineHeight: 1.5 }}
-      ></div>
+        sx={isTruncated ? truncatedSx : undefined}
+      />
     </>
   );
 };
