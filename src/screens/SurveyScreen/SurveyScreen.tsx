@@ -1,14 +1,15 @@
 import { Registration, useAuthStore } from '@features/auth';
 import { SurveyStartCard } from '@features/survey/components/SurveyStartCard/SurveyStartCard';
-import { Container } from '@mui/material';
-import { useNavigation } from 'react-router-dom';
+import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
+import { Helmet } from 'react-helmet';
 
 export const SurveyScreen = () => {
-  const isAuth = useAuthStore((state) => state.isAuth);
-
-  return isAuth ? (
-    <SurveyStartCard />
-  ) : (
-    <Registration title="Для прохождения теста нужно зарегистрироваться" />
+  return (
+    <>
+      <Helmet>
+        <title>Подобрать IT профессию {APP_TITLE_WITH_SEPARATOR}</title>
+      </Helmet>
+      <SurveyStartCard />;
+    </>
   );
 };

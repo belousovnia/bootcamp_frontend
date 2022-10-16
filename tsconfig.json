@@ -21,6 +21,7 @@
       "@screens/*": ["screens/*"],
       "@infrastructure/*": ["infrastructure/*"],
       "@ui-library/*": ["ui-library/*"],
+      "@utils/*": ["utils/*"],
     }
   },
   "include": ["src"],

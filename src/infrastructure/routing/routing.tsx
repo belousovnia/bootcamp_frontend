@@ -1,17 +1,23 @@
 import { MainLayout } from '@features/layout';
-import { CourseScreen } from '@screens/CourseScreen';
-import { CoursesScreen } from '@screens/CoursesScreen';
-import { PageScreen } from '@screens/PageScreen';
-import { Route, Routes } from 'react-router-dom';
-import { SurveyScreen } from '@screens/SurveyScreen';
-import { SurveyStepScreen } from '@screens/SurveyStepScreen';
-import { SurveyGuard } from '@features/survey/components/SurveyGuard';
-import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { AdminLayout } from '@features/layout/components/AdminLayout';
-import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { UserLayout } from '@features/layout/components/UserLayout';
+import { SurveyGuard } from '@features/survey/components/SurveyGuard';
 import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
 import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
-import { MainScreen, TestScreen, LoginScreen, RegistrationScreen } from '@screens/index';
+import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
+import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
+import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
+import { CourseScreen } from '@screens/CourseScreen';
+import { CoursesScreen } from '@screens/CoursesScreen';
+import { LoginScreen, MainScreen, RegistrationScreen } from '@screens/index';
+import { PageScreen } from '@screens/PageScreen';
+import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
+import { SurveyScreen } from '@screens/SurveyScreen';
+import { SurveyStepScreen } from '@screens/SurveyStepScreen';
+import { UserAccountScreen } from '@screens/UserAccountScreen';
+import { UserRecommendationsScreen } from '@screens/UserRecommendationsScreen';
+import { Route, Routes } from 'react-router-dom';
 
 export const Routing = () => {
   return (
@@ -19,7 +25,6 @@ export const Routing = () => {
       <Routes>
         <Route path={'/'} element={<MainLayout />}>
           <Route index element={<MainScreen />} />
-          <Route path={'test'} element={<TestScreen />} />
           <Route path={'courses'} element={<CoursesScreen />} />
           <Route path={'courses/:id'} element={<CourseScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />
@@ -48,7 +53,12 @@ export const Routing = () => {
             }
           />
 
+          {/* Admin */}
           <Route path={'admin/*'} element={<AdminLayout />}>
+            <Route path={'courses'} element={<AdminCoursesScreen />} />
+            <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
+            <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
+
             <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
             <Route
               path={'course-providers/:id/edit'}
@@ -59,6 +69,14 @@ export const Routing = () => {
               element={<AdminCourseProviderNewScreen />}
             />
           </Route>
+
+          {/* User */}
+          <Route path={'user/*'} element={<UserLayout />}>
+            <Route path={'recommendations'} element={<UserRecommendationsScreen />} />
+            <Route path={'account'} element={<UserAccountScreen />} />
+          </Route>
+
+          {/* Auth */}
           <Route path={'login'} element={<LoginScreen />} />
           <Route path={'registration'} element={<RegistrationScreen />} />
         </Route>

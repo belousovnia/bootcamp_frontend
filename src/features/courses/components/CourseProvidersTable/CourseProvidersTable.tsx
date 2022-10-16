@@ -151,7 +151,7 @@ export const CourseProvidersTable = () => {
           severity="success"
           sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
         >
-          Курс успешно удален
+          Создатель курса успешно удален
         </Alert>
       </Snackbar>
     </>
