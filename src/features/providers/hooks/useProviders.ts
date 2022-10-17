@@ -1,17 +1,20 @@
 import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { CourseProvidersListResponse, fetchCourseProviders } from '../courses.service';
+import {
+  fetchProviders,
+  ProvidersListResponse,
+} from '@features/providers/providers.service';
 
 type SelectOptions = {
   search?: string;
   page: string;
 };
 
-export const useCourseProviders = (
+export const useProviders = (
   selectOptions: SelectOptions,
   queryOpts?: UseQueryOptions<
-    CourseProvidersListResponse,
+    ProvidersListResponse,
     unknown,
-    CourseProvidersListResponse,
+    ProvidersListResponse,
     QueryKey
   >,
 ) => {
@@ -20,10 +23,10 @@ export const useCourseProviders = (
     staleTime: 1000 * 60 * 60,
   };
 
-  const { data, error, isLoading } = useQuery<CourseProvidersListResponse>(
-    ['course-providers', selectOptions.page],
+  const { data, error, isLoading } = useQuery<ProvidersListResponse>(
+    ['providers', selectOptions.page],
     async () => {
-      const { data } = await fetchCourseProviders({
+      const { data } = await fetchProviders({
         page: selectOptions.page,
         options: selectOptions,
       });

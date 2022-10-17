@@ -5,7 +5,7 @@ import {
   updateCourse,
 } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { useCourseProviders } from '@features/courses/hooks/useCourseProviders';
+import { useProviders } from '@features/providers/hooks/useProviders';
 import {
   Alert,
   Autocomplete,
@@ -52,7 +52,7 @@ const Logo = styled('img')`
 
 export const CoursesNewForm = () => {
   const [courseProviderName, setCourseProviderName] = useState('');
-  const { courseProviders } = useCourseProviders(
+  const { courseProviders } = useProviders(
     {
       page: '1',
       search: courseProviderName,

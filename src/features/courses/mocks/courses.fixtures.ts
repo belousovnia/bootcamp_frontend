@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { CourseFull, CourseProviderShort, CourseShort } from '../cources.entity';
-import { CourseProviderFull } from '../cources.entity';
+import { CourseFull, CourseShort } from '../cources.entity';
 
 export const shortCourseFixtures: CourseShort[] = [
   {
@@ -47,15 +46,6 @@ export const fullCourseFixture: CourseFull = {
   profession: 'Программирование',
 };
 
-export const courseProviderFullFixture: CourseProviderFull = {
-  id: faker.datatype.uuid(),
-  name: 'Мобильное электронное образование',
-  url: 'http://habr.ru',
-  coverUrl:
-    'https://www.silvermedia.ru/upload/resize_cache/iblock/196/75_75_1/2800374.jpg',
-  description: 'Описание',
-};
-
 export const generateShortCourses = (count: number): CourseShort[] => {
   return Array.from({ length: count }, () => {
     return {
@@ -73,15 +63,6 @@ export const generateShortCourses = (count: number): CourseShort[] => {
       provider: 'Skillbox',
       providerUrl: faker.internet.url(),
       providerCoverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
-    };
-  });
-};
-
-export const generateShortCourseProviders = (count: number): CourseProviderShort[] => {
-  return Array.from({ length: count }, () => {
-    return {
-      id: faker.datatype.uuid(),
-      title: faker.lorem.words(2),
     };
   });
 };

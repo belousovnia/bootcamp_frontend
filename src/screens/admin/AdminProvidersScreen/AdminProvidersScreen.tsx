@@ -1,9 +1,9 @@
-import { CourseProvidersTable } from '@features/courses/components/CourseProvidersTable';
+import { ProvidersTable } from '@features/providers/components/ProvidersTable';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';
 
-export const AdminCourseProvidersScreen = () => {
+export const AdminProvidersScreen = () => {
   return (
     <>
       <Helmet>
@@ -16,7 +16,7 @@ export const AdminCourseProvidersScreen = () => {
         Создатели курсов
       </Typography>
       <Box sx={{ mt: 3 }}>
-        <CourseProvidersTable />
+        <ProvidersTable />
       </Box>
     </>
   );

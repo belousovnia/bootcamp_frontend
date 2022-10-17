@@ -1,9 +1,8 @@
 import { CourseFull } from '@features/courses/cources.entity';
-import { CourseProviderFull } from '@features/courses/cources.entity';
-import { updateCourse, updateCourseProvider } from '@features/courses/courses.service';
+import { updateCourse } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { useCourseProvider } from '@features/courses/hooks/useCourseProvider';
-import { useCourseProviders } from '@features/courses/hooks/useCourseProviders';
+import { useProvider } from '@features/providers/hooks/useProvider';
+import { useProviders } from '@features/providers/hooks/useProviders';
 import {
   Alert,
   Button,
@@ -29,6 +28,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { updateCourseProvider } from '@features/providers/providers.service';
+import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;
@@ -50,7 +51,7 @@ const Logo = styled('img')`
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const { course, isLoading } = useCourse(id || '');
-  const { courseProviders } = useCourseProviders({ page: '1' });
+  const { courseProviders } = useProviders({ page: '1' });
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const {

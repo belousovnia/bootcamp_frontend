@@ -1,5 +1,3 @@
-import { CourseProviderFull } from '@features/courses/cources.entity';
-import { createCourseProvider } from '@features/courses/courses.service';
 import {
   Alert,
   Button,
@@ -16,6 +14,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { createProvider } from '@features/providers/providers.service';
+import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;
@@ -34,24 +34,24 @@ const Logo = styled('img')`
   object-fit: contain;
 `;
 
-export const CourseProviderNewForm = () => {
+export const ProviderNewForm = () => {
   const { id } = useParams<{ id: string }>();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const { control, handleSubmit, reset } = useForm<CourseProviderFull>();
+  const { control, handleSubmit, reset } = useForm<ProviderFull>();
 
   const {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: CourseProviderFull) => {
-    return createCourseProvider(data).then(() => {
+  } = useMutation((data: ProviderFull) => {
+    return createProvider(data).then(() => {
       setSnackbarVisible(true);
       reset({ name: '', description: '', coverUrl: '', url: '' });
     });
   });
 
   const onSubmit = useCallback(
-    (data: CourseProviderFull) => {
+    (data: ProviderFull) => {
       if (!isMutationLoading) {
         mutate(data);
       }
