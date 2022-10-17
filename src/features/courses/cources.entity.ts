@@ -1,6 +1,6 @@
 export type CourseProviderShort = {
   id: string;
-  name: string;
+  title: string;
 };
 
 export type CourseProviderFull = {
@@ -8,7 +8,6 @@ export type CourseProviderFull = {
   name: string;
   url: string;
   coverUrl?: string;
-  shortDescription: string;
   description: string;
 };
 
@@ -38,31 +37,29 @@ type CourseImage = {
 };
 
 export type CourseShort = {
-  name: string;
   id: string;
-  startMskDateTime: string;
-  endMskDateTime: string;
+  title: string;
   url: string;
   coverUrl: string;
-  provider: CourseProviderShort;
-  updatedAt: string;
-  isArchived: boolean;
-  profession: CourseProfession;
+  startsAt: string;
+  endsAt: string;
+  provider: string;
+  providerUrl: string;
+  providerCoverUrl: string;
+  profession: string;
 };
 
 export type CourseFull = {
-  name: string;
   id: string;
-  description: string;
-  coverUrl: string;
-  isArchived: boolean;
+  title: string;
   url: string;
-  provider: CourseProvider;
-  updatedAt: string;
-  startMskDateTime: string;
-  endMskDateTime: string;
-  profession: CourseProfession;
-  isIndefinite: boolean;
-  internalRating: number;
-  isForAdvancedStudents: boolean;
+  coverUrl: string;
+  description: string;
+  startsAt: string;
+  endsAt: string;
+  isAdvanced: boolean;
+  provider: string;
+  providerUrl: string;
+  providerCoverUrl: string;
+  profession: string;
 };

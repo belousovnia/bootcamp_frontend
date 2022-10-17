@@ -35,16 +35,16 @@ export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) =>
           <>
             <Helmet>
               <title>
-                {course.name} {APP_TITLE_WITH_SEPARATOR}
+                {course.title} {APP_TITLE_WITH_SEPARATOR}
               </title>
             </Helmet>
             <Box sx={{ mb: 5 }}>
               <CourseDetailsHeader
-                isForAdvancedStudents={course.isForAdvancedStudents}
-                title={course.name}
+                isForAdvancedStudents={course.isAdvanced}
+                title={course.title}
                 profession={course.profession}
-                dateStart={course.startMskDateTime}
-                dateEnd={course.endMskDateTime}
+                dateStart={course.startsAt}
+                dateEnd={course.endsAt}
               />
             </Box>
             <CourseDetailsContent

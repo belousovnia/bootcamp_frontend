@@ -47,22 +47,17 @@ export const coursesMockHandlers = [
 
       if (search) {
         courses = courses.filter((course) => {
-          return course.name.toLowerCase().includes(search.toLowerCase());
+          return course.title.toLowerCase().includes(search.toLowerCase());
         });
       }
 
       if (sortBy) {
         courses = courses.sort((a, b) => {
           if (sortBy === 'date-start') {
-            return (
-              new Date(a.startMskDateTime).getTime() -
-              new Date(b.startMskDateTime).getTime()
-            );
+            return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
           }
           if (sortBy === 'date-end') {
-            return (
-              new Date(a.endMskDateTime).getTime() - new Date(b.endMskDateTime).getTime()
-            );
+            return new Date(a.endsAt).getTime() - new Date(b.endsAt).getTime();
           }
           return 0;
         });
@@ -118,7 +113,6 @@ export const coursesMockHandlers = [
   rest.post<CourseCreateArgs, CourseCreateResponse | FakeErrorJSON>(
     `/api/courses/new`,
     (req, res, ctx) => {
-      const { name, description } = req.body;
       return res(
         ctx.delay(500),
         ctx.status(200),

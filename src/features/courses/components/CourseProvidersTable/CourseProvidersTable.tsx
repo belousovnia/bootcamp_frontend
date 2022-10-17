@@ -46,9 +46,11 @@ export const CourseProvidersTable = () => {
   const client = useQueryClient();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const { courseProviders, pagination, isLoading, error } = useCourseProviders(
-    page.toString(),
-  );
+  const { courseProviders, pagination, isLoading, error } = useCourseProviders({
+    page: page.toString(),
+  });
+
+  console.log(courseProviders);
 
   const {
     mutate,
@@ -109,7 +111,7 @@ export const CourseProvidersTable = () => {
               >
                 {courseProviders?.map((courseProvider) => (
                   <TableRow key={courseProvider.id}>
-                    <StyledTableCell>{courseProvider.name}</StyledTableCell>
+                    <StyledTableCell>{courseProvider.title}</StyledTableCell>
                     <StyledTableCell width={80}>
                       <IconButton
                         component={Link}

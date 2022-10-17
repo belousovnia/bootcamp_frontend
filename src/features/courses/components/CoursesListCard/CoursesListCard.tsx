@@ -18,21 +18,21 @@ interface CoursesListCardProps extends CourseShort {
 
 export const CoursesListCard = ({
   id,
-  name,
+  title,
   coverUrl,
   provider,
-  startMskDateTime,
-  endMskDateTime,
+  startsAt,
+  endsAt,
 }: CoursesListCardProps) => {
-  const formattedDateStart = dayjs(startMskDateTime).format('DD.MM.YYYY');
-  const formattedDateEnd = dayjs(endMskDateTime).format('DD.MM.YYYY');
+  const formattedDateStart = dayjs(startsAt).format('DD.MM.YYYY');
+  const formattedDateEnd = dayjs(endsAt).format('DD.MM.YYYY');
   return (
     <Card>
       <CardActionArea component={Link} to={`/courses/${id}`}>
         <CardMedia
           component={'img'}
           image={coverUrl}
-          alt={name}
+          alt={title}
           width={672}
           height={320}
           sx={{ maxHeight: 160 }}
@@ -40,13 +40,13 @@ export const CoursesListCard = ({
       </CardActionArea>
       <CardContent sx={{ p: { md: 3 } }}>
         <Typography component="p" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {provider.name}
+          {provider}
         </Typography>
         <Box sx={{ mb: 1 }} typography={'body2'}>
           {formattedDateStart} – {formattedDateEnd}
         </Box>
         <Typography variant="h5" component="h3">
-          {name}
+          {title}
         </Typography>
       </CardContent>
       <CardActions sx={{ p: { md: 2 } }}>

@@ -1,10 +1,34 @@
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { Box, Button, Card, CircularProgress, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 
 interface CourseDetailsAsideProps {
   courseId: string;
 }
+
+const ImgWrapper = styled('div')(() => ({
+  width: '100%',
+  height: '160px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'relative',
+}));
+
+const CourseProviderCoverImg = styled('img')(() => ({
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+  position: 'absolute',
+}));
 
 export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
   const { course } = useCourse(courseId);
@@ -17,14 +41,13 @@ export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
               <Typography component={'h5'} variant="h6" marginBottom={2}>
                 Создатель курса
               </Typography>
-              <Card>
-                <img
-                  alt={course.provider.name}
-                  width={288}
-                  height={76}
-                  src={course.provider.logo.url}
-                  style={{ width: '100%', height: 'auto' }}
-                ></img>
+              <Card sx={{ p: 3 }}>
+                <ImgWrapper>
+                  <CourseProviderCoverImg
+                    alt={course.provider}
+                    src={course.providerCoverUrl}
+                  />
+                </ImgWrapper>
               </Card>
             </Box>
             <Box>

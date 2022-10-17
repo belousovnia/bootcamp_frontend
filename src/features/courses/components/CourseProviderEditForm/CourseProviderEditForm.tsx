@@ -125,8 +125,8 @@ export const CourseProviderEditForm = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="shortDescription"
-                    defaultValue={provider.shortDescription}
+                    name="description"
+                    defaultValue={provider.description}
                     control={control}
                     rules={{
                       required: {
@@ -142,7 +142,7 @@ export const CourseProviderEditForm = () => {
                         rows={4}
                         fullWidth
                         error={!!fieldState.error}
-                        defaultValue={provider.shortDescription}
+                        defaultValue={provider.description}
                         helperText={fieldState.error?.message}
                         {...otherFields}
                       />
