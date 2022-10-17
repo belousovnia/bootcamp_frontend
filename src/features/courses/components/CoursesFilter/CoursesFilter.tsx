@@ -1,4 +1,5 @@
 import { CoursesSortBy } from '@features/courses/courses.service';
+import { optionUnstyledClasses } from '@mui/base';
 import {
   Card,
   CardContent,
@@ -14,6 +15,7 @@ import {
   TextField,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
+import { useEffect, useRef, useState } from 'react';
 
 export type FilterOptions = {
   professionId?: string;
@@ -28,6 +30,7 @@ interface CourseFilterProps {
 }
 
 export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...options, search: event.target.value });
   };
@@ -44,6 +47,12 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
     onChange({ ...options, sortBy: event.target.value as CoursesSortBy });
   };
 
+  useEffect(() => {
+    if ((!options.search || options.search === '') && searchInputRef.current) {
+      searchInputRef.current.value = '';
+    }
+  }, [searchInputRef, options]);
+
   return (
     <Card>
       <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />
@@ -55,6 +64,7 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
               label="Поиск по названию курса"
               onChange={debounce(handleSearchChange, 300)}
               defaultValue={options.search}
+              inputRef={searchInputRef}
               fullWidth
             />
           </Grid>

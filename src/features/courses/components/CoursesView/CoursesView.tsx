@@ -61,7 +61,7 @@ export const CoursesView = () => {
           </Box>
         </>
       )}
-      {data?.pages && data?.pages?.length === 0 && (
+      {data?.pages && data?.pages[0].courses.length === 0 && (
         <Box sx={{ mt: 3 }}>
           <Alert severity="info">
             К сожалению, курсы по заданым фильтрам не найдены.{' '}

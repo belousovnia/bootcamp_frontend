@@ -1,9 +1,14 @@
 import { CourseFull } from '@features/courses/cources.entity';
-import { createCourse, updateCourse } from '@features/courses/courses.service';
+import {
+  CourseCreateArgs,
+  createCourse,
+  updateCourse,
+} from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
 import { useCourseProviders } from '@features/courses/hooks/useCourseProviders';
 import {
   Alert,
+  Autocomplete,
   Button,
   Card,
   CardActions,
@@ -46,9 +51,18 @@ const Logo = styled('img')`
 `;
 
 export const CoursesNewForm = () => {
-  const { courseProviders } = useCourseProviders('1');
+  const [courseProviderName, setCourseProviderName] = useState('');
+  const { courseProviders } = useCourseProviders(
+    {
+      page: '1',
+      search: courseProviderName,
+    },
+    { enabled: !!courseProviderName },
+  );
 
-  const { control, handleSubmit, reset } = useForm<CourseFull>();
+  console.log(courseProviders);
+
+  const { control, handleSubmit, reset } = useForm<CourseCreateArgs>();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -56,28 +70,23 @@ export const CoursesNewForm = () => {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: CourseFull) => {
+  } = useMutation((data: CourseCreateArgs) => {
     return createCourse(data).then(() => {
       setSnackbarVisible(true);
       reset({
-        name: '',
+        title: '',
         description: '',
         url: '',
         coverUrl: '',
-        provider: { id: '' },
-        profession: { id: '' },
-        internalRating: 0,
-        isArchived: false,
-        isForAdvancedStudents: false,
-        isIndefinite: false,
+        providerId: undefined,
+        professionId: undefined,
+        isAdvanced: false,
       });
     });
   });
 
   const onSubmit = useCallback(
-    (data: CourseFull) => {
-      console.log('submitted!');
-      console.log(data);
+    (data: CourseCreateArgs) => {
       if (!isMutationLoading) {
         mutate(data);
       }
@@ -93,7 +102,7 @@ export const CoursesNewForm = () => {
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="name"
+                  name="title"
                   control={control}
                   defaultValue={''}
                   rules={{
@@ -178,7 +187,7 @@ export const CoursesNewForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="provider.id"
+                  name="providerId"
                   control={control}
                   defaultValue={''}
                   rules={{
@@ -188,89 +197,27 @@ export const CoursesNewForm = () => {
                     },
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
-                    <FormControl fullWidth>
-                      <InputLabel id="course-provider-select-label">
-                        Создатель курса
-                      </InputLabel>
-                      <Select
-                        labelId="course-provider-select-label"
-                        id="course-provider-select"
-                        label="Создатель курса"
-                        error={!!fieldState.error}
-                        value={value}
-                        defaultValue={''}
-                        fullWidth
-                        {...otherFields}
-                      >
-                        {courseProviders?.map((provider) => (
-                          <MenuItem key={provider.id} value={provider.id}>
-                            {provider.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {fieldState.error && (
-                        <FormHelperText error>{fieldState.error.message}</FormHelperText>
+                    <Autocomplete
+                      options={courseProviders ?? []}
+                      getOptionLabel={(option) => option?.title ?? ''}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Провайдер"
+                          variant="outlined"
+                          fullWidth
+                          error={!!fieldState.error}
+                          helperText={fieldState.error?.message}
+                        />
                       )}
-                    </FormControl>
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="startMskDateTime"
-                  control={control}
-                  defaultValue={''}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      id="datetime-start-local"
-                      label="Дата начала"
-                      type="datetime-local"
-                      defaultValue={''}
-                      fullWidth
-                      {...field}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
+                      {...otherFields}
                     />
                   )}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="endMskDateTime"
-                  control={control}
-                  defaultValue={''}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                  }}
-                  render={({ field }) => (
-                    <TextField
-                      id="datetime-end-local"
-                      label="Дата окончания"
-                      type="datetime-local"
-                      defaultValue={''}
-                      fullWidth
-                      {...field}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Controller
-                  name="profession.id"
+                  name="professionId"
                   control={control}
                   defaultValue={''}
                   rules={{
@@ -306,6 +253,59 @@ export const CoursesNewForm = () => {
                   )}
                 />
               </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="startsAt"
+                  control={control}
+                  defaultValue={''}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'Поле обязательно для заполнения',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      id="datetime-start-local"
+                      label="Дата начала"
+                      type="datetime-local"
+                      defaultValue={''}
+                      fullWidth
+                      {...field}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="endsAt"
+                  control={control}
+                  defaultValue={''}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: 'Поле обязательно для заполнения',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      id="datetime-end-local"
+                      label="Дата окончания"
+                      type="datetime-local"
+                      defaultValue={''}
+                      fullWidth
+                      {...field}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                    />
+                  )}
+                />
+              </Grid>
+
               <Grid item xs={12}>
                 <Controller
                   name="description"
@@ -335,7 +335,7 @@ export const CoursesNewForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="isForAdvancedStudents"
+                  name="isAdvanced"
                   control={control}
                   defaultValue={false}
                   render={({ field }) => (
@@ -345,61 +345,6 @@ export const CoursesNewForm = () => {
                         control={<Checkbox defaultChecked={field.value ?? false} />}
                         {...field}
                       />
-                    </>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="isIndefinite"
-                  control={control}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <>
-                      <FormControlLabel
-                        label={'Является бессрочным'}
-                        control={<Checkbox defaultChecked={field.value ?? false} />}
-                        {...field}
-                      />
-                    </>
-                  )}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="isArchived"
-                  control={control}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <>
-                      <FormControlLabel
-                        label={'Находится в архиве'}
-                        control={<Checkbox defaultChecked={field.value ?? false} />}
-                        {...field}
-                      />
-                    </>
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="internalRating"
-                  control={control}
-                  defaultValue={0}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <>
-                      <Typography component="legend" sx={{ mb: '3px' }}>
-                        Внутренний рейтинг
-                      </Typography>
-                      <Rating {...field} />
-                      <FormHelperText error>{fieldState.error?.message}</FormHelperText>
                     </>
                   )}
                 />

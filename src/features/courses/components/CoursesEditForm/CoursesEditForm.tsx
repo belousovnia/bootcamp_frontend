@@ -1,4 +1,5 @@
-import { CourseFull, CourseProviderFull } from '@features/courses/cources.entity';
+import { CourseFull } from '@features/courses/cources.entity';
+import { CourseProviderFull } from '@features/courses/cources.entity';
 import { updateCourse, updateCourseProvider } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
 import { useCourseProvider } from '@features/courses/hooks/useCourseProvider';
@@ -49,7 +50,7 @@ const Logo = styled('img')`
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const { course, isLoading } = useCourse(id || '');
-  const { courseProviders } = useCourseProviders('1');
+  const { courseProviders } = useCourseProviders({ page: '1' });
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const {
@@ -66,8 +67,6 @@ export const CoursesEditForm = () => {
 
   const onSubmit = useCallback(
     (data: CourseFull) => {
-      console.log('submitted!');
-      console.log(data);
       if (!isMutationLoading) {
         mutate(data);
       }
@@ -77,7 +76,7 @@ export const CoursesEditForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <>
+      {/* <>
         {isLoading && <CircularProgress />}
 
         {course && (
@@ -88,7 +87,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="name"
                     control={control}
-                    defaultValue={course.name}
+                    defaultValue={course.title}
                     rules={{
                       required: {
                         value: true,
@@ -99,7 +98,7 @@ export const CoursesEditForm = () => {
                       <TextField
                         label="Название курса"
                         variant="outlined"
-                        defaultValue={course.name}
+                        defaultValue={course.title}
                         fullWidth
                         error={!!fieldState.error}
                         helperText={fieldState.error?.message}
@@ -194,7 +193,7 @@ export const CoursesEditForm = () => {
                         >
                           {courseProviders?.map((provider) => (
                             <MenuItem key={provider.id} value={provider.id}>
-                              {provider.name}
+                              {provider.title}
                             </MenuItem>
                           ))}
                         </Select>
@@ -212,7 +211,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="startMskDateTime"
                     control={control}
-                    defaultValue={course.startMskDateTime}
+                    defaultValue={course.startsAt}
                     rules={{
                       required: {
                         value: true,
@@ -224,7 +223,7 @@ export const CoursesEditForm = () => {
                         id="datetime-start-local"
                         label="Дата начала"
                         type="datetime-local"
-                        defaultValue={course.startMskDateTime}
+                        defaultValue={course.startsAt}
                         fullWidth
                         {...field}
                         InputLabelProps={{
@@ -238,7 +237,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="endMskDateTime"
                     control={control}
-                    defaultValue={course.endMskDateTime}
+                    defaultValue={course.endsAt}
                     rules={{
                       required: {
                         value: true,
@@ -250,7 +249,7 @@ export const CoursesEditForm = () => {
                         id="datetime-end-local"
                         label="Дата окончания"
                         type="datetime-local"
-                        defaultValue={course.endMskDateTime}
+                        defaultValue={course.endsAt}
                         fullWidth
                         {...field}
                         InputLabelProps={{
@@ -331,7 +330,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="isForAdvancedStudents"
                     control={control}
-                    defaultValue={course.isForAdvancedStudents}
+                    defaultValue={course.isAdvanced}
                     render={({ field }) => (
                       <>
                         <FormControlLabel
@@ -430,7 +429,7 @@ export const CoursesEditForm = () => {
             Данные успешно сохранены
           </Alert>
         </Snackbar>
-      </>
+      </> */}
     </form>
   );
 };

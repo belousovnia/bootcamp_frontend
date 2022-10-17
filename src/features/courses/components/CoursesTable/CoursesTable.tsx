@@ -98,7 +98,7 @@ export const CoursesTable = () => {
               >
                 {courses?.map((course) => (
                   <TableRow key={course.id}>
-                    <StyledTableCell>{course.name}</StyledTableCell>
+                    <StyledTableCell>{course.title}</StyledTableCell>
                     <StyledTableCell width={80}>
                       <IconButton
                         component={Link}

@@ -46,7 +46,7 @@ export const CourseProviderNewForm = () => {
   } = useMutation((data: CourseProviderFull) => {
     return createCourseProvider(data).then(() => {
       setSnackbarVisible(true);
-      reset({ name: '', description: '', shortDescription: '', coverUrl: '', url: '' });
+      reset({ name: '', description: '', coverUrl: '', url: '' });
     });
   });
 
@@ -116,7 +116,7 @@ export const CourseProviderNewForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="shortDescription"
+                  name="description"
                   control={control}
                   rules={{
                     required: {

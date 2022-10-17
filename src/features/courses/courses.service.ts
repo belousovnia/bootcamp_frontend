@@ -1,11 +1,7 @@
 import { requestService } from '@infrastructure/request';
 import { AxiosResponse } from 'axios';
-import {
-  CourseFull,
-  CourseProviderFull,
-  CourseProviderShort,
-  CourseShort,
-} from './cources.entity';
+import { CourseFull, CourseProviderShort, CourseShort } from './cources.entity';
+import { CourseProviderFull } from './cources.entity';
 
 export type CoursesSortBy = 'date-start' | 'date-end';
 
@@ -69,7 +65,20 @@ export const updateCourse = (args: CourseUpdateArgs): Promise<CourseProviderResp
   return requestService.post(`courses/${args.id}`, args);
 };
 
-export type CourseCreateArgs = Partial<CourseFull>;
+export type CourseCreateArgs = {
+  title: string;
+  url: string;
+  coverUrl: string;
+  description: string;
+  startsAt: string;
+  endsAt: string;
+  isAdvanced: boolean;
+  courseId: string;
+  providerId: string;
+  professionId: string;
+  tags: string[];
+};
+
 export type CourseCreateResponse = {
   type: 'success' | 'error';
   message: string;
@@ -81,6 +90,9 @@ export const createCourse = (args: CourseCreateArgs): Promise<CourseCreateRespon
 
 export type CourseProvidersListArgs = {
   page: string;
+  options?: {
+    search?: string;
+  };
 };
 
 export type CourseProvidersListResponse = {
@@ -94,7 +106,7 @@ export type CourseProvidersListResponse = {
 export const fetchCourseProviders = (
   args: CourseProvidersListArgs,
 ): Promise<AxiosResponse<CourseProvidersListResponse>> => {
-  return requestService.get(`course-providers`, { params: args });
+  return requestService.get(`course-providers`, { params: args.options });
 };
 
 export type CourseProviderCreateArgs = Omit<CourseProviderFull, 'id'>;

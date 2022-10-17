@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 interface CourseDetailsHeaderProps {
   title: string;
   isForAdvancedStudents: boolean;
-  profession: CourseProfession;
+  profession: string;
   dateStart: string;
   dateEnd: string;
 }
@@ -46,7 +46,7 @@ export const CourseDetailsHeader = ({
             Профессия:
           </Typography>
           <Typography component={'p'} variant="subtitle1">
-            {profession.name}
+            {profession}
           </Typography>
         </Grid>
       </Grid>
