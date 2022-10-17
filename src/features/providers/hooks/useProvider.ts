@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { CourseProviderResponse, fetchCourseProvider } from '../courses.service';
+import { fetchProvider, ProviderResponse } from '@features/providers/providers.service';
 
-export const useCourseProvider = (id: string) => {
-  const { data, error, isLoading } = useQuery<CourseProviderResponse>(
+export const useProvider = (id: string) => {
+  const { data, error, isLoading } = useQuery<ProviderResponse>(
     ['course-provider', id],
     async () => {
-      const { data } = await fetchCourseProvider({ id });
+      const { data } = await fetchProvider({ id });
       return data;
     },
     { refetchOnWindowFocus: false, staleTime: Infinity },

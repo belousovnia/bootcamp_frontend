@@ -2,9 +2,9 @@ import { MainLayout } from '@features/layout';
 import { AdminLayout } from '@features/layout/components/AdminLayout';
 import { UserLayout } from '@features/layout/components/UserLayout';
 import { SurveyGuard } from '@features/survey/components/SurveyGuard';
-import { AdminCourseProviderEditScreen } from '@screens/admin/AdminCourseProviderEditScreen';
-import { AdminCourseProviderNewScreen } from '@screens/admin/AdminCourseProviderNewScreen';
-import { AdminCourseProvidersScreen } from '@screens/admin/AdminCourseProvidersScreen';
+import { AdminProviderEditScreen } from '@screens/admin/AdminProviderEditScreen';
+import { AdminProviderNewScreen } from '@screens/admin/AdminProviderNewScreen';
+import { AdminProvidersScreen } from '@screens/admin/AdminProvidersScreen';
 import { AdminCoursesEditScreen } from '@screens/admin/AdminCoursesEditScreen';
 import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
 import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
@@ -59,15 +59,9 @@ export const Routing = () => {
             <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
             <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
 
-            <Route path={'course-providers'} element={<AdminCourseProvidersScreen />} />
-            <Route
-              path={'course-providers/:id/edit'}
-              element={<AdminCourseProviderEditScreen />}
-            />
-            <Route
-              path={'course-providers/new'}
-              element={<AdminCourseProviderNewScreen />}
-            />
+            <Route path={'providers'} element={<AdminProvidersScreen />} />
+            <Route path={'providers/:id/edit'} element={<AdminProviderEditScreen />} />
+            <Route path={'providers/new'} element={<AdminProviderNewScreen />} />
           </Route>
 
           {/* User */}

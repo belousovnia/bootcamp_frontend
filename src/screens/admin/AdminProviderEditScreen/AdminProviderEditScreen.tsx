@@ -1,9 +1,9 @@
-import { CourseProviderEditForm } from '@features/courses/components/CourseProviderEditForm';
+import { ProviderEditForm } from '@features/providers/components/ProviderEditForm';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';
 
-export const AdminCourseProviderEditScreen = () => {
+export const AdminProviderEditScreen = () => {
   return (
     <>
       <Helmet>
@@ -16,7 +16,7 @@ export const AdminCourseProviderEditScreen = () => {
         Редактирование создателя курсов
       </Typography>
       <Box sx={{ mt: 5 }}>
-        <CourseProviderEditForm />
+        <ProviderEditForm />
       </Box>
     </>
   );

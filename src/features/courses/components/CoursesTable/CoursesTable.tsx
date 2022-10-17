@@ -1,8 +1,5 @@
 import { CourseShort } from '@features/courses/cources.entity';
-import {
-  CoursesListResponse,
-  deleteCourseProvider,
-} from '@features/courses/courses.service';
+import { CoursesListResponse } from '@features/courses/courses.service';
 import { useCourses } from '@features/courses/hooks/useCourses';
 import { Delete, Edit } from '@mui/icons-material';
 import {
@@ -25,6 +22,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { deleteCourseProvider } from '@features/providers/providers.service';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {

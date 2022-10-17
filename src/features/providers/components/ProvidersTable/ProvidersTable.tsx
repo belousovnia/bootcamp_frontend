@@ -1,9 +1,4 @@
-import { CourseProviderShort } from '@features/courses/cources.entity';
-import {
-  CourseProvidersListResponse,
-  deleteCourseProvider,
-} from '@features/courses/courses.service';
-import { useCourseProviders } from '@features/courses/hooks/useCourseProviders';
+import { useProviders } from '@features/providers/hooks/useProviders';
 import { Delete, Edit } from '@mui/icons-material';
 import {
   Alert,
@@ -31,6 +26,11 @@ import {
 } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  deleteCourseProvider,
+  ProvidersListResponse,
+} from '@features/providers/providers.service';
+import { ProviderShort } from '@features/providers';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -41,12 +41,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-export const CourseProvidersTable = () => {
+export const ProvidersTable = () => {
   const [page, setPage] = useState(1);
   const client = useQueryClient();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const { courseProviders, pagination, isLoading, error } = useCourseProviders({
+  const { courseProviders, pagination, isLoading, error } = useProviders({
     page: page.toString(),
   });
 
@@ -64,19 +64,19 @@ export const CourseProvidersTable = () => {
     },
     {
       onMutate: async (idToDelete) => {
-        await client.cancelQueries(['course-providers', page.toString()]);
+        await client.cancelQueries(['providers', page.toString()]);
         const previousCourseProvidersData = client.getQueryData([
-          'course-providers',
+          'providers',
           page.toString(),
         ]);
-        client.setQueryData<CourseProvidersListResponse | undefined>(
-          ['course-providers', page.toString()],
+        client.setQueryData<ProvidersListResponse | undefined>(
+          ['providers', page.toString()],
           (oldData) => {
             return (
               oldData && {
                 ...oldData,
                 providers: oldData.providers.filter(
-                  (item: CourseProviderShort) => item.id !== idToDelete,
+                  (item: ProviderShort) => item.id !== idToDelete,
                 ),
               }
             );
@@ -93,7 +93,7 @@ export const CourseProvidersTable = () => {
         <CircularProgress />
       ) : (
         <>
-          <Button variant="contained" component={Link} to="/admin/course-providers/new">
+          <Button variant="contained" component={Link} to="/admin/providers/new">
             Добавить создателя курсов
           </Button>
           <TableContainer component={Paper} sx={{ mt: 2 }}>
@@ -115,7 +115,7 @@ export const CourseProvidersTable = () => {
                     <StyledTableCell width={80}>
                       <IconButton
                         component={Link}
-                        to={`/admin/course-providers/${courseProvider.id}/edit`}
+                        to={`/admin/providers/${courseProvider.id}/edit`}
                       >
                         <Edit />
                       </IconButton>
