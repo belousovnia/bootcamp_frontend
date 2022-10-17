@@ -23,7 +23,10 @@ export const UserSidebar = ({ navItems }: UserSidebarProps) => {
     <aside>
       <List sx={{ display: { xs: 'flex', md: 'block' }, flexWrap: 'wrap' }}>
         {navItems.map((item) => (
-          <ListItem key={item.path} sx={{ width: { xs: '100%', sm: '50%', md: '100%' } }}>
+          <ListItem
+            key={item.path}
+            sx={{ width: { xs: '100%', sm: '50%', md: '100%' }, px: 1 }}
+          >
             <ListItemButton
               key={item.path}
               component={Link}
