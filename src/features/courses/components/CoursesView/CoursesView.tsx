@@ -1,22 +1,17 @@
-import { useCourses } from '@features/courses/hooks/useCourses';
-import { Alert, Box, CircularProgress, Link, Pagination } from '@mui/material';
-import { ContainerLoader } from '@ui-library/components/ContainerLoader';
-import { MouseEventHandler, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useInfiniteCourses } from '@features/courses/hooks/useInfiniteCourses';
+import { Alert, Box, Button, CircularProgress, Link } from '@mui/material';
+import { MouseEventHandler, useState } from 'react';
 import { CoursesFilter, FilterOptions } from '../CoursesFilter';
 import { CoursesList } from '../CoursesList';
 
 export const CoursesView = () => {
-  const navigate = useNavigate();
-  const coursesListRef = useRef<HTMLDivElement>(null);
-
-  const [page, setPage] = useState(1);
   const [options, setOptions] = useState<FilterOptions>({
     sortBy: 'date-start',
     search: '',
   });
 
-  const { courses, pagination, error, isLoading, isFetching } = useCourses(page, options);
+  const { data, error, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteCourses(1, options);
 
   const handleFilterChange = (filterOptions: FilterOptions) => {
     setOptions((prev) => ({ ...prev, ...filterOptions }));
@@ -27,16 +22,10 @@ export const CoursesView = () => {
     setOptions({ sortBy: 'date-start', search: '' });
   };
 
-  useEffect(() => {
-    if (coursesListRef.current) {
-      coursesListRef.current.scrollIntoView();
-    }
-  }, [page]);
-
   return (
     <>
       <CoursesFilter options={options} onChange={handleFilterChange} />
-      {isLoading && !courses && (
+      {isLoading && !data && (
         <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
           <CircularProgress />
         </Box>
@@ -48,27 +37,31 @@ export const CoursesView = () => {
           </Alert>
         </Box>
       )}
-      {courses && courses.length > 0 && (
+      {data && data.pages && data.pages.length > 0 && (
         <>
           <Box sx={{ mt: 4 }}>
-            <ContainerLoader isLoading={isFetching}>
-              <CoursesList items={courses} ref={coursesListRef} />
-            </ContainerLoader>
+            {data.pages?.map((page, idx) => (
+              <Box sx={{ mb: 4 }} key={idx}>
+                <CoursesList items={page.courses} />
+              </Box>
+            ))}
+            {hasNextPage && (
+              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  sx={{ maxWidth: 300, py: 2 }}
+                  onClick={() => (isFetchingNextPage ? null : fetchNextPage())}
+                >
+                  {isFetchingNextPage ? 'Загрузка...' : 'Загрузить еще'}
+                </Button>
+              </Box>
+            )}
           </Box>
-          {pagination && (
-            <Box sx={{ mt: 4, justifyContent: 'center', display: 'flex' }}>
-              <Pagination
-                count={pagination.totalPages}
-                page={page}
-                shape="rounded"
-                variant="outlined"
-                onChange={(_, value) => setPage(value)}
-              />
-            </Box>
-          )}
         </>
       )}
-      {courses && courses.length === 0 && (
+      {data?.pages && data?.pages?.length === 0 && (
         <Box sx={{ mt: 3 }}>
           <Alert severity="info">
             К сожалению, курсы по заданым фильтрам не найдены.{' '}
