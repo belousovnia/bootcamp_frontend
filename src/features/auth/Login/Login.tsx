@@ -30,7 +30,8 @@ export const Login = () => {
       await login(email, password)
         .then((response) => {
           localStorage.setItem('accessToken', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.refreshToken);
+          if (response.data.refreshToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken);
           setWarningMessage('');
           setAuth(true);
         })
