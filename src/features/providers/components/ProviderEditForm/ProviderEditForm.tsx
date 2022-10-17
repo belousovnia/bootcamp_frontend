@@ -68,7 +68,7 @@ export const ProviderEditForm = () => {
 
         {provider && (
           <Card>
-            <CardContent sx={{ p: { md: 5 } }}>
+            <CardContent sx={{ p: { xs: 3, md: 5 } }}>
               <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
                   <Controller
@@ -206,7 +206,7 @@ export const ProviderEditForm = () => {
                 </Grid>
               </Grid>
             </CardContent>
-            <CardActions sx={{ p: { md: 5 }, pt: { md: 2 } }}>
+            <CardActions sx={{ p: { xs: 3, md: 5 }, pt: { md: 2 } }}>
               <Button
                 type="submit"
                 size="large"

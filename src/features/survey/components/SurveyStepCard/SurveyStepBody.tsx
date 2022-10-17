@@ -23,7 +23,7 @@ export const SurveyStepBody = ({
   return (
     <Box sx={{ my: 2 }}>
       <form>
-        <Typography variant="h6" component="h3" sx={{ mb: 1 }}>
+        <Typography variant="h6" component="h3" sx={{ mb: 2 }}>
           {question.text}
         </Typography>
 
@@ -35,6 +35,7 @@ export const SurveyStepBody = ({
               value={index + 1}
               name={'question-answer'}
               control={<Radio color="primary" />}
+              sx={{ mb: 1 }}
             />
           ))}
         </RadioGroup>

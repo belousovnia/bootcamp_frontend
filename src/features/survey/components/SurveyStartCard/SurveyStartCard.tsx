@@ -15,7 +15,6 @@ import { SurveyCard } from '../SurveyCard';
 export const SurveyStartCard = () => {
   const navigate = useNavigate();
   const setSurveyState = useSurveyResultsStore((state) => state.setSurveyState);
-  const setCurrentStep = useSurveyResultsStore((state) => state.setCurrentStep);
 
   const handleStartSurvey: MouseEventHandler<HTMLButtonElement> = (e) => {
     setSurveyState('in-progress');
@@ -36,7 +35,7 @@ export const SurveyStartCard = () => {
           Ответьте на 10 вопросов и узнайте наиболее подходящее для вас IT направление
         </Typography>
       </CardContent>
-      <CardActions style={{ marginTop: 20 }}>
+      <CardActions style={{ marginTop: 20 }} sx={{ p: 2 }}>
         <Button
           variant="contained"
           color="primary"

@@ -16,7 +16,7 @@ export const AdminSidebar = ({ navItems }: AdminSidebarProps) => {
     <aside>
       <List sx={{ display: { xs: 'flex', md: 'block' }, flexWrap: 'wrap' }}>
         {navItems.map((item) => (
-          <ListItem key={item.path} sx={{ width: { xs: '50%', md: '100%' } }}>
+          <ListItem key={item.path} sx={{ width: { xs: '50%', md: '100%' }, px: 0 }}>
             <ListItemButton
               key={item.path}
               component={Link}
