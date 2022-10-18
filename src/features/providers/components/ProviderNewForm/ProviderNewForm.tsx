@@ -10,7 +10,7 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -21,6 +21,7 @@ export const ProviderNewForm = () => {
   const { id } = useParams<{ id: string }>();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const { control, handleSubmit, reset } = useForm<ProviderFull>();
+  const queryClient = useQueryClient();
 
   const {
     mutate,
@@ -30,6 +31,7 @@ export const ProviderNewForm = () => {
     return createProvider(data).then(() => {
       setSnackbarVisible(true);
       reset({ name: '', description: '', coverUrl: '', url: '' });
+      queryClient.invalidateQueries(['providers']);
     });
   });
 
