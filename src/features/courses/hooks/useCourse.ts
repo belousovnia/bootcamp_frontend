@@ -8,7 +8,7 @@ export const useCourse = (id: string) => {
   });
 
   return {
-    course: data?.course,
+    course: data,
     error,
     isLoading,
   };

@@ -1,11 +1,11 @@
-import { CourseShort } from '@features/courses/cources.entity';
+import { CourseFull, CourseShort } from '@features/courses/cources.entity';
 import { CoursesSortBy } from '@features/courses/courses.service';
 import { Grid } from '@mui/material';
 import { ForwardedRef, forwardRef } from 'react';
 import { CoursesListCard } from '../CoursesListCard';
 
 interface CoursesListProps {
-  items: CourseShort[];
+  items: CourseFull[];
 }
 
 export const CoursesList = forwardRef(function Component(

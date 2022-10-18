@@ -1,4 +1,4 @@
-import { CourseShort } from '@features/courses/cources.entity';
+import { CourseFull, CourseShort } from '@features/courses/cources.entity';
 import {
   Box,
   Button,
@@ -12,15 +12,13 @@ import {
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-interface CoursesListCardProps extends CourseShort {
-  onClick?: () => void;
-}
+type CoursesListCardProps = CourseFull;
 
 export const CoursesListCard = ({
   id,
   title,
   coverUrl,
-  provider,
+  providerName,
   startsAt,
   endsAt,
 }: CoursesListCardProps) => {
@@ -40,7 +38,7 @@ export const CoursesListCard = ({
       </CardActionArea>
       <CardContent sx={{ p: { md: 3 } }}>
         <Typography component="p" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {provider}
+          {providerName}
         </Typography>
         <Box sx={{ mb: 1 }} typography={'body2'}>
           {formattedDateStart} – {formattedDateEnd}

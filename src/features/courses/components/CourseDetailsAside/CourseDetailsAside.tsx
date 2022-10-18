@@ -44,7 +44,7 @@ export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
               <Card sx={{ p: 3 }}>
                 <ImgWrapper>
                   <CourseProviderCoverImg
-                    alt={course.provider}
+                    alt={course.providerName}
                     src={course.providerCoverUrl}
                   />
                 </ImgWrapper>

@@ -11,23 +11,15 @@ export type CoursesListArgs = {
   directionId?: string;
 };
 
-export type CoursesListResponse = {
-  courses: CourseShort[];
-  pagination: {
-    page: number;
-    totalPages: number;
-  };
-};
+export type CoursesListResponse = CourseFull[];
 
 export const fetchCourses = (
   args: CoursesListArgs,
 ): Promise<AxiosResponse<CoursesListResponse>> => {
-  return requestService.get(`courses`, { params: args });
+  return requestService.get(`v1/courses`, { params: args });
 };
 
-export type CourseDetailsResponse = {
-  course: CourseFull;
-};
+export type CourseDetailsResponse = CourseFull;
 
 export type CourseDetailsArgs = {
   id: string;
@@ -36,7 +28,7 @@ export type CourseDetailsArgs = {
 export const fetchCourse = (
   args: CourseDetailsArgs,
 ): Promise<AxiosResponse<CourseDetailsResponse>> => {
-  return requestService.get(`courses/${args.id}`);
+  return requestService.get(`v1/courses/${args.id}`);
 };
 
 export type CourseDeleteResponse = {
@@ -54,7 +46,7 @@ export const deleteCourse = (
   return requestService.delete(`/api/courses/${args.id}`);
 };
 
-export type CourseUpdateArgs = { id: string; changes: Partial<CourseFull> };
+export type CourseUpdateArgs = CourseCreateArgs & { id: number };
 export type CourseUpdateResponse = {
   type: 'success' | 'error';
   message: string;
@@ -73,7 +65,7 @@ export type CourseCreateArgs = {
   endsAt: string;
   isAdvanced: boolean;
   courseId: string;
-  providerId: string;
+  providerId: number;
   professionId: string;
   tags: string[];
 };
@@ -84,5 +76,5 @@ export type CourseCreateResponse = {
 };
 
 export const createCourse = (args: CourseCreateArgs): Promise<CourseCreateResponse> => {
-  return requestService.post(`courses/new`, args);
+  return requestService.post(`v1/courses`, args);
 };

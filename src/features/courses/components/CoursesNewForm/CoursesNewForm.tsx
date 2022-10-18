@@ -1,10 +1,6 @@
-import { CourseFull } from '@features/courses/cources.entity';
-import {
-  CourseCreateArgs,
-  createCourse,
-  updateCourse,
-} from '@features/courses/courses.service';
-import { useCourse } from '@features/courses/hooks/useCourse';
+import { CourseCreateArgs, createCourse } from '@features/courses/courses.service';
+import { useProfessions } from '@features/professions/professions.hooks';
+import { ProviderFull } from '@features/providers';
 import { useProviders } from '@features/providers/hooks/useProviders';
 import {
   Alert,
@@ -22,42 +18,17 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
   Snackbar,
-  styled,
   TextField,
-  Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { FormEvent, useCallback, useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-import { ProviderFull } from '@features/providers';
-
-const LogoWrapper = styled('div')`
-  max-width: 220px;
-  height: 120px;
-  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const Logo = styled('img')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
-
-type CourseCreateForm = CourseCreateArgs & {
-  provider?: ProviderFull;
-};
 
 export const CoursesNewForm = () => {
   const [providerSearch, setProviderSearch] = useState('');
+  const queryClient = useQueryClient();
   const [selectedProvider, setSelectedProvider] = useState<ProviderFull | undefined>(
     undefined,
   );
@@ -65,11 +36,14 @@ export const CoursesNewForm = () => {
     page: '1',
     search: providerSearch,
   });
+  const { data: professions, isLoading: isLoadingProfessions } = useProfessions();
 
   console.log(selectedProvider);
+  console.log(professions);
+
   console.log(courseProviders);
 
-  const { control, handleSubmit, reset, setValue } = useForm<CourseCreateForm>();
+  const { control, handleSubmit, reset, setValue } = useForm<CourseCreateArgs>();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -88,16 +62,17 @@ export const CoursesNewForm = () => {
         providerId: undefined,
         professionId: undefined,
         isAdvanced: false,
+        tags: [],
       });
+      queryClient.invalidateQueries(['courses']);
     });
   });
 
   const onSubmit = useCallback(
     (data: CourseCreateArgs) => {
-      console.log(data);
-      // if (!isMutationLoading) {
-      //   mutate(data);
-      // }
+      if (!isMutationLoading) {
+        mutate(data);
+      }
     },
     [isMutationLoading, mutate],
   );
@@ -195,7 +170,7 @@ export const CoursesNewForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="provider"
+                  name="providerId"
                   control={control}
                   rules={{
                     required: {
@@ -207,16 +182,12 @@ export const CoursesNewForm = () => {
                     <Autocomplete
                       options={courseProviders ?? []}
                       getOptionLabel={(option) => option?.name ?? ''}
-                      noOptionsText={
-                        selectedProvider
-                          ? 'Ничего не найдено'
-                          : 'Начните вводить имя провайдера'
-                      }
+                      noOptionsText={'Ничего не найдено'}
                       onInputChange={(event, newInputValue) => {
                         setProviderSearch(newInputValue);
                       }}
                       onChange={(event, newValue) => {
-                        setValue('provider', newValue ?? undefined);
+                        setValue('providerId', newValue?.id as number);
                         setSelectedProvider(newValue ?? undefined);
                       }}
                       renderInput={(params) => (
@@ -256,12 +227,11 @@ export const CoursesNewForm = () => {
                         fullWidth
                         {...otherFields}
                       >
-                        <MenuItem value={0}>Не выбрано</MenuItem>
-                        <MenuItem value={1}>Программирование</MenuItem>
-                        <MenuItem value={2}>Веб-дизайн</MenuItem>
-                        <MenuItem value={3}>Аналитика</MenuItem>
-                        <MenuItem value={4}>Тестирование</MenuItem>
-                        <MenuItem value={5}>Администрирование</MenuItem>
+                        {professions?.map((profession) => (
+                          <MenuItem key={profession.id} value={profession.id}>
+                            {profession.name}
+                          </MenuItem>
+                        ))}
                       </Select>
                       {fieldState.error && (
                         <FormHelperText error>{fieldState.error.message}</FormHelperText>
