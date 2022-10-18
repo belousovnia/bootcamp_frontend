@@ -199,7 +199,7 @@ export const CoursesNewForm = () => {
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <Autocomplete
                       options={courseProviders ?? []}
-                      getOptionLabel={(option) => option?.title ?? ''}
+                      getOptionLabel={(option) => option?.name ?? ''}
                       renderInput={(params) => (
                         <TextField
                           {...params}

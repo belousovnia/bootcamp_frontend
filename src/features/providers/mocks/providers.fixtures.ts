@@ -2,7 +2,7 @@ import { ProviderFull, ProviderShort } from '@features/providers';
 import { faker } from '@faker-js/faker';
 
 export const providerFullFixture: ProviderFull = {
-  id: faker.datatype.uuid(),
+  id: faker.datatype.number(),
   name: 'Мобильное электронное образование',
   url: 'http://habr.ru',
   coverUrl:

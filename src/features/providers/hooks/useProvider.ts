@@ -3,7 +3,7 @@ import { fetchProvider, ProviderResponse } from '@features/providers/providers.s
 
 export const useProvider = (id: string) => {
   const { data, error, isLoading } = useQuery<ProviderResponse>(
-    ['course-provider', id],
+    ['provider', id],
     async () => {
       const { data } = await fetchProvider({ id });
       return data;
@@ -12,7 +12,7 @@ export const useProvider = (id: string) => {
   );
 
   return {
-    provider: data?.provider,
+    provider: data,
     error,
     isLoading,
   };

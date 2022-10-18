@@ -36,8 +36,8 @@ export const useProviders = (
   );
 
   return {
-    courseProviders: data?.providers,
-    pagination: data?.pagination,
+    courseProviders: data,
+    pagination: null,
     error,
     isLoading,
   };
