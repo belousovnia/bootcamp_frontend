@@ -17,23 +17,6 @@ import { useParams } from 'react-router-dom';
 import { createProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
 
-const LogoWrapper = styled('div')`
-  max-width: 220px;
-  height: 120px;
-  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const Logo = styled('img')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
-
 export const ProviderNewForm = () => {
   const { id } = useParams<{ id: string }>();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -114,31 +97,7 @@ export const ProviderNewForm = () => {
                   )}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Controller
-                  name="description"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      label="Краткое описание"
-                      variant="outlined"
-                      multiline
-                      rows={4}
-                      fullWidth
-                      error={!!fieldState.error}
-                      helperText={fieldState.error?.message}
-                      {...field}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Controller
                   name="description"
                   control={control}

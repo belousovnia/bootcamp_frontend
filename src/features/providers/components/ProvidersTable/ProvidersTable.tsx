@@ -17,13 +17,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import {
-  MutationFunction,
-  Updater,
-  useMutation,
-  useQueryClient,
-  UseQueryResult,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -49,8 +43,6 @@ export const ProvidersTable = () => {
   const { courseProviders, pagination, isLoading, error } = useProviders({
     page: page.toString(),
   });
-
-  console.log(courseProviders);
 
   const {
     mutate,

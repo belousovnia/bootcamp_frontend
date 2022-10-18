@@ -1,35 +1,12 @@
 import { CourseFull } from '@features/courses/cources.entity';
 import { updateCourse } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { useProvider } from '@features/providers/hooks/useProvider';
 import { useProviders } from '@features/providers/hooks/useProviders';
-import {
-  Alert,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Checkbox,
-  CircularProgress,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Rating,
-  Select,
-  Snackbar,
-  styled,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { styled } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { updateCourseProvider } from '@features/providers/providers.service';
-import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;

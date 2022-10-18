@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { updateCourseProvider } from '@features/providers/providers.service';
+import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
@@ -45,7 +45,7 @@ export const ProviderEditForm = () => {
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
   } = useMutation((data: ProviderFull) => {
-    return updateCourseProvider(data).then(() => {
+    return updateProvider(data).then(() => {
       setSnackbarVisible(true);
     });
   });

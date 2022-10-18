@@ -47,7 +47,7 @@ export type ProviderUpdateResponse = {
   type: 'success' | 'error';
   message: string;
 };
-export const updateCourseProvider = (
+export const updateProvider = (
   args: CourseDetailsArgs,
 ): Promise<AxiosResponse<ProviderUpdateResponse>> => {
   return requestService.post(`providers/${args.id}`, args);
