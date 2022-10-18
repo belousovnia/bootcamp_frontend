@@ -10,7 +10,6 @@ import { AdminCoursesNewScreen } from '@screens/admin/AdminCoursesNewScreen';
 import { AdminCoursesScreen } from '@screens/admin/AdminCoursesScreen';
 import { CourseScreen } from '@screens/CourseScreen';
 import { CoursesScreen } from '@screens/CoursesScreen';
-import { LoginScreen, MainScreen, RegistrationScreen } from '@screens/index';
 import { PageScreen } from '@screens/PageScreen';
 import { SurveyFinishScreen } from '@screens/SurveyFinishScreen';
 import { SurveyScreen } from '@screens/SurveyScreen';
@@ -19,6 +18,12 @@ import { UserAccountScreen } from '@screens/UserAccountScreen';
 import { UserRecommendationsScreen } from '@screens/UserRecommendationsScreen';
 import { Route, Routes } from 'react-router-dom';
 import { CurrentUserRoles, ProtectedRoute } from '@features/auth';
+import {
+  MainScreen,
+  LoginScreen,
+  RegistrationScreen,
+  ProfessionsScreen,
+} from '@screens/index';
 
 export const Routing = () => {
   return (

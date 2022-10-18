@@ -13,8 +13,8 @@ export const useCourses = (page: number, opts: FilterOptions) => {
   );
 
   return {
-    courses: data?.courses,
-    pagination: data?.pagination,
+    courses: data,
+    pagination: data,
     error,
     isLoading,
     isFetching,

@@ -19,8 +19,7 @@ export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
       return data;
     },
     {
-      getNextPageParam: (data) =>
-        data.pagination.totalPages > 1 ? data.pagination.page + 1 : undefined,
+      getNextPageParam: (data) => false,
     },
   );
 

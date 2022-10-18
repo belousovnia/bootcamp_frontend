@@ -42,7 +42,7 @@ export const CoursesView = () => {
           <Box sx={{ mt: 4 }}>
             {data.pages?.map((page, idx) => (
               <Box sx={{ mb: 4 }} key={idx}>
-                <CoursesList items={page.courses} />
+                <CoursesList items={page} />
               </Box>
             ))}
             {hasNextPage && (
@@ -61,7 +61,7 @@ export const CoursesView = () => {
           </Box>
         </>
       )}
-      {data?.pages && data?.pages[0].courses.length === 0 && (
+      {data?.pages && data?.pages[0].length === 0 && (
         <Box sx={{ mt: 3 }}>
           <Alert severity="info">
             К сожалению, курсы по заданым фильтрам не найдены.{' '}

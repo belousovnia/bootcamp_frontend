@@ -1,10 +1,6 @@
-import { CourseFull } from '@features/courses/cources.entity';
-import {
-  CourseCreateArgs,
-  createCourse,
-  updateCourse,
-} from '@features/courses/courses.service';
-import { useCourse } from '@features/courses/hooks/useCourse';
+import { CourseCreateArgs, createCourse } from '@features/courses/courses.service';
+import { useProfessions } from '@features/professions/professions.hooks';
+import { ProviderFull } from '@features/providers';
 import { useProviders } from '@features/providers/hooks/useProviders';
 import {
   Alert,
@@ -14,6 +10,7 @@ import {
   CardActions,
   CardContent,
   Checkbox,
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -21,48 +18,32 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
   Snackbar,
-  styled,
   TextField,
-  Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
-
-const LogoWrapper = styled('div')`
-  max-width: 220px;
-  height: 120px;
-  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const Logo = styled('img')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
 
 export const CoursesNewForm = () => {
-  const [courseProviderName, setCourseProviderName] = useState('');
-  const { courseProviders } = useProviders(
-    {
-      page: '1',
-      search: courseProviderName,
-    },
-    { enabled: !!courseProviderName },
+  const [providerSearch, setProviderSearch] = useState('');
+  const queryClient = useQueryClient();
+  const [selectedProvider, setSelectedProvider] = useState<ProviderFull | undefined>(
+    undefined,
   );
+  const { courseProviders } = useProviders({
+    page: '1',
+    search: providerSearch,
+  });
+  const { data: professions, isLoading: isLoadingProfessions } = useProfessions();
+
+  console.log(selectedProvider);
+  console.log(professions);
 
   console.log(courseProviders);
 
-  const { control, handleSubmit, reset } = useForm<CourseCreateArgs>();
+  const { control, handleSubmit, reset, setValue } = useForm<CourseCreateArgs>();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -81,7 +62,9 @@ export const CoursesNewForm = () => {
         providerId: undefined,
         professionId: undefined,
         isAdvanced: false,
+        tags: [],
       });
+      queryClient.invalidateQueries(['courses']);
     });
   });
 
@@ -95,7 +78,7 @@ export const CoursesNewForm = () => {
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <>
         <Card>
           <CardContent sx={{ p: { xs: 3, md: 5 } }}>
@@ -189,7 +172,6 @@ export const CoursesNewForm = () => {
                 <Controller
                   name="providerId"
                   control={control}
-                  defaultValue={''}
                   rules={{
                     required: {
                       value: true,
@@ -200,17 +182,23 @@ export const CoursesNewForm = () => {
                     <Autocomplete
                       options={courseProviders ?? []}
                       getOptionLabel={(option) => option?.name ?? ''}
+                      noOptionsText={'Ничего не найдено'}
+                      onInputChange={(event, newInputValue) => {
+                        setProviderSearch(newInputValue);
+                      }}
+                      onChange={(event, newValue) => {
+                        setValue('providerId', newValue?.id as number);
+                        setSelectedProvider(newValue ?? undefined);
+                      }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           label="Провайдер"
                           variant="outlined"
-                          fullWidth
                           error={!!fieldState.error}
                           helperText={fieldState.error?.message}
                         />
                       )}
-                      {...otherFields}
                     />
                   )}
                 />
@@ -239,17 +227,51 @@ export const CoursesNewForm = () => {
                         fullWidth
                         {...otherFields}
                       >
-                        <MenuItem value={0}>Не выбрано</MenuItem>
-                        <MenuItem value={1}>Программирование</MenuItem>
-                        <MenuItem value={2}>Веб-дизайн</MenuItem>
-                        <MenuItem value={3}>Аналитика</MenuItem>
-                        <MenuItem value={4}>Тестирование</MenuItem>
-                        <MenuItem value={5}>Администрирование</MenuItem>
+                        {professions?.map((profession) => (
+                          <MenuItem key={profession.id} value={profession.id}>
+                            {profession.name}
+                          </MenuItem>
+                        ))}
                       </Select>
                       {fieldState.error && (
                         <FormHelperText error>{fieldState.error.message}</FormHelperText>
                       )}
                     </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="tags"
+                  control={control}
+                  defaultValue={[] as string[]}
+                  render={({ field: { value, ...otherFields }, fieldState }) => (
+                    <Autocomplete
+                      multiple
+                      id="tags-filled"
+                      options={[] as readonly string[]}
+                      defaultValue={[]}
+                      freeSolo
+                      {...otherFields}
+                      onChange={(e, value) => setValue('tags', value)}
+                      renderTags={(value: string[], getTagProps) =>
+                        value.map((option: string, index: number) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <Chip
+                            variant="outlined"
+                            label={option}
+                            {...getTagProps({ index })}
+                          />
+                        ))
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Метки"
+                          placeholder="Введите метку и нажмите Enter"
+                        />
+                      )}
+                    />
                   )}
                 />
               </Grid>
