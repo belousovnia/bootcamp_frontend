@@ -14,6 +14,7 @@ import {
   CardActions,
   CardContent,
   Checkbox,
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -29,9 +30,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { useCallback, useState } from 'react';
+import { FormEvent, useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;
@@ -50,19 +52,24 @@ const Logo = styled('img')`
   object-fit: contain;
 `;
 
-export const CoursesNewForm = () => {
-  const [courseProviderName, setCourseProviderName] = useState('');
-  const { courseProviders } = useProviders(
-    {
-      page: '1',
-      search: courseProviderName,
-    },
-    { enabled: !!courseProviderName },
-  );
+type CourseCreateForm = CourseCreateArgs & {
+  provider?: ProviderFull;
+};
 
+export const CoursesNewForm = () => {
+  const [providerSearch, setProviderSearch] = useState('');
+  const [selectedProvider, setSelectedProvider] = useState<ProviderFull | undefined>(
+    undefined,
+  );
+  const { courseProviders } = useProviders({
+    page: '1',
+    search: providerSearch,
+  });
+
+  console.log(selectedProvider);
   console.log(courseProviders);
 
-  const { control, handleSubmit, reset } = useForm<CourseCreateArgs>();
+  const { control, handleSubmit, reset, setValue } = useForm<CourseCreateForm>();
 
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -87,15 +94,16 @@ export const CoursesNewForm = () => {
 
   const onSubmit = useCallback(
     (data: CourseCreateArgs) => {
-      if (!isMutationLoading) {
-        mutate(data);
-      }
+      console.log(data);
+      // if (!isMutationLoading) {
+      //   mutate(data);
+      // }
     },
     [isMutationLoading, mutate],
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <>
         <Card>
           <CardContent sx={{ p: { xs: 3, md: 5 } }}>
@@ -187,9 +195,8 @@ export const CoursesNewForm = () => {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Controller
-                  name="providerId"
+                  name="provider"
                   control={control}
-                  defaultValue={''}
                   rules={{
                     required: {
                       value: true,
@@ -200,17 +207,27 @@ export const CoursesNewForm = () => {
                     <Autocomplete
                       options={courseProviders ?? []}
                       getOptionLabel={(option) => option?.name ?? ''}
+                      noOptionsText={
+                        selectedProvider
+                          ? 'Ничего не найдено'
+                          : 'Начните вводить имя провайдера'
+                      }
+                      onInputChange={(event, newInputValue) => {
+                        setProviderSearch(newInputValue);
+                      }}
+                      onChange={(event, newValue) => {
+                        setValue('provider', newValue ?? undefined);
+                        setSelectedProvider(newValue ?? undefined);
+                      }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
                           label="Провайдер"
                           variant="outlined"
-                          fullWidth
                           error={!!fieldState.error}
                           helperText={fieldState.error?.message}
                         />
                       )}
-                      {...otherFields}
                     />
                   )}
                 />
@@ -250,6 +267,41 @@ export const CoursesNewForm = () => {
                         <FormHelperText error>{fieldState.error.message}</FormHelperText>
                       )}
                     </FormControl>
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Controller
+                  name="tags"
+                  control={control}
+                  defaultValue={[] as string[]}
+                  render={({ field: { value, ...otherFields }, fieldState }) => (
+                    <Autocomplete
+                      multiple
+                      id="tags-filled"
+                      options={[] as readonly string[]}
+                      defaultValue={[]}
+                      freeSolo
+                      {...otherFields}
+                      onChange={(e, value) => setValue('tags', value)}
+                      renderTags={(value: string[], getTagProps) =>
+                        value.map((option: string, index: number) => (
+                          // eslint-disable-next-line react/jsx-key
+                          <Chip
+                            variant="outlined"
+                            label={option}
+                            {...getTagProps({ index })}
+                          />
+                        ))
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Метки"
+                          placeholder="Введите метку и нажмите Enter"
+                        />
+                      )}
+                    />
                   )}
                 />
               </Grid>
