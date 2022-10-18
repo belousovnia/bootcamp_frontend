@@ -2,14 +2,15 @@ import { useAuthStore, useCurrentUser } from '@features/auth/auth.hooks';
 import { CurrentUserRoles } from '@features/auth';
 import React, { useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { Outlet } from '@mui/icons-material';
 
 interface ProtectedRouteProps {
   role: CurrentUserRoles;
+  children?: React.ReactNode;
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   role = CurrentUserRoles.ROLE_REGULAR,
+  children,
 }) => {
   const currentUser = useCurrentUser();
   const { isAuth } = useAuthStore();
@@ -27,7 +28,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={'/login'} replace state={{ from: location }} />;
   }
   if (isAvailable) {
-    return <Outlet />;
+    return <>{children}</>;
   }
   return <Navigate to={'/'} replace />;
 };
