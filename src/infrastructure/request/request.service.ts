@@ -10,10 +10,16 @@ const serverURL = import.meta.env.VITE_API_URL;
 export const requestService = axios.create({
   withCredentials: true,
   baseURL: `${serverURL}/api`,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  },
 });
 
 requestService.interceptors.request.use((config: AxiosRequestConfig) => {
-  if (accessToken) (config.headers ?? {}).Authorization = `Bearer ${accessToken}`;
+  if (accessToken) {
+    (config.headers ?? {}).Authorization = `Bearer ${accessToken}`;
+  }
   return config;
 });
 

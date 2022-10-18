@@ -37,19 +37,19 @@ export const Registration = ({ title }: RegistrationProps) => {
     try {
       await registration({
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        middleName: user.middleName,
         password: user.password,
+        name: user.name,
+        surname: user.surname,
       })
         .then((response) => {
           localStorage.setItem('accessToken', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('refreshToken', response.data?.refreshToken);
           setWarningMessage('');
           setAuth(true);
         })
-        .catch(() => {
-          setWarningMessage('Пользователь с таким email уже существует!');
+        .catch((error) => {
+          if (error.response?.status === 400)
+            setWarningMessage('Пользователь с таким email уже существует!');
         });
     } catch (e) {
       if (axios.isAxiosError(e)) console.log(e.response?.data?.message);
@@ -97,41 +97,28 @@ export const Registration = ({ title }: RegistrationProps) => {
           )}
         </StyledBox>
         <StyledBox>
-          <InputLabel htmlFor={'lastName'}>Фамилия</InputLabel>
+          <InputLabel htmlFor={'surname'}>Фамилия</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('lastName', { required: true })}
+            {...register('surname', { required: true })}
             placeholder={'Ваша фамилия'}
           />
-          {errors.lastName && (
+          {errors.surname && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
               Вы должны ввести свою фамилию
             </FormHelperText>
           )}
         </StyledBox>
         <StyledBox>
-          <InputLabel htmlFor={'firstName'}>Имя</InputLabel>
+          <InputLabel htmlFor={'name'}>Имя</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('firstName', { required: true })}
+            {...register('name', { required: true })}
             placeholder={'Ваше имя'}
           />
-          {errors.firstName && (
+          {errors.name && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
               Вы должны ввести своё имя
-            </FormHelperText>
-          )}
-        </StyledBox>
-        <StyledBox>
-          <InputLabel htmlFor={'middleName'}>Отчество</InputLabel>
-          <Input
-            inputProps={{ number: 50 }}
-            {...register('middleName', { required: true })}
-            placeholder={'Ваше отчество'}
-          />
-          {errors.middleName && (
-            <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Вы должны ввести своё отчество
             </FormHelperText>
           )}
         </StyledBox>
@@ -141,7 +128,7 @@ export const Registration = ({ title }: RegistrationProps) => {
             type={'password'}
             {...register('password', {
               required: true,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
             })}
             placeholder={'Ваш пароль'}
             title={

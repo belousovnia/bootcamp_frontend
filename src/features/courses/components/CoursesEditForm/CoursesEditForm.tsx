@@ -7,6 +7,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import { updateProvider } from '@features/providers/providers.service';
+import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;

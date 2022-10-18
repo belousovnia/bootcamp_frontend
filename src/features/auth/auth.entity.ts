@@ -10,8 +10,7 @@ export interface AuthStore {
 
 export interface RegistrationUser {
   email: string;
-  firstName: string;
-  lastName: string;
-  middleName: string;
   password: string;
+  name: string;
+  surname: string;
 }

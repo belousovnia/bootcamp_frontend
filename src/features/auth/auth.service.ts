@@ -6,13 +6,13 @@ export const login = async (
   email: string,
   password: string,
 ): Promise<AxiosResponse<AuthResponse>> => {
-  return await requestService.post('/login', { email, password });
+  return await requestService.post('/v1/auth/login', { email, password });
 };
 
 export const registration = async (
   user: RegistrationUser,
 ): Promise<AxiosResponse<AuthResponse>> => {
-  return await requestService.post('/registration', {
-    user,
+  return await requestService.post('/v1/auth/signup', {
+    ...user,
   });
 };
