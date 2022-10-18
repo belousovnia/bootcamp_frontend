@@ -46,9 +46,8 @@ requestService.interceptors.response.use(
       } catch (e) {
         await Promise.reject(e);
       }
-    } else {
+    } else if (error.response?.status == 401) {
       logOut();
-      return Promise.reject(error);
-    }
+    } else return Promise.reject(error);
   },
 );

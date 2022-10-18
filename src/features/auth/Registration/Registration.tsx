@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyledBox } from '@features/auth/components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface RegistrationProps {
   title?: string;
@@ -20,6 +21,10 @@ interface RegistrationProps {
 
 export const Registration = ({ title }: RegistrationProps) => {
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [warningMessage, setWarningMessage] = useState<string>('');
 
   const {
@@ -46,9 +51,11 @@ export const Registration = ({ title }: RegistrationProps) => {
           localStorage.setItem('refreshToken', response.data?.refreshToken);
           setWarningMessage('');
           setAuth(true);
+          if (location.state?.from) navigate(location.state.from);
+          else navigate('/');
         })
         .catch((error) => {
-          if (error.response?.status === 400)
+          if (error.response?.data.code === 'ITD_UEC_2')
             setWarningMessage('Пользователь с таким email уже существует!');
         });
     } catch (e) {
@@ -56,7 +63,6 @@ export const Registration = ({ title }: RegistrationProps) => {
       else console.log(e);
     }
   };
-
   return (
     <Container
       maxWidth={'sm'}

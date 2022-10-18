@@ -18,6 +18,7 @@ import { SurveyStepScreen } from '@screens/SurveyStepScreen';
 import { UserAccountScreen } from '@screens/UserAccountScreen';
 import { UserRecommendationsScreen } from '@screens/UserRecommendationsScreen';
 import { Route, Routes } from 'react-router-dom';
+import { CurrentUserRoles, ProtectedRoute } from '@features/auth';
 
 export const Routing = () => {
   return (
@@ -25,7 +26,9 @@ export const Routing = () => {
       <Routes>
         <Route path={'/'} element={<MainLayout />}>
           <Route index element={<MainScreen />} />
-          <Route path={'courses'} element={<CoursesScreen />} />
+          <Route element={<ProtectedRoute role={CurrentUserRoles.ROLE_REGULAR} />}>
+            <Route path={'courses'} element={<CoursesScreen />} />
+          </Route>
           <Route path={'courses/:id'} element={<CourseScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />
           <Route
