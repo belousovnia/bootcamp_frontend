@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { registration } from '@features/auth/auth.service';
 import axios from 'axios';
 import { useAuthStore } from '@features/auth/auth.hooks';
@@ -13,14 +13,20 @@ import {
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyledBox } from '@features/auth/components';
+import { useLocation } from 'react-router-dom';
 
-interface RegistrationProps {
-  title?: string;
-}
-
-export const Registration = ({ title }: RegistrationProps) => {
+export const Registration = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
   const [warningMessage, setWarningMessage] = useState<string>('');
+  const location = useLocation();
+  console.log(location.state);
+
+  const titleText = useMemo(() => {
+    if (location.state?.next === '/survey') {
+      return 'Для прохождения теста, пожалуйста, зарегистрируйтесь';
+    }
+    return 'Регистрация';
+  }, [location.state]);
 
   const {
     register,
@@ -69,8 +75,8 @@ export const Registration = ({ title }: RegistrationProps) => {
         alignItems: 'center',
       }}
     >
-      <Typography variant={'h4'} textAlign="center" maxWidth={470}>
-        {title ?? 'Регистрация'}
+      <Typography variant={'h4'} textAlign="center" maxWidth={570}>
+        {titleText}
       </Typography>
       <Paper
         sx={{

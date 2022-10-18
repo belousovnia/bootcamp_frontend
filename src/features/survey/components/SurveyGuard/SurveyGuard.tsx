@@ -1,6 +1,7 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuthStore } from '@features/auth';
 
 interface SurveyGuardProps {
   children: JSX.Element;
@@ -9,6 +10,7 @@ interface SurveyGuardProps {
 export const SurveyGuard = ({ children }: SurveyGuardProps) => {
   const navigate = useNavigate();
   const { step } = useParams();
+  const isAuth = useAuthStore((state) => state.isAuth);
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -16,6 +18,11 @@ export const SurveyGuard = ({ children }: SurveyGuardProps) => {
   ]);
 
   useEffect(() => {
+    if (!isAuth) {
+      navigate('/registration', { state: { next: '/survey' } });
+      return;
+    }
+
     if (surveyState === 'not-active') {
       navigate(`/survey`, { replace: true });
       return;
@@ -34,7 +41,7 @@ export const SurveyGuard = ({ children }: SurveyGuardProps) => {
     if (!step && surveyState === 'in-progress') {
       navigate(`/survey/step/${currentStep}`, { replace: true });
     }
-  }, [currentStep, navigate, step]);
+  }, [currentStep, navigate, step, isAuth]);
 
-  return children;
+  return isAuth ? children : null;
 };
