@@ -1,7 +1,7 @@
 import { useCourse } from '@features/courses/hooks/useCourse';
 import { Alert, Box, Button, CircularProgress } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { CourseDetailsContent } from '../CourseDetailsContent';
 import { CourseDetailsHeader } from '../CourseDetailsHeader';
@@ -10,11 +10,19 @@ interface CourseDetailsArticleProps {
   courseId: string;
 }
 
+const DESCRIPTION_LIMIT = 200;
+
 export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) => {
   const [isDescriptionTruncated, setDescriptionTruncated] = useState(true);
   const { course, isLoading, error } = useCourse(courseId);
 
   const truncationText = isDescriptionTruncated ? 'Раскрыть описание' : 'Скрыть описание';
+  const descriptionLength = useMemo(() => {
+    if (course?.description) {
+      return course.description.length;
+    }
+    return 0;
+  }, [course]);
 
   return (
     <article>
@@ -49,11 +57,15 @@ export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) =>
             </Box>
             <CourseDetailsContent
               description={course.description}
-              isTruncated={isDescriptionTruncated}
+              isTruncated={
+                descriptionLength > DESCRIPTION_LIMIT && isDescriptionTruncated
+              }
             />
-            <Button onClick={() => setDescriptionTruncated((p) => !p)}>
-              {truncationText}
-            </Button>
+            {descriptionLength > DESCRIPTION_LIMIT && (
+              <Button onClick={() => setDescriptionTruncated((p) => !p)}>
+                {truncationText}
+              </Button>
+            )}
           </>
         )}
         {error && (

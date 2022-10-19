@@ -14,6 +14,7 @@ const TruncatedContainer = styled(Box)<BoxProps<'div', { isTruncated: boolean }>
     overflow: 'hidden',
     '&:after': {
       content: '""',
+      display: isTruncated ? 'block' : 'none',
       position: 'absolute',
       bottom: 0,
       left: 0,
