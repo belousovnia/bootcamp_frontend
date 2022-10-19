@@ -16,7 +16,7 @@ import {
   TextField,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export type FilterOptions = {
   professionId?: number;
@@ -27,12 +27,28 @@ export type FilterOptions = {
 
 interface CourseFilterProps {
   options: FilterOptions;
+  disabledControls?: Array<keyof FilterOptions>;
   onChange: (filterOptions: FilterOptions) => void;
 }
 
-export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
+export const CoursesFilter = ({
+  options,
+  disabledControls,
+  onChange,
+}: CourseFilterProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { data } = useAllProfessions();
+  const isProfessionsDisabled = disabledControls?.includes('professionId');
+
+  const gridColumnSize = useMemo(() => {
+    let columnSize = 3;
+    if (isProfessionsDisabled) {
+      columnSize += 1;
+    }
+
+    return columnSize;
+  }, [isProfessionsDisabled, disabledControls]);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...options, search: event.target.value });
   };
@@ -60,7 +76,7 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
       <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />
       <CardContent sx={{ p: { md: 3 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={4} lg={gridColumnSize}>
             <TextField
               variant="outlined"
               label="Поиск по названию курса"
@@ -70,30 +86,32 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={12} sm={4} lg={3}>
-            <FormControl fullWidth>
-              <InputLabel id="course-profession">Профессия</InputLabel>
-              <Select
-                labelId="course-profession"
-                id="course-profession"
-                label="Профессия"
-                defaultValue=""
-                value={options.professionId?.toString() || ''}
-                onChange={handleProfessionChange}
-              >
-                <MenuItem value="">
-                  <em>Не выбрано</em>
-                </MenuItem>
-                {data?.map((profession) => (
-                  <MenuItem key={profession.id} value={profession.id}>
-                    {profession.name}
+          {!isProfessionsDisabled && (
+            <Grid item xs={12} sm={4} lg={gridColumnSize}>
+              <FormControl fullWidth>
+                <InputLabel id="course-profession">Профессия</InputLabel>
+                <Select
+                  labelId="course-profession"
+                  id="course-profession"
+                  label="Профессия"
+                  defaultValue=""
+                  value={options.professionId?.toString() || ''}
+                  onChange={handleProfessionChange}
+                >
+                  <MenuItem value="">
+                    <em>Не выбрано</em>
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
+                  {data?.map((profession) => (
+                    <MenuItem key={profession.id} value={profession.id}>
+                      {profession.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          )}
 
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={4} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-for-advanced">Сложность</InputLabel>
               <Select
@@ -112,7 +130,7 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={4} lg={3}>
+          <Grid item xs={12} sm={4} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-sortby">Сортировать по:</InputLabel>
               <Select

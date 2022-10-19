@@ -1,3 +1,11 @@
+import { UserRecommendedCourses } from '../UserRecommendedCourses';
+import { UserRecommendedProfessions } from '../UserRecommendedProfessions';
+
 export const UserRecommendations = () => {
-  return <>User Recommendations</>;
+  return (
+    <>
+      <UserRecommendedProfessions />
+      <UserRecommendedCourses />
+    </>
+  );
 };
