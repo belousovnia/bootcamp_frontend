@@ -4,8 +4,19 @@ import { MouseEventHandler, useState } from 'react';
 import { CoursesFilter, FilterOptions } from '../CoursesFilter';
 import { CoursesList } from '../CoursesList';
 
-export const CoursesView = () => {
+interface CoursesViewProps {
+  filterOptions?: FilterOptions;
+  itemsPerRow?: number;
+  disabledFilterControls?: Array<keyof FilterOptions>;
+}
+
+export const CoursesView = ({
+  filterOptions = {},
+  disabledFilterControls,
+  itemsPerRow,
+}: CoursesViewProps) => {
   const [options, setOptions] = useState<FilterOptions>({
+    ...filterOptions,
     sortBy: 'date-start',
     search: '',
   });
@@ -24,7 +35,11 @@ export const CoursesView = () => {
 
   return (
     <>
-      <CoursesFilter options={options} onChange={handleFilterChange} />
+      <CoursesFilter
+        options={options}
+        onChange={handleFilterChange}
+        disabledControls={disabledFilterControls}
+      />
       {isLoading && !data && (
         <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
           <CircularProgress />
@@ -42,7 +57,7 @@ export const CoursesView = () => {
           <Box sx={{ mt: 4 }}>
             {data.pages?.map((page, idx) => (
               <Box sx={{ mb: 4 }} key={idx}>
-                <CoursesList items={page.content} />
+                <CoursesList items={page.content} itemsPerRow={itemsPerRow} />
               </Box>
             ))}
             {hasNextPage && (

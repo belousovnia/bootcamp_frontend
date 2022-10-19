@@ -6,16 +6,19 @@ import { CoursesListCard } from '../CoursesListCard';
 
 interface CoursesListProps {
   items: CourseFull[];
+  itemsPerRow?: number;
 }
 
 export const CoursesList = forwardRef(function Component(
-  props: CoursesListProps,
+  { items, itemsPerRow = 3 }: CoursesListProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const gridSize = 12 / itemsPerRow;
+
   return (
     <Grid container spacing={4} ref={ref}>
-      {props.items.map((item) => (
-        <Grid item xs={12} sm={6} md={4} lg={4} key={item.id}>
+      {items.map((item) => (
+        <Grid item xs={12} sm={6} md={gridSize} lg={gridSize} key={item.id}>
           <CoursesListCard {...item} />
         </Grid>
       ))}
