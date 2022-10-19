@@ -4,6 +4,7 @@ import { useCourse } from '@features/courses/hooks/useCourse';
 import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
   Alert,
+  AlertTitle,
   Autocomplete,
   Button,
   Card,
@@ -53,19 +54,25 @@ const Logo = styled('img')`
 
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
-  const { course, isLoading } = useCourse(id || '');
+  const { course, isLoading, error } = useCourse(id || '');
   const { courseProviders } = useAllProviders();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const queryClient = useQueryClient();
 
-  const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
+  const {
+    data: professions,
+    isLoading: isLoadingProfessions,
+    error: professionsError,
+  } = useAllProfessions();
 
   const {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: CourseCreateArgs) => {
+    isError: isMutationError,
+    error: mutationError,
+  } = useMutation<void, Error, CourseCreateArgs>((data: CourseCreateArgs) => {
     return updateCourse({ ...data, id: course?.id as number }).then(() => {
       setSnackbarVisible(true);
       queryClient.invalidateQueries(['courses']);
@@ -78,8 +85,6 @@ export const CoursesEditForm = () => {
 
   const onSubmit = useCallback(
     (data: CourseCreateArgs) => {
-      console.log(data);
-
       if (!isMutationLoading) {
         mutate(data);
       }
@@ -91,10 +96,21 @@ export const CoursesEditForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <>
         {isLoading && <CircularProgress />}
-
+        {(error || professionsError) && (
+          <Alert color="error">
+            <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+            {error?.message ?? professionsError?.message}
+          </Alert>
+        )}
         {course && (
           <Card>
             <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+              {isMutationError && (
+                <Alert color="error">
+                  <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+                  {mutationError.message}
+                </Alert>
+              )}
               <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
                   <Controller

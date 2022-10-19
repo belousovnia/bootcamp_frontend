@@ -1,6 +1,7 @@
 import { useProvider } from '@features/providers/hooks/useProvider';
 import {
   Alert,
+  AlertTitle,
   Button,
   Card,
   CardActions,
@@ -18,34 +19,19 @@ import { useParams } from 'react-router-dom';
 import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
 
-const LogoWrapper = styled('div')`
-  max-width: 220px;
-  height: 120px;
-  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const Logo = styled('img')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
-
 export const ProviderEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
-  const { provider, isLoading } = useProvider(id as string);
+  const { provider, isLoading, error } = useProvider(id as string);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: ProviderFull) => {
+    isError: isMutationError,
+    error: mutationError,
+  } = useMutation<void, Error, ProviderFull>((data: ProviderFull) => {
     return updateProvider({ ...data, id: provider?.id as number })
       .then(() => {
         setSnackbarVisible(true);
@@ -72,10 +58,21 @@ export const ProviderEditForm = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <>
         {isLoading && <CircularProgress />}
-
+        {error && (
+          <Alert color="error">
+            <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+            {error.message}
+          </Alert>
+        )}
         {provider && (
           <Card>
             <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+              {isMutationError && (
+                <Alert color="error">
+                  <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+                  {mutationError.message}
+                </Alert>
+              )}
               <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
                   <Controller

@@ -1,6 +1,8 @@
 import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import { Edit } from '@mui/icons-material';
 import {
+  Alert,
+  AlertTitle,
   Button,
   CircularProgress,
   IconButton,
@@ -36,6 +38,11 @@ export const ProvidersTable = () => {
     <>
       {isLoading ? (
         <CircularProgress />
+      ) : error ? (
+        <Alert color="error">
+          <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+          {error.message}
+        </Alert>
       ) : (
         <>
           <Button variant="contained" component={Link} to="/admin/providers/new">

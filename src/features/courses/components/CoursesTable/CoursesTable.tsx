@@ -1,6 +1,8 @@
 import { useAllCourses } from '@features/courses/hooks/useAllCourses';
 import { Edit } from '@mui/icons-material';
 import {
+  Alert,
+  AlertTitle,
   Button,
   CircularProgress,
   IconButton,
@@ -32,6 +34,11 @@ export const CoursesTable = () => {
     <>
       {isLoading ? (
         <CircularProgress />
+      ) : error ? (
+        <Alert color="error">
+          <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+          {error.message}
+        </Alert>
       ) : (
         <>
           <Button variant="contained" component={Link} to="/admin/courses/new">

@@ -1,5 +1,6 @@
 import {
   Alert,
+  AlertTitle,
   Button,
   Card,
   CardActions,
@@ -27,7 +28,9 @@ export const ProviderNewForm = () => {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: ProviderFull) => {
+    isError: isMutationError,
+    error: mutationError,
+  } = useMutation<void, Error, ProviderFull>((data: ProviderFull) => {
     return createProvider(data).then(() => {
       setSnackbarVisible(true);
       reset({ name: '', description: '', coverUrl: '', url: '' });
@@ -49,6 +52,12 @@ export const ProviderNewForm = () => {
       <>
         <Card>
           <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+            {isMutationError && (
+              <Alert color="error">
+                <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+                {mutationError.message}
+              </Alert>
+            )}
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <Controller

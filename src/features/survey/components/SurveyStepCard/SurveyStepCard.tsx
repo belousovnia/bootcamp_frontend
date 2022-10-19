@@ -1,5 +1,7 @@
 import { useSurvey, useSurveyResultsStore } from '@features/survey/hooks';
 import {
+  Alert,
+  AlertTitle,
   Button,
   Card,
   CardActions,
@@ -17,7 +19,6 @@ import { SurveyStepBody } from './SurveyStepBody';
 // @TODO: handle error state
 export const SurveyStepCard = () => {
   const navigate = useNavigate();
-  const { step } = useParams(); // step from params
   const { data, error, isLoading } = useSurvey();
   const [currentAnswer, setCurrentAnswer] = useState<number | null>(null);
 
@@ -97,6 +98,14 @@ export const SurveyStepCard = () => {
       {isLoading && (
         <CardContent sx={{ justifyContent: 'center' }}>
           <CircularProgress />
+        </CardContent>
+      )}
+      {error && (
+        <CardContent>
+          <Alert color="error">
+            <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+            {error.message}
+          </Alert>
         </CardContent>
       )}
       {data && (

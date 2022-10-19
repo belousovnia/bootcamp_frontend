@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { FilterOptions } from '../components/CoursesFilter';
-import { fetchCourses } from '../courses.service';
+import { CoursesListArgs, CoursesListResponse, fetchCourses } from '../courses.service';
 
 export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
   const {
@@ -12,7 +12,7 @@ export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery(
+  } = useInfiniteQuery<CoursesListResponse, Error>(
     ['courses', page, opts],
     async ({ pageParam = 1 }) => {
       const { data } = await fetchCourses({ page: pageParam, ...opts });

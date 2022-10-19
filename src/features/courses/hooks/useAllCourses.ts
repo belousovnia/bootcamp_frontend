@@ -1,9 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { FilterOptions } from '../components/CoursesFilter';
-import { fetchAllCourses, fetchCourses } from '../courses.service';
+import { CoursesAllResponse, fetchAllCourses } from '../courses.service';
 
 export const useAllCourses = () => {
-  const { data, error, isLoading, isFetching, isRefetching } = useQuery(
+  const { data, error, isLoading, isFetching, isRefetching } = useQuery<
+    CoursesAllResponse,
+    Error
+  >(
     ['courses'],
     async () => {
       const { data } = await fetchAllCourses();

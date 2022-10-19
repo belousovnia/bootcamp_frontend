@@ -7,6 +7,7 @@ import { ProviderFull } from '@features/providers';
 import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
   Alert,
+  AlertTitle,
   Autocomplete,
   Button,
   Card,
@@ -51,7 +52,9 @@ export const CoursesNewForm = () => {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: CourseCreateArgs) => {
+    isError: isMutationError,
+    error: mutationError,
+  } = useMutation<void, Error, CourseCreateArgs>((data: CourseCreateArgs) => {
     return createCourse(data).then(() => {
       setSnackbarVisible(true);
       reset({
@@ -83,6 +86,12 @@ export const CoursesNewForm = () => {
       <>
         <Card>
           <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+            {isMutationError && (
+              <Alert color="error">
+                <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+                {mutationError.message}
+              </Alert>
+            )}
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
                 <Controller

@@ -1,6 +1,7 @@
 import {
   getAllProfessions,
   getProfessions,
+  ProfessionsAllResponse,
 } from '@features/professions/professions.service';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +13,7 @@ export const useProfessions = () => {
 };
 
 export const useAllProfessions = () => {
-  return useQuery(['all-professions'], async () => {
+  return useQuery<ProfessionsAllResponse, Error>(['all-professions'], async () => {
     const { data } = await getAllProfessions();
     return data;
   });

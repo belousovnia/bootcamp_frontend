@@ -1,5 +1,5 @@
 import { useInfiniteCourses } from '@features/courses/hooks/useInfiniteCourses';
-import { Alert, Box, Button, CircularProgress, Link } from '@mui/material';
+import { Alert, AlertTitle, Box, Button, CircularProgress, Link } from '@mui/material';
 import { MouseEventHandler, useState } from 'react';
 import { CoursesFilter, FilterOptions } from '../CoursesFilter';
 import { CoursesList } from '../CoursesList';
@@ -47,8 +47,9 @@ export const CoursesView = ({
       )}
       {error && (
         <Box sx={{ mt: 3 }}>
-          <Alert severity="error">
-            Ой! Кажется произошла ошибка. Попробуйте перезагрузить страницу.
+          <Alert color="error">
+            <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+            {error.message}
           </Alert>
         </Box>
       )}

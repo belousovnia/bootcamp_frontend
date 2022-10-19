@@ -11,7 +11,7 @@ export const getProfessions = async (): Promise<
   return await requestService.get('/v1/professions');
 };
 
-type ProfessionsAllResponse = ProfessionsEntity[];
+export type ProfessionsAllResponse = ProfessionsEntity[];
 
 export const getAllProfessions = async (): Promise<
   AxiosResponse<ProfessionsAllResponse>
