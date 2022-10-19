@@ -1,5 +1,5 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import { Menu, AccountCircle } from '@mui/icons-material';
+import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
   Button,
   Container,
@@ -11,6 +11,8 @@ import {
   Toolbar,
   AppBar,
   Box,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
@@ -59,6 +61,8 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const userMenuOpen = Boolean(userMenuAnchorEl);
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -76,6 +80,10 @@ export const Header = () => {
   }, [currentStep, surveyState]);
 
   const isLogged = useAuthStore((store) => store.isAuth);
+
+  const handleUserMenuClose = () => {
+    setUserMenuAnchorEl(null);
+  };
   return (
     <AppBar
       position="static"
@@ -93,7 +101,7 @@ export const Header = () => {
               sx={{ display: { xs: 'flex', md: 'none' }, mr: { sm: 2 } }}
               onClick={() => setMobileDrawerOpen(true)}
             >
-              <Menu sx={{ width: 30, height: 30 }} />
+              <MenuIcon sx={{ width: 30, height: 30 }} />
             </IconButton>
             <StyledLogoLink to="/">
               <Logo />
@@ -125,9 +133,39 @@ export const Header = () => {
           </StyledNav>
           <Stack direction="row" spacing={'0.5rem'}>
             {isLogged ? (
-              <IconButton size="large" edge="end">
-                <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
-              </IconButton>
+              <>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-haspopup="true"
+                  aria-expanded={userMenuOpen ? 'true' : undefined}
+                  onClick={(event) => setUserMenuAnchorEl(event.currentTarget)}
+                >
+                  <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
+                </IconButton>
+                <Menu
+                  anchorEl={userMenuAnchorEl}
+                  open={userMenuOpen}
+                  onClose={() => setUserMenuAnchorEl(null)}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                >
+                  <MenuItem
+                    onClick={handleUserMenuClose}
+                    component={Link}
+                    to="/user/account"
+                  >
+                    Мой аккаунт
+                  </MenuItem>
+                  <MenuItem onClick={handleUserMenuClose}>Выход</MenuItem>
+                </Menu>
+              </>
             ) : (
               <Box display={{ xs: 'none', sm: 'flex' }}>
                 <Button

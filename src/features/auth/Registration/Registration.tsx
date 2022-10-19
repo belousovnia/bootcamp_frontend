@@ -24,7 +24,7 @@ export const Registration = () => {
   const [warningMessage, setWarningMessage] = useState<string>('');
 
   const titleText = useMemo(() => {
-    if (location.state?.next === '/survey') {
+    if (location.state?.from === '/survey') {
       return 'Для прохождения теста, пожалуйста, зарегистрируйтесь';
     }
     return 'Регистрация';
