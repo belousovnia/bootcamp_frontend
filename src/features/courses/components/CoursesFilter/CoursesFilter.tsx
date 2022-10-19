@@ -1,4 +1,5 @@
 import { CoursesSortBy } from '@features/courses/courses.service';
+import { useAllProfessions } from '@features/professions/professions.hooks';
 import { optionUnstyledClasses } from '@mui/base';
 import {
   Card,
@@ -18,7 +19,7 @@ import debounce from 'lodash.debounce';
 import { useEffect, useRef, useState } from 'react';
 
 export type FilterOptions = {
-  professionId?: string;
+  professionId?: number;
   search?: string;
   isForAdvancedStudents?: boolean;
   sortBy?: CoursesSortBy;
@@ -31,12 +32,13 @@ interface CourseFilterProps {
 
 export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { data } = useAllProfessions();
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...options, search: event.target.value });
   };
 
   const handleProfessionChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, professionId: event.target.value });
+    onChange({ ...options, professionId: parseInt(event.target.value) });
   };
 
   const handleIsForAdvancedChange = (event: SelectChangeEvent<string>) => {
@@ -76,15 +78,17 @@ export const CoursesFilter = ({ options, onChange }: CourseFilterProps) => {
                 id="course-profession"
                 label="Профессия"
                 defaultValue=""
-                value={options.professionId}
+                value={options.professionId?.toString() || ''}
                 onChange={handleProfessionChange}
               >
                 <MenuItem value="">
                   <em>Не выбрано</em>
                 </MenuItem>
-                <MenuItem value={10}>Программирование</MenuItem>
-                <MenuItem value={20}>Аналитика</MenuItem>
-                <MenuItem value={30}>Веб-дизайн</MenuItem>
+                {data?.map((profession) => (
+                  <MenuItem key={profession.id} value={profession.id}>
+                    {profession.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
