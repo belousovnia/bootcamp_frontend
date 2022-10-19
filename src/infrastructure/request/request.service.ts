@@ -38,9 +38,12 @@ requestService.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const response = await axios.post<AuthResponse>(`${serverURL}/api/refresh`, {
-          refreshToken: getRefreshToken(),
-        });
+        const response = await axios.post<AuthResponse>(
+          `${serverURL}/api/v1/auth/refresh`,
+          {
+            refreshToken: getRefreshToken(),
+          },
+        );
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
       } catch (e) {
