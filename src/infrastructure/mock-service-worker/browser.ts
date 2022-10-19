@@ -8,8 +8,8 @@ import { providersMockHandlers } from '@features/providers/mocks/providers.mockH
 // This configures a Service Worker with the given request handlers.
 export const worker = setupWorker(
   ...usersMockHandlers,
-  ...providersMockHandlers,
-  ...coursesMockHandlers,
+  // ...providersMockHandlers,
+  // ...coursesMockHandlers,
   ...surveyMockHandlers,
   rest.get<null, { message: string }>('/ping', (req, res, ctx) => {
     return res(

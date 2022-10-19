@@ -17,7 +17,7 @@ export type CourseShort = {
 };
 
 export type CourseFull = {
-  id: string;
+  id: number;
   title: string;
   url: string;
   coverUrl: string;
@@ -25,8 +25,11 @@ export type CourseFull = {
   startsAt: string;
   endsAt: string;
   isAdvanced: boolean;
-  provider: string;
+  providerId: number;
+  providerName: string;
   providerUrl: string;
   providerCoverUrl: string;
-  profession: string;
+  professionId: number;
+  professionName: string;
+  tags: string[];
 };

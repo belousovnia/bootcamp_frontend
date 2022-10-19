@@ -13,13 +13,15 @@ import {
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyledBox } from '@features/auth/components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Registration = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
-  const [warningMessage, setWarningMessage] = useState<string>('');
+
+  const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.state);
+
+  const [warningMessage, setWarningMessage] = useState<string>('');
 
   const titleText = useMemo(() => {
     if (location.state?.next === '/survey') {
@@ -52,9 +54,11 @@ export const Registration = () => {
           localStorage.setItem('refreshToken', response.data?.refreshToken);
           setWarningMessage('');
           setAuth(true);
+          if (location.state?.from) navigate(location.state.from);
+          else navigate('/');
         })
         .catch((error) => {
-          if (error.response?.status === 400)
+          if (error.response?.data.code === 'ITD_UEC_2')
             setWarningMessage('Пользователь с таким email уже существует!');
         });
     } catch (e) {
@@ -62,7 +66,6 @@ export const Registration = () => {
       else console.log(e);
     }
   };
-
   return (
     <Container
       maxWidth={'sm'}

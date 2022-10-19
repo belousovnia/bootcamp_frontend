@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { requestService } from '@infrastructure/request';
-import { AuthResponse, RegistrationUser } from '@features/auth/auth.entity';
+import { AuthResponse, CurrentUser, RegistrationUser } from '@features/auth/auth.entity';
 
 export const login = async (
   email: string,
@@ -15,4 +15,8 @@ export const registration = async (
   return await requestService.post('/v1/auth/signup', {
     ...user,
   });
+};
+
+export const getUserInfo = async (): Promise<AxiosResponse<CurrentUser>> => {
+  return await requestService.get('/v1/users/me');
 };

@@ -42,7 +42,7 @@ export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) =>
               <CourseDetailsHeader
                 isForAdvancedStudents={course.isAdvanced}
                 title={course.title}
-                profession={course.profession}
+                profession={course.professionName}
                 dateStart={course.startsAt}
                 dateEnd={course.endsAt}
               />

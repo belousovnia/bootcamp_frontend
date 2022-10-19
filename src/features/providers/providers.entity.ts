@@ -3,7 +3,7 @@ export type ProviderShort = {
   title: string;
 };
 export type ProviderFull = {
-  id: string;
+  id: number;
   name: string;
   url: string;
   coverUrl?: string;

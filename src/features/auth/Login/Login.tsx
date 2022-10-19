@@ -12,17 +12,24 @@ import {
   Typography,
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { StyledBox } from '../components';
 
 export const Login = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [warningMessage, setWarningMessage] = useState<string>('');
 
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (data: FieldValues) => {
     auth(data.email, data.password);
+  };
+  const goToRegistration = () => {
+    navigate('/registration', { state: { from: location.state?.from } });
   };
 
   const auth = async (email: string, password: string) => {
@@ -34,9 +41,14 @@ export const Login = () => {
             localStorage.setItem('refreshToken', response.data.refreshToken);
           setWarningMessage('');
           setAuth(true);
+          if (location.state?.from) navigate(location.state.from);
+          else navigate('/');
         })
-        .catch(() => {
-          setWarningMessage('Логин и пароль не совпадают!');
+        .catch((error) => {
+          if (error.response.data.code === 'ITD_AEC_1')
+            setWarningMessage('Логин и пароль не совпадают!');
+          else if (error.response.data.code === 'ITD_UEC_1')
+            setWarningMessage('Такого пользователя не существует!');
         });
     } catch (e) {
       if (axios.isAxiosError(e)) console.log(e.response?.data?.message);
@@ -104,9 +116,7 @@ export const Login = () => {
         >
           Войти
         </Button>
-        <Button to={'/registration'} component={Link}>
-          {'Зарегистрироваться'}
-        </Button>
+        <Button onClick={() => goToRegistration()}>{'Зарегистрироваться'}</Button>
       </Paper>
     </Container>
   );

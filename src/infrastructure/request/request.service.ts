@@ -2,9 +2,6 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { AuthResponse } from '@features/auth/auth.entity';
 import { logOut } from '@features/auth/components';
 
-const accessToken = localStorage.getItem('accessToken') || '';
-const refreshToken = localStorage.getItem('refreshToken') || '';
-
 const serverURL = import.meta.env.VITE_API_URL;
 
 export const requestService = axios.create({
@@ -16,9 +13,12 @@ export const requestService = axios.create({
   },
 });
 
+const getAccessToken = () => localStorage.getItem('accessToken') || '';
+const getRefreshToken = () => localStorage.getItem('refreshToken') || '';
+
 requestService.interceptors.request.use((config: AxiosRequestConfig) => {
-  if (accessToken) {
-    (config.headers ?? {}).Authorization = `Bearer ${accessToken}`;
+  if (getAccessToken()) {
+    (config.headers ?? {}).Authorization = `Bearer ${getAccessToken()}`;
   }
   return config;
 });
@@ -34,21 +34,20 @@ requestService.interceptors.response.use(
       error.response?.status == 401 &&
       error.config &&
       !originalRequest.config._retry &&
-      refreshToken
+      getRefreshToken()
     ) {
       originalRequest._retry = true;
       try {
         const response = await axios.post<AuthResponse>(`${serverURL}/api/refresh`, {
-          refreshToken: refreshToken,
+          refreshToken: getRefreshToken(),
         });
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
       } catch (e) {
         await Promise.reject(e);
       }
-    } else {
+    } else if (error.response?.status == 401) {
       logOut();
-      return Promise.reject(error);
-    }
+    } else return Promise.reject(error);
   },
 );

@@ -11,11 +11,11 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { updateCourseProvider } from '@features/providers/providers.service';
+import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
 
 const LogoWrapper = styled('div')`
@@ -37,6 +37,7 @@ const Logo = styled('img')`
 
 export const ProviderEditForm = () => {
   const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const { provider, isLoading } = useProvider(id as string);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -45,9 +46,15 @@ export const ProviderEditForm = () => {
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
   } = useMutation((data: ProviderFull) => {
-    return updateCourseProvider(data).then(() => {
-      setSnackbarVisible(true);
-    });
+    return updateProvider({ ...data, id: provider?.id as number })
+      .then(() => {
+        setSnackbarVisible(true);
+        queryClient.invalidateQueries(['providers']);
+        queryClient.refetchQueries(['provider', id]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   });
 
   const { control, handleSubmit } = useForm<ProviderFull>();
@@ -123,33 +130,7 @@ export const ProviderEditForm = () => {
                     )}
                   />
                 </Grid>
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="description"
-                    defaultValue={provider.description}
-                    control={control}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                    }}
-                    render={({ field: { value, ...otherFields }, fieldState }) => (
-                      <TextField
-                        label="Краткое описание"
-                        variant="outlined"
-                        multiline
-                        rows={4}
-                        fullWidth
-                        error={!!fieldState.error}
-                        defaultValue={provider.description}
-                        helperText={fieldState.error?.message}
-                        {...otherFields}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={12}>
                   <Controller
                     name="description"
                     defaultValue={provider.description}

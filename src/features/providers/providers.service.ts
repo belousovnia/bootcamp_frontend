@@ -9,17 +9,9 @@ export type ProvidersListArgs = {
     search?: string;
   };
 };
-export type ProvidersListResponse = {
-  providers: ProviderShort[];
-  pagination: {
-    page: number;
-    totalPages: number;
-  };
-};
-export const fetchProviders = (
-  args: ProvidersListArgs,
-): Promise<AxiosResponse<ProvidersListResponse>> => {
-  return requestService.get(`providers`, { params: args.options });
+export type ProvidersAllResponse = ProviderFull[];
+export const fetchAllProviders = (): Promise<AxiosResponse<ProvidersAllResponse>> => {
+  return requestService.get(`v1/providers/all`);
 };
 export type ProviderCreateArgs = Omit<ProviderFull, 'id'>;
 export type ProviderCreateResponse = {
@@ -29,28 +21,28 @@ export type ProviderCreateResponse = {
 export const createProvider = (
   args: ProviderCreateArgs,
 ): Promise<AxiosResponse<ProviderResponse>> => {
-  return requestService.post(`providers`, args);
+  return requestService.post(`v1/providers`, args);
 };
 export type ProviderListArgs = {
   id: string;
 };
-export type ProviderResponse = {
-  provider: ProviderFull;
-};
+
+export type ProviderResponse = ProviderFull;
+
 export const fetchProvider = (
   args: ProviderListArgs,
 ): Promise<AxiosResponse<ProviderResponse>> => {
-  return requestService.get(`providers/${args.id}`);
+  return requestService.get(`v1/providers/${args.id}`);
 };
-export type ProviderUpdateArgs = Omit<ProviderFull, 'id'>;
+export type ProviderUpdateArgs = ProviderFull;
 export type ProviderUpdateResponse = {
   type: 'success' | 'error';
   message: string;
 };
-export const updateCourseProvider = (
-  args: CourseDetailsArgs,
+export const updateProvider = (
+  args: ProviderUpdateArgs,
 ): Promise<AxiosResponse<ProviderUpdateResponse>> => {
-  return requestService.post(`providers/${args.id}`, args);
+  return requestService.put(`v1/providers/${args.id}`, args);
 };
 export type ProviderDeleteResponse = {
   type: 'success' | 'error';

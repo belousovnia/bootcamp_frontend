@@ -1,15 +1,16 @@
 import { CourseFull } from '@features/courses/cources.entity';
-import { updateCourse } from '@features/courses/courses.service';
+import { CourseCreateArgs, updateCourse } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { useProvider } from '@features/providers/hooks/useProvider';
-import { useProviders } from '@features/providers/hooks/useProviders';
+import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
   Alert,
+  Autocomplete,
   Button,
   Card,
   CardActions,
   CardContent,
   Checkbox,
+  Chip,
   CircularProgress,
   FormControl,
   FormControlLabel,
@@ -17,19 +18,21 @@ import {
   Grid,
   InputLabel,
   MenuItem,
-  Rating,
   Select,
   Snackbar,
   styled,
   TextField,
-  Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { updateCourseProvider } from '@features/providers/providers.service';
+import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
+import {
+  useAllProfessions,
+  useProfessions,
+} from '@features/professions/professions.hooks';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;
@@ -51,23 +54,32 @@ const Logo = styled('img')`
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const { course, isLoading } = useCourse(id || '');
-  const { courseProviders } = useProviders({ page: '1' });
+  const { courseProviders } = useAllProviders();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
 
   const {
     mutate,
     isLoading: isMutationLoading,
     isSuccess: isMutationSuccess,
-  } = useMutation((data: CourseFull) => {
-    return updateCourse({ id: course?.id as string, changes: data }).then(() => {
+  } = useMutation((data: CourseCreateArgs) => {
+    return updateCourse({ ...data, id: course?.id as number }).then(() => {
       setSnackbarVisible(true);
+      queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries(['all-courses']);
+      queryClient.refetchQueries(['course', id]);
     });
   });
 
-  const { control, handleSubmit } = useForm<CourseFull>();
+  const { control, handleSubmit, setValue } = useForm<CourseCreateArgs>();
 
   const onSubmit = useCallback(
-    (data: CourseFull) => {
+    (data: CourseCreateArgs) => {
+      console.log(data);
+
       if (!isMutationLoading) {
         mutate(data);
       }
@@ -77,7 +89,7 @@ export const CoursesEditForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* <>
+      <>
         {isLoading && <CircularProgress />}
 
         {course && (
@@ -86,7 +98,7 @@ export const CoursesEditForm = () => {
               <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="name"
+                    name="title"
                     control={control}
                     defaultValue={course.title}
                     rules={{
@@ -99,9 +111,9 @@ export const CoursesEditForm = () => {
                       <TextField
                         label="Название курса"
                         variant="outlined"
-                        defaultValue={course.title}
                         fullWidth
                         error={!!fieldState.error}
+                        value={value ?? course.title}
                         helperText={fieldState.error?.message}
                         {...otherFields}
                       />
@@ -129,7 +141,7 @@ export const CoursesEditForm = () => {
                         label="Ссылка на курс"
                         variant="outlined"
                         fullWidth
-                        defaultValue={course.url}
+                        value={value ?? course.url}
                         error={!!fieldState.error}
                         helperText={fieldState.error?.message}
                         {...otherFields}
@@ -158,9 +170,9 @@ export const CoursesEditForm = () => {
                         label="Ссылка на обложку курса"
                         variant="outlined"
                         fullWidth
-                        defaultValue={course.coverUrl}
                         error={!!fieldState.error}
                         helperText={fieldState.error?.message}
+                        value={value ?? course.coverUrl}
                         {...otherFields}
                       />
                     )}
@@ -168,103 +180,42 @@ export const CoursesEditForm = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="provider.id"
+                    name="providerId"
                     control={control}
-                    defaultValue={''}
+                    defaultValue={course.providerId}
                     rules={{
                       required: {
                         value: true,
                         message: 'Поле обязательно для заполнения',
                       },
                     }}
-                    render={({ field: { value, ...otherFields }, fieldState }) => (
-                      <FormControl fullWidth>
-                        <InputLabel id="course-provider-select-label">
-                          Создатель курса
-                        </InputLabel>
-                        <Select
-                          labelId="course-provider-select-label"
-                          id="course-provider-select"
-                          label="Создатель курса"
-                          error={!!fieldState.error}
-                          value={value}
-                          defaultValue={course.provider.id}
-                          fullWidth
-                          {...otherFields}
-                        >
-                          {courseProviders?.map((provider) => (
-                            <MenuItem key={provider.id} value={provider.id}>
-                              {provider.title}
-                            </MenuItem>
-                          ))}
-                        </Select>
-                        {fieldState.error && (
-                          <FormHelperText error>
-                            {fieldState.error.message}
-                          </FormHelperText>
+                    render={({ field: { value }, fieldState }) => (
+                      <Autocomplete
+                        options={courseProviders ?? []}
+                        getOptionLabel={(option) => option?.name ?? ''}
+                        noOptionsText={'Ничего не найдено'}
+                        value={courseProviders?.find((p) => p.id === value) ?? null}
+                        onChange={(event, newValue) => {
+                          setValue('providerId', newValue?.id as number);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Провайдер"
+                            variant="outlined"
+                            error={!!fieldState.error}
+                            helperText={fieldState.error?.message}
+                          />
                         )}
-                      </FormControl>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="startMskDateTime"
-                    control={control}
-                    defaultValue={course.startsAt}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        id="datetime-start-local"
-                        label="Дата начала"
-                        type="datetime-local"
-                        defaultValue={course.startsAt}
-                        fullWidth
-                        {...field}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
                       />
                     )}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="endMskDateTime"
+                    name="professionId"
                     control={control}
-                    defaultValue={course.endsAt}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                    }}
-                    render={({ field }) => (
-                      <TextField
-                        id="datetime-end-local"
-                        label="Дата окончания"
-                        type="datetime-local"
-                        defaultValue={course.endsAt}
-                        fullWidth
-                        {...field}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Controller
-                    name="profession.id"
-                    control={control}
-                    defaultValue={''}
+                    defaultValue={course.professionId}
                     rules={{
                       required: {
                         value: true,
@@ -279,17 +230,15 @@ export const CoursesEditForm = () => {
                           id="profession-select"
                           label="Профессия"
                           error={!!fieldState.error}
-                          value={value}
-                          defaultValue={course.profession.id}
+                          value={value ?? course.professionId}
                           fullWidth
                           {...otherFields}
                         >
-                          <MenuItem value={0}>Не выбрано</MenuItem>
-                          <MenuItem value={1}>Программирование</MenuItem>
-                          <MenuItem value={2}>Веб-дизайн</MenuItem>
-                          <MenuItem value={3}>Аналитика</MenuItem>
-                          <MenuItem value={4}>Тестирование</MenuItem>
-                          <MenuItem value={5}>Администрирование</MenuItem>
+                          {professions?.map((profession) => (
+                            <MenuItem key={profession.id} value={profession.id}>
+                              {profession.name}
+                            </MenuItem>
+                          ))}
                         </Select>
                         {fieldState.error && (
                           <FormHelperText error>
@@ -300,6 +249,98 @@ export const CoursesEditForm = () => {
                     )}
                   />
                 </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name="tags"
+                    control={control}
+                    defaultValue={course.tags}
+                    render={({ field: { value, ...otherFields }, fieldState }) => (
+                      <Autocomplete
+                        multiple
+                        id="tags-filled"
+                        options={[]}
+                        defaultValue={course.tags ?? ([] as string[])}
+                        freeSolo
+                        {...otherFields}
+                        onChange={(e, v) => setValue('tags', v as string[])}
+                        renderTags={(val, getTagProps) =>
+                          val.map((option, index: number) => (
+                            // eslint-disable-next-line react/jsx-key
+                            <Chip
+                              variant="outlined"
+                              label={option}
+                              {...getTagProps({ index })}
+                            />
+                          ))
+                        }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Метки"
+                            placeholder="Введите метку и нажмите Enter"
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name="startsAt"
+                    control={control}
+                    defaultValue={course.startsAt}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'Поле обязательно для заполнения',
+                      },
+                    }}
+                    render={({ field: { value, ...restProps }, fieldState }) => (
+                      <TextField
+                        id="datetime-start-local"
+                        label="Дата начала"
+                        type="datetime-local"
+                        fullWidth
+                        {...restProps}
+                        value={value ?? course.endsAt}
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Controller
+                    name="endsAt"
+                    control={control}
+                    defaultValue={course.endsAt}
+                    rules={{
+                      required: {
+                        value: true,
+                        message: 'Поле обязательно для заполнения',
+                      },
+                    }}
+                    render={({ field: { value, ...restProps }, fieldState }) => (
+                      <TextField
+                        id="datetime-end-local"
+                        label="Дата окончания"
+                        type="datetime-local"
+                        value={value ?? course.endsAt}
+                        fullWidth
+                        {...restProps}
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                    )}
+                  />
+                </Grid>
+
                 <Grid item xs={12}>
                   <Controller
                     name="description"
@@ -315,12 +356,11 @@ export const CoursesEditForm = () => {
                       <TextField
                         label="Описание"
                         variant="outlined"
-                        defaultValue={course.description}
                         multiline
                         rows={6}
                         fullWidth
                         error={!!fieldState.error}
-                        value={value}
+                        value={value ?? course.description}
                         helperText={fieldState.error?.message}
                         {...otherFields}
                       />
@@ -329,70 +369,18 @@ export const CoursesEditForm = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Controller
-                    name="isForAdvancedStudents"
+                    name="isAdvanced"
                     control={control}
                     defaultValue={course.isAdvanced}
                     render={({ field }) => (
                       <>
                         <FormControlLabel
                           label={'Для продвинутых'}
-                          control={<Checkbox defaultChecked={field.value ?? false} />}
+                          control={
+                            <Checkbox defaultChecked={field.value ?? course.isAdvanced} />
+                          }
                           {...field}
                         />
-                      </>
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="isIndefinite"
-                    control={control}
-                    defaultValue={course.isIndefinite}
-                    render={({ field }) => (
-                      <>
-                        <FormControlLabel
-                          label={'Является бессрочным'}
-                          control={<Checkbox defaultChecked={field.value ?? false} />}
-                          {...field}
-                        />
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="isArchived"
-                    control={control}
-                    defaultValue={course.isArchived}
-                    render={({ field }) => (
-                      <>
-                        <FormControlLabel
-                          label={'Находится в архиве'}
-                          control={<Checkbox defaultChecked={field.value ?? false} />}
-                          {...field}
-                        />
-                      </>
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                  <Controller
-                    name="internalRating"
-                    control={control}
-                    defaultValue={course.internalRating}
-                    rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                    }}
-                    render={({ field }) => (
-                      <>
-                        <Typography component="legend" sx={{ mb: '3px' }}>
-                          Внутренний рейтинг
-                        </Typography>
-                        <Rating {...field} />
                       </>
                     )}
                   />
@@ -430,7 +418,7 @@ export const CoursesEditForm = () => {
             Данные успешно сохранены
           </Alert>
         </Snackbar>
-      </> */}
+      </>
     </form>
   );
 };
