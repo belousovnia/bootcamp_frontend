@@ -41,6 +41,10 @@ export const Registration = () => {
     commitRegistration(data);
   };
 
+  const goToLogin = () => {
+    navigate('/login', { state: { from: location.state?.from } });
+  };
+
   const commitRegistration = async (user: FieldValues) => {
     try {
       await registration({
@@ -158,6 +162,9 @@ export const Registration = () => {
         )}
         <Button variant={'contained'} size={'large'} type={'submit'}>
           Зарегистрироваться
+        </Button>
+        <Button size={'small'} onClick={() => goToLogin()}>
+          {'Уже зарегистрированы?'}
         </Button>
       </Paper>
     </Container>
