@@ -19,6 +19,7 @@ import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '@features/auth';
+import { logOut } from '@features/auth/components';
 
 type NavLink = {
   title: string;
@@ -62,7 +63,7 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const userMenuOpen = Boolean(userMenuAnchorEl);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -83,7 +84,14 @@ export const Header = () => {
 
   const handleUserMenuClose = () => {
     setUserMenuAnchorEl(null);
+    setUserMenuOpen(false);
   };
+
+  const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setUserMenuAnchorEl(event.currentTarget);
+    setUserMenuOpen(true);
+  };
+
   return (
     <AppBar
       position="static"
@@ -139,14 +147,14 @@ export const Header = () => {
                   edge="end"
                   aria-haspopup="true"
                   aria-expanded={userMenuOpen ? 'true' : undefined}
-                  onClick={(event) => setUserMenuAnchorEl(event.currentTarget)}
+                  onClick={handleUserMenuOpen}
                 >
                   <AccountCircle color="primary" fontSize="inherit"></AccountCircle>
                 </IconButton>
                 <Menu
                   anchorEl={userMenuAnchorEl}
                   open={userMenuOpen}
-                  onClose={() => setUserMenuAnchorEl(null)}
+                  onClose={handleUserMenuClose}
                   anchorOrigin={{
                     vertical: 'top',
                     horizontal: 'right',
@@ -163,7 +171,14 @@ export const Header = () => {
                   >
                     Мой аккаунт
                   </MenuItem>
-                  <MenuItem onClick={handleUserMenuClose}>Выход</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      handleUserMenuClose();
+                      logOut();
+                    }}
+                  >
+                    Выход
+                  </MenuItem>
                 </Menu>
               </>
             ) : (
