@@ -20,7 +20,7 @@ export const Professions = () => {
     >
       <Typography variant={'h3'}>Профессии в IT</Typography>
       <Grid container spacing={2}>
-        {professions.data?.map((profession) => {
+        {professions.data?.content.map((profession) => {
           return (
             <Grid key={profession.id} item>
               <ProfessionCard profession={profession} />

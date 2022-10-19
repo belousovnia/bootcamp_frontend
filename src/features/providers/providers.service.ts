@@ -9,11 +9,9 @@ export type ProvidersListArgs = {
     search?: string;
   };
 };
-export type ProvidersListResponse = ProviderFull[];
-export const fetchProviders = (
-  args: ProvidersListArgs,
-): Promise<AxiosResponse<ProvidersListResponse>> => {
-  return requestService.get(`v1/providers`, { params: args.options });
+export type ProvidersAllResponse = ProviderFull[];
+export const fetchAllProviders = (): Promise<AxiosResponse<ProvidersAllResponse>> => {
+  return requestService.get(`v1/providers/all`);
 };
 export type ProviderCreateArgs = Omit<ProviderFull, 'id'>;
 export type ProviderCreateResponse = {

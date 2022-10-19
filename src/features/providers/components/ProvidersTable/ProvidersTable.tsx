@@ -1,14 +1,10 @@
-import { useProviders } from '@features/providers/hooks/useProviders';
-import { Delete, Edit } from '@mui/icons-material';
+import { useAllProviders } from '@features/providers/hooks/useAllProviders';
+import { Edit } from '@mui/icons-material';
 import {
-  Alert,
-  Box,
   Button,
   CircularProgress,
   IconButton,
-  Pagination,
   Paper,
-  Snackbar,
   styled,
   Table,
   TableBody,
@@ -17,14 +13,9 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  deleteCourseProvider,
-  ProvidersListResponse,
-} from '@features/providers/providers.service';
-import { ProviderFull, ProviderShort } from '@features/providers';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -39,10 +30,7 @@ export const ProvidersTable = () => {
   const [page, setPage] = useState(1);
   const client = useQueryClient();
 
-  const { courseProviders, pagination, isLoading, error } = useProviders({
-    page: page.toString(),
-  });
-  console.log(courseProviders);
+  const { courseProviders, isLoading, error } = useAllProviders();
 
   return (
     <>

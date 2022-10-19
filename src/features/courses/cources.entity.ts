@@ -31,4 +31,5 @@ export type CourseFull = {
   providerCoverUrl: string;
   professionId: number;
   professionName: string;
+  tags: string[];
 };

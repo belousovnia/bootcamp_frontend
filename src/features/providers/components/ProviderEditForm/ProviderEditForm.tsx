@@ -50,7 +50,7 @@ export const ProviderEditForm = () => {
       .then(() => {
         setSnackbarVisible(true);
         queryClient.invalidateQueries(['providers']);
-        queryClient.invalidateQueries(['provider', id]);
+        queryClient.refetchQueries(['provider', id]);
       })
       .catch((e) => {
         console.log(e);

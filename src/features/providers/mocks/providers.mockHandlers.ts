@@ -1,15 +1,4 @@
-import { rest } from 'msw';
-import {
-  ProviderCreateArgs,
-  ProviderCreateResponse,
-  ProviderResponse,
-  ProvidersListResponse,
-  ProviderUpdateArgs,
-} from '@features/providers/providers.service';
-import {
-  generateShortProviders,
-  providerFullFixture as fullCourseProviderFixture,
-} from '@features/providers';
+import { generateShortProviders } from '@features/providers';
 
 const ITEMS_PER_PAGE = 12;
 

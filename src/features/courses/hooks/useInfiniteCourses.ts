@@ -19,7 +19,8 @@ export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
       return data;
     },
     {
-      getNextPageParam: (data) => false,
+      getNextPageParam: (data) =>
+        data.pageNumber >= data.totalPages ? undefined : data.pageNumber + 1,
     },
   );
 

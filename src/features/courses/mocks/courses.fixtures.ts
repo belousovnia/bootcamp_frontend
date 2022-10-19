@@ -46,6 +46,7 @@ export const fullCourseFixture: CourseFull = {
   endsAt: '2023-02-05T20:00',
   professionName: 'Программирование',
   professionId: 1,
+  tags: ['Python', 'JavaScript', 'React'],
 };
 
 export const generateShortCourses = (count: number): CourseShort[] => {

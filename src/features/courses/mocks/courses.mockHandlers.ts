@@ -1,29 +1,4 @@
-import { rest } from 'msw';
-import {
-  CourseCreateArgs,
-  CourseCreateResponse,
-  CourseDetailsResponse,
-  CoursesListArgs,
-  CoursesListResponse,
-  CourseUpdateArgs,
-  CourseUpdateResponse,
-} from '../courses.service';
-import {
-  fullCourseFixture,
-  generateShortCourses,
-  shortCourseFixtures,
-} from './courses.fixtures';
-import {
-  ProviderCreateArgs,
-  ProviderCreateResponse,
-  ProviderResponse,
-  ProvidersListResponse,
-  ProviderUpdateArgs,
-} from '@features/providers/providers.service';
-import {
-  generateShortProviders,
-  providerFullFixture as fullCourseProviderFixture,
-} from '@features/providers';
+import { generateShortCourses } from './courses.fixtures';
 
 const ITEMS_PER_PAGE = 12;
 

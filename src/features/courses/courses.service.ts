@@ -1,4 +1,5 @@
 import { requestService } from '@infrastructure/request';
+import { PaginatedResult } from '@infrastructure/types';
 import { AxiosResponse } from 'axios';
 import { CourseFull, CourseShort } from './cources.entity';
 
@@ -11,12 +12,18 @@ export type CoursesListArgs = {
   directionId?: string;
 };
 
-export type CoursesListResponse = CourseFull[];
+export type CoursesListResponse = PaginatedResult<CourseFull>;
 
 export const fetchCourses = (
   args: CoursesListArgs,
 ): Promise<AxiosResponse<CoursesListResponse>> => {
   return requestService.get(`v1/courses`, { params: args });
+};
+
+export type CoursesAllResponse = CourseFull[];
+
+export const fetchAllCourses = (): Promise<AxiosResponse<CoursesAllResponse>> => {
+  return requestService.get(`v1/courses/all`);
 };
 
 export type CourseDetailsResponse = CourseFull;
@@ -31,21 +38,6 @@ export const fetchCourse = (
   return requestService.get(`v1/courses/${args.id}`);
 };
 
-export type CourseDeleteResponse = {
-  type: 'success' | 'error';
-  message: string;
-};
-
-export type CourseDeleteArgs = {
-  id: string;
-};
-
-export const deleteCourse = (
-  args: CourseDeleteArgs,
-): Promise<AxiosResponse<CourseDeleteResponse>> => {
-  return requestService.delete(`/api/courses/${args.id}`);
-};
-
 export type CourseUpdateArgs = CourseCreateArgs & { id: number };
 export type CourseUpdateResponse = {
   type: 'success' | 'error';
@@ -53,7 +45,7 @@ export type CourseUpdateResponse = {
 };
 
 export const updateCourse = (args: CourseUpdateArgs): Promise<CourseUpdateResponse> => {
-  return requestService.post(`courses/${args.id}`, args);
+  return requestService.put(`v1/courses/${args.id}`, args);
 };
 
 export type CourseCreateArgs = {
@@ -66,7 +58,7 @@ export type CourseCreateArgs = {
   isAdvanced: boolean;
   courseId: string;
   providerId: number;
-  professionId: string;
+  professionId: number;
   tags: string[];
 };
 

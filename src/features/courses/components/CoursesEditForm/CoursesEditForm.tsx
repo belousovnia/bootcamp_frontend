@@ -1,7 +1,7 @@
 import { CourseFull } from '@features/courses/cources.entity';
 import { CourseCreateArgs, updateCourse } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
-import { useProviders } from '@features/providers/hooks/useProviders';
+import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
   Alert,
   Autocomplete,
@@ -29,7 +29,10 @@ import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
-import { useProfessions } from '@features/professions/professions.hooks';
+import {
+  useAllProfessions,
+  useProfessions,
+} from '@features/professions/professions.hooks';
 
 const LogoWrapper = styled('div')`
   max-width: 220px;
@@ -51,18 +54,12 @@ const Logo = styled('img')`
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const { course, isLoading } = useCourse(id || '');
-  const { courseProviders } = useProviders({ page: '1' });
+  const { courseProviders } = useAllProviders();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
-  const [providerSearch, setProviderSearch] = useState('');
   const queryClient = useQueryClient();
-  const [selectedProvider, setSelectedProvider] = useState<ProviderFull | undefined>(
-    undefined,
-  );
 
-  console.log(course);
-
-  const { data: professions, isLoading: isLoadingProfessions } = useProfessions();
+  const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
 
   const {
     mutate,
@@ -72,7 +69,8 @@ export const CoursesEditForm = () => {
     return updateCourse({ ...data, id: course?.id as number }).then(() => {
       setSnackbarVisible(true);
       queryClient.invalidateQueries(['courses']);
-      queryClient.invalidateQueries(['course', course?.id]);
+      queryClient.invalidateQueries(['all-courses']);
+      queryClient.refetchQueries(['course', id]);
     });
   });
 
@@ -80,6 +78,8 @@ export const CoursesEditForm = () => {
 
   const onSubmit = useCallback(
     (data: CourseCreateArgs) => {
+      console.log(data);
+
       if (!isMutationLoading) {
         mutate(data);
       }
@@ -100,6 +100,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="title"
                     control={control}
+                    defaultValue={course.title}
                     rules={{
                       required: {
                         value: true,
@@ -123,6 +124,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="url"
                     control={control}
+                    defaultValue={course.url}
                     rules={{
                       required: {
                         value: true,
@@ -151,6 +153,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="coverUrl"
                     control={control}
+                    defaultValue={course.coverUrl}
                     rules={{
                       required: {
                         value: true,
@@ -212,6 +215,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="professionId"
                     control={control}
+                    defaultValue={course.professionId}
                     rules={{
                       required: {
                         value: true,
@@ -249,18 +253,18 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="tags"
                     control={control}
-                    defaultValue={[] as string[]}
+                    defaultValue={course.tags}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <Autocomplete
                         multiple
                         id="tags-filled"
-                        options={[] as readonly string[]}
-                        defaultValue={[]}
+                        options={[]}
+                        defaultValue={course.tags ?? ([] as string[])}
                         freeSolo
                         {...otherFields}
-                        onChange={(e, value) => setValue('tags', value)}
-                        renderTags={(value: string[], getTagProps) =>
-                          value.map((option: string, index: number) => (
+                        onChange={(e, v) => setValue('tags', v as string[])}
+                        renderTags={(val, getTagProps) =>
+                          val.map((option, index: number) => (
                             // eslint-disable-next-line react/jsx-key
                             <Chip
                               variant="outlined"
@@ -291,7 +295,7 @@ export const CoursesEditForm = () => {
                         message: 'Поле обязательно для заполнения',
                       },
                     }}
-                    render={({ field: { value, ...restProps } }) => (
+                    render={({ field: { value, ...restProps }, fieldState }) => (
                       <TextField
                         id="datetime-start-local"
                         label="Дата начала"
@@ -299,6 +303,8 @@ export const CoursesEditForm = () => {
                         fullWidth
                         {...restProps}
                         value={value ?? course.endsAt}
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -310,13 +316,14 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="endsAt"
                     control={control}
+                    defaultValue={course.endsAt}
                     rules={{
                       required: {
                         value: true,
                         message: 'Поле обязательно для заполнения',
                       },
                     }}
-                    render={({ field: { value, ...restProps } }) => (
+                    render={({ field: { value, ...restProps }, fieldState }) => (
                       <TextField
                         id="datetime-end-local"
                         label="Дата окончания"
@@ -324,6 +331,8 @@ export const CoursesEditForm = () => {
                         value={value ?? course.endsAt}
                         fullWidth
                         {...restProps}
+                        error={!!fieldState.error}
+                        helperText={fieldState.error?.message}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -336,6 +345,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="description"
                     control={control}
+                    defaultValue={course.description}
                     rules={{
                       required: {
                         value: true,
@@ -361,7 +371,7 @@ export const CoursesEditForm = () => {
                   <Controller
                     name="isAdvanced"
                     control={control}
-                    defaultValue={false}
+                    defaultValue={course.isAdvanced}
                     render={({ field }) => (
                       <>
                         <FormControlLabel

@@ -1,16 +1,10 @@
-import { CourseShort } from '@features/courses/cources.entity';
-import { CoursesListResponse } from '@features/courses/courses.service';
-import { useCourses } from '@features/courses/hooks/useCourses';
-import { Delete, Edit } from '@mui/icons-material';
+import { useAllCourses } from '@features/courses/hooks/useAllCourses';
+import { Edit } from '@mui/icons-material';
 import {
-  Alert,
-  Box,
   Button,
   CircularProgress,
   IconButton,
-  Pagination,
   Paper,
-  Snackbar,
   styled,
   Table,
   TableBody,
@@ -19,10 +13,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteCourseProvider } from '@features/providers/providers.service';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -34,11 +25,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export const CoursesTable = () => {
-  const [page, setPage] = useState(1);
-  const client = useQueryClient();
-
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
-  const { courses, pagination, isLoading, error } = useCourses(page, {});
+  const { courses, isLoading, error } = useAllCourses();
+  console.log(courses);
 
   return (
     <>
@@ -73,17 +61,6 @@ export const CoursesTable = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          {/* {pagination && (
-            <Box sx={{ mt: 4, justifyContent: 'center', display: 'flex' }}>
-              <Pagination
-                count={pagination.totalPages}
-                page={page}
-                shape="rounded"
-                variant="outlined"
-                onChange={(_, value) => setPage(value)}
-              />
-            </Box>
-          )} */}
         </>
       )}
     </>

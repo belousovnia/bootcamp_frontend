@@ -1,7 +1,10 @@
 import { CourseCreateArgs, createCourse } from '@features/courses/courses.service';
-import { useProfessions } from '@features/professions/professions.hooks';
+import {
+  useAllProfessions,
+  useProfessions,
+} from '@features/professions/professions.hooks';
 import { ProviderFull } from '@features/providers';
-import { useProviders } from '@features/providers/hooks/useProviders';
+import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
   Alert,
   Autocomplete,
@@ -32,11 +35,8 @@ export const CoursesNewForm = () => {
   const [selectedProvider, setSelectedProvider] = useState<ProviderFull | undefined>(
     undefined,
   );
-  const { courseProviders } = useProviders({
-    page: '1',
-    search: providerSearch,
-  });
-  const { data: professions, isLoading: isLoadingProfessions } = useProfessions();
+  const { courseProviders } = useAllProviders();
+  const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
 
   console.log(selectedProvider);
   console.log(professions);
@@ -65,6 +65,7 @@ export const CoursesNewForm = () => {
         tags: [],
       });
       queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries(['all-courses']);
     });
   });
 
@@ -207,7 +208,7 @@ export const CoursesNewForm = () => {
                 <Controller
                   name="professionId"
                   control={control}
-                  defaultValue={''}
+                  defaultValue={undefined}
                   rules={{
                     required: {
                       value: true,
@@ -222,7 +223,7 @@ export const CoursesNewForm = () => {
                         id="profession-select"
                         label="Профессия"
                         error={!!fieldState.error}
-                        value={value}
+                        value={value?.toString() ?? ''}
                         defaultValue={''}
                         fullWidth
                         {...otherFields}
@@ -286,13 +287,15 @@ export const CoursesNewForm = () => {
                       message: 'Поле обязательно для заполнения',
                     },
                   }}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <TextField
                       id="datetime-start-local"
                       label="Дата начала"
                       type="datetime-local"
                       defaultValue={''}
                       fullWidth
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
                       {...field}
                       InputLabelProps={{
                         shrink: true,
@@ -312,13 +315,15 @@ export const CoursesNewForm = () => {
                       message: 'Поле обязательно для заполнения',
                     },
                   }}
-                  render={({ field }) => (
+                  render={({ field, fieldState }) => (
                     <TextField
                       id="datetime-end-local"
                       label="Дата окончания"
                       type="datetime-local"
                       defaultValue={''}
                       fullWidth
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
                       {...field}
                       InputLabelProps={{
                         shrink: true,
