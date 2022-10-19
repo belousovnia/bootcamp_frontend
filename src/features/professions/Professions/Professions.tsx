@@ -1,33 +1,36 @@
 import React from 'react';
-import { Grid, Paper, Typography } from '@mui/material';
+import { Alert, Box, CircularProgress, Grid, Typography } from '@mui/material';
 import { ProfessionCard } from '@features/professions/components';
-import { useProfessions } from '@features/professions/professions.hooks';
+import { useAllProfessions } from '@features/professions/professions.hooks';
 
 export const Professions = () => {
-  const professions = useProfessions();
+  const professions = useAllProfessions();
   return (
-    <Paper
+    <Box
       sx={{
         maxWidth: 'xl',
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
         alignItems: 'center',
-        padding: '1.5rem',
-        width: '100%',
       }}
-      elevation={1}
     >
       <Typography variant={'h3'}>Профессии в IT</Typography>
-      <Grid container spacing={2}>
-        {professions.data?.content.map((profession) => {
+      {professions.isLoading && <CircularProgress size="4rem" />}
+      {!professions.data && !professions.isLoading && (
+        <Alert severity="error">
+          Профессии не найдены. Попробуйте перезагрузить страницу.
+        </Alert>
+      )}
+      <Grid container spacing={4}>
+        {professions.data?.map((profession) => {
           return (
-            <Grid key={profession.id} item>
+            <Grid key={profession.id} item xs={12} sm={6} md={4} lg={4}>
               <ProfessionCard profession={profession} />
             </Grid>
           );
         })}
       </Grid>
-    </Paper>
+    </Box>
   );
 };

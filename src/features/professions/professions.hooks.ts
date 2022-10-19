@@ -1,5 +1,6 @@
 import {
   getAllProfessions,
+  getProfession,
   getProfessions,
   ProfessionsAllResponse,
 } from '@features/professions/professions.service';
@@ -15,6 +16,13 @@ export const useProfessions = () => {
 export const useAllProfessions = () => {
   return useQuery<ProfessionsAllResponse, Error>(['all-professions'], async () => {
     const { data } = await getAllProfessions();
+    return data;
+  });
+};
+
+export const useProfession = (id: string) => {
+  return useQuery(['profession'], async () => {
+    const { data } = await getProfession(id);
     return data;
   });
 };

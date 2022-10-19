@@ -24,6 +24,7 @@ import {
   RegistrationScreen,
   ProfessionsScreen,
 } from '@screens/index';
+import { ProfessionScreen } from '@screens/ProfessionScreen';
 
 export const Routing = () => {
   return (
@@ -40,6 +41,8 @@ export const Routing = () => {
               </ProtectedRoute>
             }
           />
+          <Route path={'/professions'} element={<ProfessionsScreen />} />
+          <Route path={'professions/:id'} element={<ProfessionScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />
           <Route
             path={'survey'}
