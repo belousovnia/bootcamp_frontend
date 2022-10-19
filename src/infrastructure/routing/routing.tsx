@@ -78,7 +78,14 @@ export const Routing = () => {
           </Route>
 
           {/* User */}
-          <Route path={'user/*'} element={<UserLayout />}>
+          <Route
+            path={'user/*'}
+            element={
+              <ProtectedRoute role={CurrentUserRoles.ROLE_REGULAR}>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path={'recommendations'} element={<UserRecommendationsScreen />} />
             <Route path={'account'} element={<UserAccountScreen />} />
           </Route>
