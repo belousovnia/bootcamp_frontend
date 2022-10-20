@@ -64,6 +64,7 @@ export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const resetSurveyResultsStore = useSurveyResultsStore((state) => state.reset);
   const currentUser = useCurrentUser();
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
@@ -182,6 +183,7 @@ export const Header = () => {
                   <MenuItem
                     onClick={() => {
                       handleUserMenuClose();
+                      resetSurveyResultsStore();
                       logOut();
                     }}
                   >
