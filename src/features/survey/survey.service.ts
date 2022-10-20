@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios';
 import { Survey } from './survey.entity';
 
 export const fetchSurvey = (): Promise<AxiosResponse<Survey>> => {
-  return requestService.get(`survey`);
+  return requestService.get(`v1/survey`);
 };
 
 export type CreateSurveyResultsArgs = {
@@ -17,5 +17,5 @@ export type CreateSurveyResultsArgs = {
 export const createSurveyResults = (
   args: CreateSurveyResultsArgs,
 ): Promise<AxiosResponse> => {
-  return requestService.post(`survey/result`, args);
+  return requestService.post(`v1/survey/result`, args);
 };
