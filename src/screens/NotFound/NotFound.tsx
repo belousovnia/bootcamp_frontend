@@ -17,7 +17,7 @@ export const NotFound = () => {
         <Typography variant={'h1'}>Ошибка 404</Typography>
         <Box component={'img'} width={200} src={dyno} alt="404 картинка" />
       </Box>
-      <Typography variant={'body1'}>
+      <Typography variant={'h5'}>
         Эта страница не найдена... Может вернётесь на{' '}
         {
           <Link to={'/'} replace>
