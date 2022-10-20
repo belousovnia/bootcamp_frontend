@@ -9,13 +9,8 @@ export const useAuthStore = create<AuthStore>((set) => ({
 }));
 
 export const useCurrentUser = () => {
-  const isAuth = useAuthStore((state) => state.isAuth);
-  if (isAuth) {
-    return useQuery(['currentUser'], async () => {
-      const { data } = await getUserInfo();
-      return data;
-    });
-  } else {
-    return null;
-  }
+  return useQuery(['currentUser'], async () => {
+    const { data } = await getUserInfo();
+    return data;
+  });
 };
