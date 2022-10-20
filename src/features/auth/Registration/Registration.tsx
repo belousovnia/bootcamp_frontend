@@ -113,7 +113,10 @@ export const Registration = () => {
           <InputLabel htmlFor={'surname'}>Фамилия</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('surname', { required: true })}
+            {...register('surname', {
+              required: true,
+              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
+            })}
             placeholder={'Ваша фамилия'}
           />
           {errors.surname && (
@@ -126,7 +129,10 @@ export const Registration = () => {
           <InputLabel htmlFor={'name'}>Имя</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('name', { required: true })}
+            {...register('name', {
+              required: true,
+              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
+            })}
             placeholder={'Ваше имя'}
           />
           {errors.name && (

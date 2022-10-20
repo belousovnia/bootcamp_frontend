@@ -2,6 +2,7 @@ import { useAuthStore, useCurrentUser } from '@features/auth/auth.hooks';
 import { CurrentUserRoles } from '@features/auth';
 import React, { useMemo } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Box, CircularProgress } from '@mui/material';
 
 interface ProtectedRouteProps {
   role: CurrentUserRoles;
@@ -24,10 +25,15 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   const location = useLocation();
 
-  if (!isAuth) {
+  if (currentUser.isLoading) {
+    return (
+      <Box sx={{ position: 'absolute', left: '50%', top: '40%' }}>
+        <CircularProgress size="8rem" />
+      </Box>
+    );
+  } else if (!isAuth) {
     return <Navigate to={'/login'} replace state={{ from: location }} />;
-  }
-  if (isAvailable) {
+  } else if (isAvailable) {
     return <>{children}</>;
   }
   return <Navigate to={'/'} replace />;
