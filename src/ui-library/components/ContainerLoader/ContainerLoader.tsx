@@ -21,7 +21,7 @@ export const ContainerLoader = (props: ContainerLoaderProps) => {
             width: '100%',
             height: '100%',
             zIndex: 1,
-            backgroundColor: 'rgba(255, 255, 255, 0.3)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
             display: 'flex',
             alignItems: props.loaderPosition === 'center' ? 'center' : 'flex-start',
             paddingTop: props.loaderPosition === 'center' ? 0 : 20,
