@@ -36,5 +36,5 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   } else if (isAvailable) {
     return <>{children}</>;
   }
-  return <Navigate to={'/'} replace />;
+  return <Navigate to={'/404'} replace />;
 };
