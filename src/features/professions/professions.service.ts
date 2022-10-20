@@ -25,3 +25,15 @@ export const getProfession = async (
 ): Promise<AxiosResponse<ProfessionEntity>> => {
   return await requestService.get(`/v1/professions/${id}`);
 };
+
+export const createProfession = (
+  profession: Omit<ProfessionEntity, 'id'>,
+): Promise<AxiosResponse<ProfessionEntity>> => {
+  return requestService.post(`v1/professions`, profession);
+};
+
+export const updateProfession = (
+  profession: ProfessionEntity,
+): Promise<AxiosResponse> => {
+  return requestService.put(`v1/professions/${profession.id}`, profession);
+};

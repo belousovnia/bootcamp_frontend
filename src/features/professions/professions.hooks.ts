@@ -4,7 +4,10 @@ import {
   getProfessions,
 } from '@features/professions/professions.service';
 import { useQuery } from '@tanstack/react-query';
-import { ProfessionsAllResponse } from '@features/professions/professions.entity';
+import {
+  ProfessionEntity,
+  ProfessionsAllResponse,
+} from '@features/professions/professions.entity';
 
 export const useProfessions = () => {
   return useQuery(['professions'], async () => {
@@ -21,7 +24,7 @@ export const useAllProfessions = () => {
 };
 
 export const useProfession = (id: string) => {
-  return useQuery(['profession'], async () => {
+  return useQuery<ProfessionEntity, Error>(['profession', id], async () => {
     const { data } = await getProfession(id);
     return data;
   });

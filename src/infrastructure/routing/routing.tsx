@@ -25,6 +25,9 @@ import {
   ProfessionsScreen,
 } from '@screens/index';
 import { ProfessionScreen } from '@screens/ProfessionScreen';
+import { AdminProfessionsEditScreen } from '@screens/admin/AdminProfessionsEditScreen';
+import { AdminProfessionsScreen } from '@screens/admin/AdminProfessionsScreen';
+import { AdminProfessionsNewScreen } from '@screens/admin/AdminProfessionsNewScreen';
 
 export const Routing = () => {
   return (
@@ -81,6 +84,13 @@ export const Routing = () => {
             <Route path={'courses'} element={<AdminCoursesScreen />} />
             <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
             <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
+
+            <Route path={'professions'} element={<AdminProfessionsScreen />} />
+            <Route
+              path={'professions/:id/edit'}
+              element={<AdminProfessionsEditScreen />}
+            />
+            <Route path={'professions/new'} element={<AdminProfessionsNewScreen />} />
 
             <Route path={'providers'} element={<AdminProvidersScreen />} />
             <Route path={'providers/:id/edit'} element={<AdminProviderEditScreen />} />
