@@ -30,11 +30,10 @@ requestService.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (
-      error &&
       error.response?.status == 401 &&
       error.config &&
-      !originalRequest.config._retry &&
-      getRefreshToken()
+      !originalRequest._retry &&
+      !!getRefreshToken()
     ) {
       originalRequest._retry = true;
       try {
@@ -46,11 +45,12 @@ requestService.interceptors.response.use(
         );
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
+        await requestService.request(originalRequest);
       } catch (e) {
-        await Promise.reject(e);
+        await Promise.reject(e).finally(() => logOut());
       }
-    } else if (error.response?.status == 401) {
-      logOut();
-    } else return Promise.reject(error);
+    } else {
+      await Promise.reject(error);
+    }
   },
 );

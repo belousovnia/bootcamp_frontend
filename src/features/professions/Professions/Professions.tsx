@@ -17,7 +17,7 @@ export const Professions = () => {
     >
       <Typography variant={'h3'}>Профессии в IT</Typography>
       {professions.isLoading && <CircularProgress size="4rem" />}
-      {!professions.data && !professions.isLoading && (
+      {!professions.isLoading && !professions.data?.length && (
         <Alert severity="error">
           Профессии не найдены. Попробуйте перезагрузить страницу.
         </Alert>

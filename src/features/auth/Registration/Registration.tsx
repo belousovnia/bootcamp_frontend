@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { registration } from '@features/auth/auth.service';
-import axios from 'axios';
 import { useAuthStore } from '@features/auth/auth.hooks';
 import {
   Button,
@@ -66,8 +65,7 @@ export const Registration = () => {
             setWarningMessage('Пользователь с таким email уже существует!');
         });
     } catch (e) {
-      if (axios.isAxiosError(e)) console.log(e.response?.data?.message);
-      else console.log(e);
+      console.log(e);
     }
   };
   return (
