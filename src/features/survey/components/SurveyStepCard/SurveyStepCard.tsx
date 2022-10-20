@@ -48,7 +48,7 @@ export const SurveyStepCard = () => {
   const currentQuestion = data?.survey[currentStep];
 
   const backButtonText = useMemo(
-    () => (currentStep === 1 ? 'Назад' : 'Предыдущий вопрос'),
+    () => (currentStep === 0 ? 'Назад' : 'Предыдущий вопрос'),
     [currentStep],
   );
 
