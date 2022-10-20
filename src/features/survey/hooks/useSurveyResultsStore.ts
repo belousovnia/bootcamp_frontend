@@ -14,21 +14,26 @@ export interface SurveyResultsState {
   currentStep: number; // Current question number
 }
 
+const initialState: SurveyResultsState = {
+  surveyId: null,
+  error: null,
+  surveyState: 'not-active',
+  answers: [],
+  currentStep: 0,
+};
+
 interface Actions {
   setSurveyState: (surveyState: SurveyResultsState['surveyState']) => void;
   setCurrentStep: (step: SurveyResultsState['currentStep']) => void;
   setStepAnswer: (questionId: number, answerId: number) => void;
+  reset: () => void;
 }
 
 export const useSurveyResultsStore = create<SurveyResultsState & Actions>()(
   devtools(
     persist(
       (set) => ({
-        surveyId: null,
-        error: null,
-        surveyState: 'not-active',
-        answers: [],
-        currentStep: 0,
+        ...initialState,
         setSurveyState: (surveyState) => set({ surveyState }),
         setCurrentStep: (step) => set({ currentStep: step }),
         setStepAnswer: (step, answer) => {
@@ -39,6 +44,7 @@ export const useSurveyResultsStore = create<SurveyResultsState & Actions>()(
             },
           }));
         },
+        reset: () => set(initialState),
       }),
       {
         name: 'survey-results-storage',
