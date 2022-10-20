@@ -17,15 +17,15 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { isAuth } = useAuthStore();
 
   const isAvailable = useMemo(() => {
-    if (currentUser.data?.role === CurrentUserRoles.ROLE_ADMIN) return true;
-    else if (currentUser.data?.role === CurrentUserRoles.ROLE_MODERATOR)
+    if (currentUser?.data?.role === CurrentUserRoles.ROLE_ADMIN) return true;
+    else if (currentUser?.data?.role === CurrentUserRoles.ROLE_MODERATOR)
       return role !== CurrentUserRoles.ROLE_ADMIN;
     else return role === CurrentUserRoles.ROLE_REGULAR;
   }, [currentUser]);
 
   const location = useLocation();
 
-  if (currentUser.isLoading) {
+  if (currentUser?.isLoading) {
     return (
       <Box sx={{ position: 'absolute', left: '50%', top: '40%' }}>
         <CircularProgress size="8rem" />
