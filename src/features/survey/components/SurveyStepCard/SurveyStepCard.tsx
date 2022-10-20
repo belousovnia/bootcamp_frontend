@@ -30,6 +30,8 @@ export const SurveyStepCard = () => {
   const { data, error, isLoading } = useSurvey();
   const [currentAnswerId, setCurrentAnswerId] = useState<number | null>(null);
 
+  const resetSurveyResultsStore = useSurveyResultsStore((state) => state.reset);
+
   const [currentStep, setCurrentStep] = useSurveyResultsStore((state) => [
     state.currentStep,
     state.setCurrentStep,
@@ -70,7 +72,10 @@ export const SurveyStepCard = () => {
     };
 
     return createSurveyResults(args).then(() => {
-      console.log('created');
+      navigate('/user/recommendations');
+      setTimeout(() => {
+        resetSurveyResultsStore();
+      }, 100);
     });
   }, [data, answers]);
 
