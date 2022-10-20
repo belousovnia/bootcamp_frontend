@@ -47,7 +47,9 @@ export const ProfessionAbout: React.FC<ProfessionAboutProps> = ({ id }) => {
           alt={'обложка'}
           sx={{ borderRadius: 1 }}
         />
-        <Typography variant={'body1'}>{profession.data?.description}</Typography>
+        <Typography variant={'body1'} sx={{ whiteSpace: 'pre-wrap' }}>
+          {profession.data?.description}
+        </Typography>
         <Button variant={'contained'} size={'large'} onClick={() => navigateToCourses()}>
           Посмотреть курсы по этой профессии
         </Button>
