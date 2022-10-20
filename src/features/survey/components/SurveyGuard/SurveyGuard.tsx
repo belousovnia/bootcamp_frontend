@@ -24,10 +24,10 @@ export const SurveyGuard = ({ children }: SurveyGuardProps) => {
       return;
     }
 
-    if (surveyState === 'completed') {
-      navigate(`/survey/finish`, { replace: true });
-      return;
-    }
+    // if (surveyState === 'completed') {
+    //   navigate(`/survey/finish`, { replace: true });
+    //   return;
+    // }
 
     if (step && surveyState === 'in-progress' && parseInt(step) > currentStep) {
       navigate(`/survey/step/${currentStep}`, { replace: true });

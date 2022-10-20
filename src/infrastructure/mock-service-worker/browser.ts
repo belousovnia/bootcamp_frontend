@@ -11,12 +11,4 @@ export const worker = setupWorker(
   // ...providersMockHandlers,
   // ...coursesMockHandlers,
   ...surveyMockHandlers,
-  rest.get<null, { message: string }>('/ping', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        message: 'Hello world!',
-      }),
-    );
-  }),
 );

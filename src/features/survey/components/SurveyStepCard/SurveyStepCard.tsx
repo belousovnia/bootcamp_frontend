@@ -1,26 +1,34 @@
-import { useSurvey, useSurveyResultsStore } from '@features/survey/hooks';
+import {
+  SurveyResultsState,
+  useSurvey,
+  useSurveyResultsStore,
+} from '@features/survey/hooks';
+import {
+  createSurveyResults,
+  CreateSurveyResultsArgs,
+} from '@features/survey/survey.service';
 import {
   Alert,
   AlertTitle,
   Button,
-  Card,
   CardActions,
   CardContent,
   CardHeader,
   CircularProgress,
   Stack,
 } from '@mui/material';
-import { MouseEventHandler, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { ContainerLoader } from '@ui-library/components/ContainerLoader';
+import { MouseEventHandler, useCallback, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SurveyCard } from '../SurveyCard';
 import { SurveyProgress } from '../SurveyProgress';
 import { SurveyStepBody } from './SurveyStepBody';
 
-// @TODO: handle error state
 export const SurveyStepCard = () => {
   const navigate = useNavigate();
   const { data, error, isLoading } = useSurvey();
-  const [currentAnswer, setCurrentAnswer] = useState<number | null>(null);
+  const [currentAnswerId, setCurrentAnswerId] = useState<number | null>(null);
 
   const [currentStep, setCurrentStep] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -34,30 +42,63 @@ export const SurveyStepCard = () => {
 
   const setSurveyState = useSurveyResultsStore((state) => state.setSurveyState);
 
-  const totalSteps = useMemo(() => data?.questions.length, [data]);
-  const currentQuestion = data?.questions[currentStep - 1];
+  const totalSteps = useMemo(() => data?.survey.length, [data]);
+  const currentQuestion = data?.survey[currentStep];
 
   const backButtonText = useMemo(
     () => (currentStep === 1 ? 'Назад' : 'Предыдущий вопрос'),
     [currentStep],
   );
 
-  const isLastStep = useMemo(() => currentStep === totalSteps, [currentStep, totalSteps]);
+  const isLastStep = useMemo(
+    () => currentStep + 1 === totalSteps,
+    [currentStep, totalSteps],
+  );
 
   const nextButtonText = useMemo(
     () => (isLastStep ? 'Завершить тестирование' : 'Следующий вопрос'),
     [isLastStep],
   );
 
+  const mutationCallback = useCallback(() => {
+    const args: CreateSurveyResultsArgs = {
+      surveyId: data?.surveyId as number,
+      survey: Object.keys(answers).map((key) => ({
+        questionId: Number(key),
+        answerId: answers[Number(key)],
+      })),
+    };
+
+    return createSurveyResults(args).then(() => {
+      console.log('created');
+    });
+  }, [data, answers]);
+
+  const {
+    mutate,
+    isLoading: isSubmitting,
+    isError: isSubmitError,
+    error: submitError,
+  } = useMutation<void, Error, void>(mutationCallback);
+
   const handleBackButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    if (currentStep === 1) {
-      setCurrentAnswer(null);
+    if (currentStep === 0) {
+      setCurrentAnswerId(null);
       setSurveyState('not-active');
       navigate(`/survey`);
     } else {
       setCurrentStep(currentStep - 1);
-      setCurrentAnswer(answers[currentStep - 1]?.number || null);
+
+      if (currentAnswerId) {
+        const questionId = data?.survey[currentStep].questionId as number;
+        setAnswer(questionId, currentAnswerId);
+      }
+
+      const prevQuestionId = data?.survey[currentStep - 1].questionId;
+      if (prevQuestionId) {
+        setCurrentAnswerId(answers[prevQuestionId]);
+      }
       navigate(`/survey/step/${currentStep - 1}`);
     }
   };
@@ -65,27 +106,32 @@ export const SurveyStepCard = () => {
   const handleNextButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
-    if (!currentAnswer) {
+    if (!currentAnswerId) {
       return;
     }
 
+    const questionId = data?.survey[currentStep].questionId as number;
+    setAnswer(questionId, currentAnswerId);
+
     if (isLastStep) {
       setSurveyState('completed');
-      navigate(`/survey/finish`);
+      setTimeout(() => {
+        mutate();
+      }, 100);
+      return;
     }
 
-    setAnswer(currentStep, {
-      number: currentAnswer as number,
-    });
+    const nextQuestionId = data?.survey[currentStep + 1].questionId;
 
-    setCurrentAnswer(answers[currentStep + 1]?.number || null);
-    setCurrentStep(currentStep + 1);
-
-    navigate(`/survey/step/${currentStep + 1}`);
+    if (nextQuestionId) {
+      setCurrentStep(currentStep + 1);
+      setCurrentAnswerId(answers[nextQuestionId] || null);
+      navigate(`/survey/step/${currentStep + 1}`);
+    }
   };
 
-  const handleAnswerChange = (answer: number) => {
-    setCurrentAnswer(answer);
+  const handleAnswerChange = (answerId: number) => {
+    setCurrentAnswerId(answerId);
   };
 
   return (
@@ -103,19 +149,30 @@ export const SurveyStepCard = () => {
       {error && (
         <CardContent>
           <Alert color="error">
-            <AlertTitle>Ой! Кажется произошла ошибка</AlertTitle>
+            <AlertTitle>Ой! Кажется произошла ошибка при загрузке теста</AlertTitle>
             {error.message}
           </Alert>
         </CardContent>
       )}
+
+      {submitError && (
+        <CardContent>
+          <Alert color="error">
+            <AlertTitle>
+              Ой! Кажется произошла ошибка отправке результатов теста
+            </AlertTitle>
+            {submitError.message}
+          </Alert>
+        </CardContent>
+      )}
       {data && (
-        <>
+        <ContainerLoader isLoading={isSubmitting}>
           <CardContent>
-            <SurveyProgress currentStep={currentStep} totalSteps={totalSteps || 10} />
+            <SurveyProgress currentStep={currentStep + 1} totalSteps={totalSteps || 10} />
             {currentQuestion && (
               <SurveyStepBody
                 question={currentQuestion}
-                answer={currentAnswer}
+                answer={currentAnswerId}
                 onAnswerChange={handleAnswerChange}
               />
             )}
@@ -137,13 +194,13 @@ export const SurveyStepCard = () => {
                 size="large"
                 sx={{ py: 2, flexGrow: 1 }}
                 onClick={handleNextButtonClick}
-                disabled={!currentAnswer}
+                disabled={!currentAnswerId}
               >
                 {nextButtonText}
               </Button>
             </Stack>
           </CardActions>
-        </>
+        </ContainerLoader>
       )}
     </SurveyCard>
   );
