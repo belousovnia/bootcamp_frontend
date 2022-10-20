@@ -18,7 +18,7 @@ import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuthStore } from '@features/auth';
+import { CurrentUserRoles, useAuthStore, useCurrentUser } from '@features/auth';
 import { logOut } from '@features/auth/components';
 
 type NavLink = {
@@ -64,6 +64,7 @@ export const Header = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const currentUser = useCurrentUser();
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -73,9 +74,6 @@ export const Header = () => {
   const surveyPath = useMemo(() => {
     if (surveyState === 'in-progress') {
       return `/survey/step/${currentStep}`;
-    }
-    if (surveyState === 'completed') {
-      return '/survey/finish';
     }
     return '/survey';
   }, [currentStep, surveyState]);
@@ -171,6 +169,16 @@ export const Header = () => {
                   >
                     Мой аккаунт
                   </MenuItem>
+                  {(currentUser?.data?.role === CurrentUserRoles.ROLE_MODERATOR ||
+                    currentUser?.data?.role === CurrentUserRoles.ROLE_ADMIN) && (
+                    <MenuItem
+                      onClick={handleUserMenuClose}
+                      component={Link}
+                      to="/admin/courses"
+                    >
+                      Административная панель
+                    </MenuItem>
+                  )}
                   <MenuItem
                     onClick={() => {
                       handleUserMenuClose();

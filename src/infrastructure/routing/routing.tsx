@@ -70,7 +70,14 @@ export const Routing = () => {
           />
 
           {/* Admin */}
-          <Route path={'admin/*'} element={<AdminLayout />}>
+          <Route
+            path={'admin/*'}
+            element={
+              <ProtectedRoute role={CurrentUserRoles.ROLE_MODERATOR}>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path={'courses'} element={<AdminCoursesScreen />} />
             <Route path={'courses/:id/edit'} element={<AdminCoursesEditScreen />} />
             <Route path={'courses/new'} element={<AdminCoursesNewScreen />} />
