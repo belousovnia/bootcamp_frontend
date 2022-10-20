@@ -99,8 +99,10 @@ export const Registration = () => {
         <StyledBox>
           <InputLabel htmlFor={'email'}>Email</InputLabel>
           <Input
-            type={'email'}
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: true,
+              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+            })}
             placeholder={'Ваша электронная почта'}
           />
           {errors.email && (

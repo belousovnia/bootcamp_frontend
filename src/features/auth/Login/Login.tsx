@@ -23,7 +23,11 @@ export const Login = () => {
 
   const [warningMessage, setWarningMessage] = useState<string>('');
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data: FieldValues) => {
     auth(data.email, data.password);
@@ -83,10 +87,17 @@ export const Login = () => {
         <StyledBox>
           <InputLabel htmlFor={'email'}>Email</InputLabel>
           <Input
-            type={'email'}
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: true,
+              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+            })}
             placeholder={'Ваша электронная почта'}
           />
+          {errors.email && (
+            <FormHelperText error sx={{ fontSize: '1rem' }}>
+              Проверьте почту
+            </FormHelperText>
+          )}
         </StyledBox>
         <StyledBox>
           <InputLabel
@@ -99,9 +110,17 @@ export const Login = () => {
           </InputLabel>
           <Input
             type={'password'}
-            {...register('password', { required: true })}
+            {...register('password', {
+              required: true,
+              pattern: /^.{8,20}$/,
+            })}
             placeholder={'Ваш пароль'}
           />
+          {errors.password && (
+            <FormHelperText error sx={{ fontSize: '1rem' }}>
+              Проверьте пароль
+            </FormHelperText>
+          )}
         </StyledBox>
         {warningMessage && (
           <FormHelperText error sx={{ fontSize: '1rem' }}>
