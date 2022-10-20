@@ -28,6 +28,7 @@ import { ProfessionScreen } from '@screens/ProfessionScreen';
 import { AdminProfessionsEditScreen } from '@screens/admin/AdminProfessionsEditScreen';
 import { AdminProfessionsScreen } from '@screens/admin/AdminProfessionsScreen';
 import { AdminProfessionsNewScreen } from '@screens/admin/AdminProfessionsNewScreen';
+import { NotFound } from '@screens/NotFound';
 
 export const Routing = () => {
   return (
@@ -113,6 +114,7 @@ export const Routing = () => {
           {/* Auth */}
           <Route path={'login'} element={<LoginScreen />} />
           <Route path={'registration'} element={<RegistrationScreen />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </>
