@@ -16,7 +16,7 @@ interface ProfessionCardProps {
 
 export const ProfessionCard: React.FC<ProfessionCardProps> = ({ profession }) => {
   return (
-    <Card raised>
+    <Card>
       <CardActionArea
         component={Link}
         to={`/professions/${profession.id}`}
@@ -27,7 +27,7 @@ export const ProfessionCard: React.FC<ProfessionCardProps> = ({ profession }) =>
           component={'img'}
           image={profession.coverUrl}
           alt={'Фон карточки'}
-          sx={{ height: 125, objectFit: 'fill' }}
+          sx={{ height: 150, width: '90%', borderRadius: 1 }}
         />
         <CardContent>
           <Button variant={'contained'} size={'large'}>
