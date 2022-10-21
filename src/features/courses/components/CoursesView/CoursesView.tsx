@@ -30,7 +30,7 @@ export const CoursesView = ({
 
   const clearFilters: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
-    setOptions({ sortBy: 'date-start', search: '' });
+    setOptions({ ...filterOptions, sortBy: 'date-start', search: '' });
   };
 
   return (
