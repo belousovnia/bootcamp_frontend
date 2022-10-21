@@ -25,7 +25,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   const location = useLocation();
 
-  if (currentUser?.isLoading) {
+  if (currentUser?.isInitialLoading) {
+    console.log(currentUser?.isLoading);
     return (
       <Box sx={{ position: 'absolute', left: '50%', top: '40%' }}>
         <CircularProgress size="8rem" />
@@ -35,6 +36,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     return <Navigate to={'/login'} replace state={{ from: location }} />;
   } else if (isAvailable) {
     return <>{children}</>;
+  } else {
+    return <Navigate to={'/404'} replace />;
   }
-  return <Navigate to={'/404'} replace />;
 };

@@ -45,7 +45,7 @@ requestService.interceptors.response.use(
         );
         localStorage.setItem('accessToken', response.data.accessToken);
         localStorage.setItem('refreshToken', response.data.refreshToken);
-        await requestService.request(originalRequest);
+        return await requestService.request(originalRequest);
       } catch (e) {
         await Promise.reject(e).finally(() => logOut());
       }
