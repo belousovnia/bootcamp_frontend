@@ -1,14 +1,12 @@
 import { CoursesSortBy } from '@features/courses/courses.service';
+import { ProfessionEntity } from '@features/professions/professions.entity';
 import { useAllProfessions } from '@features/professions/professions.hooks';
-import { optionUnstyledClasses } from '@mui/base';
 import {
   Card,
   CardContent,
   CardHeader,
   FormControl,
-  FormControlLabel,
   Grid,
-  Input,
   InputLabel,
   MenuItem,
   Select,
@@ -16,12 +14,12 @@ import {
   TextField,
 } from '@mui/material';
 import debounce from 'lodash.debounce';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 export type FilterOptions = {
   professionId?: number;
   search?: string;
-  isForAdvancedStudents?: boolean;
+  isAdvanced?: boolean;
   sortBy?: CoursesSortBy;
 };
 
@@ -49,16 +47,33 @@ export const CoursesFilter = ({
     return columnSize;
   }, [isProfessionsDisabled, disabledControls]);
 
+  const isAdvancedValue = useMemo(() => {
+    if (options.isAdvanced === undefined) {
+      return '';
+    }
+
+    if (options.isAdvanced === true) {
+      return 'yes';
+    }
+
+    if (options.isAdvanced === false) {
+      return 'no';
+    }
+  }, [options.isAdvanced]);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...options, search: event.target.value });
   };
 
   const handleProfessionChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, professionId: parseInt(event.target.value) });
+    onChange({
+      ...options,
+      professionId: event.target.value ? parseInt(event.target.value) : undefined,
+    });
   };
 
   const handleIsForAdvancedChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, isForAdvancedStudents: event.target.value === 'yes' });
+    onChange({ ...options, isAdvanced: event.target.value === 'yes' });
   };
 
   const handleSortbyChange = (event: SelectChangeEvent<string>) => {
@@ -70,6 +85,8 @@ export const CoursesFilter = ({
       searchInputRef.current.value = '';
     }
   }, [searchInputRef, options]);
+
+  console.log(isAdvancedValue);
 
   return (
     <Card>
@@ -101,7 +118,7 @@ export const CoursesFilter = ({
                   <MenuItem value="">
                     <em>Не выбрано</em>
                   </MenuItem>
-                  {data?.map((profession) => (
+                  {data?.map((profession: ProfessionEntity) => (
                     <MenuItem key={profession.id} value={profession.id}>
                       {profession.name}
                     </MenuItem>
@@ -118,7 +135,7 @@ export const CoursesFilter = ({
                 labelId="course-for-advanced"
                 id="course-for-advanced"
                 label="Сложность"
-                value={options.isForAdvancedStudents ? 'yes' : 'no'}
+                value={isAdvancedValue}
                 onChange={handleIsForAdvancedChange}
               >
                 <MenuItem value="">

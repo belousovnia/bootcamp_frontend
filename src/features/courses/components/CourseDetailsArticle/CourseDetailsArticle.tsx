@@ -10,7 +10,7 @@ interface CourseDetailsArticleProps {
   courseId: string;
 }
 
-const DESCRIPTION_LIMIT = 200;
+const DESCRIPTION_LIMIT = 400;
 
 export const CourseDetailsArticle = ({ courseId }: CourseDetailsArticleProps) => {
   const [isDescriptionTruncated, setDescriptionTruncated] = useState(true);

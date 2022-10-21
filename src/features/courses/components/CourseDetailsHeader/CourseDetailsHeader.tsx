@@ -38,7 +38,7 @@ export const CourseDetailsHeader = ({
             Сложность:
           </Typography>
           <Typography component={'p'} variant="subtitle1">
-            {isForAdvancedStudents ? 'Для продвинутых' : 'Для начинающих'}
+            {isForAdvancedStudents ? 'Для опытных' : 'Для новичков'}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6} md={4}>

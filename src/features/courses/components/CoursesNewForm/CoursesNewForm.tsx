@@ -1,8 +1,6 @@
 import { CourseCreateArgs, createCourse } from '@features/courses/courses.service';
-import {
-  useAllProfessions,
-  useProfessions,
-} from '@features/professions/professions.hooks';
+import { ProfessionEntity } from '@features/professions/professions.entity';
+import { useAllProfessions } from '@features/professions/professions.hooks';
 import { ProviderFull } from '@features/providers';
 import { useAllProviders } from '@features/providers/hooks/useAllProviders';
 import {
@@ -38,11 +36,6 @@ export const CoursesNewForm = () => {
   );
   const { courseProviders } = useAllProviders();
   const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
-
-  console.log(selectedProvider);
-  console.log(professions);
-
-  console.log(courseProviders);
 
   const { control, handleSubmit, reset, setValue } = useForm<CourseCreateArgs>();
 
@@ -237,7 +230,7 @@ export const CoursesNewForm = () => {
                         fullWidth
                         {...otherFields}
                       >
-                        {professions?.map((profession) => (
+                        {professions?.map((profession: ProfessionEntity) => (
                           <MenuItem key={profession.id} value={profession.id}>
                             {profession.name}
                           </MenuItem>
@@ -414,7 +407,7 @@ export const CoursesNewForm = () => {
             severity="success"
             sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
           >
-            Курс успешно создан
+            Курс успешно добавлен
           </Alert>
         </Snackbar>
       </>

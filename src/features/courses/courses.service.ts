@@ -10,6 +10,7 @@ export type CoursesListArgs = {
   search?: string;
   sortBy?: CoursesSortBy;
   directionId?: string;
+  isAdvanced?: boolean;
 };
 
 export type CoursesListResponse = PaginatedResult<CourseFull>;
