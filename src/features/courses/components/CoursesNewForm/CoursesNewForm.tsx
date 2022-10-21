@@ -60,6 +60,7 @@ export const CoursesNewForm = () => {
         isAdvanced: false,
         tags: [],
       });
+      setSelectedProvider(undefined);
       queryClient.invalidateQueries(['courses']);
       queryClient.invalidateQueries(['all-courses']);
     });
