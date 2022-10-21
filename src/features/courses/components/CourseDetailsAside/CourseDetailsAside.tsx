@@ -54,13 +54,7 @@ export const CourseDetailsAside = ({ courseId }: CourseDetailsAsideProps) => {
               <Typography component={'h5'} variant="h6" sx={{ mb: 2 }}>
                 Ссылка на курс
               </Typography>
-              <Button
-                variant="outlined"
-                size="large"
-                component={'a'}
-                target="_blank"
-                href={course.url}
-              >
+              <Button variant="outlined" size="large" component={'a'} href={course.url}>
                 Открыть курс
               </Button>
             </Box>
