@@ -35,7 +35,12 @@ export const CourseDetailsContent = ({
         Описание курса
       </Typography>
       <TruncatedContainer isTruncated={isTruncated}>
-        <TypographyContainer dangerouslySetInnerHTML={{ __html: description }} />
+        <TypographyContainer
+          dangerouslySetInnerHTML={{ __html: description }}
+          sx={{
+            whiteSpace: 'pre-wrap',
+          }}
+        />
       </TruncatedContainer>
     </>
   );
