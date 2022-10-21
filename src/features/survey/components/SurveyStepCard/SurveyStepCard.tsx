@@ -72,8 +72,8 @@ export const SurveyStepCard = () => {
     const args: CreateSurveyResultsArgs = {
       surveyId: data?.surveyId as number,
       survey: Object.keys(answers).map((key) => ({
-        questionId: Number(key),
-        answerId: answers[Number(key)],
+        questionId: parseInt(key),
+        answerId: answers[parseInt(key)],
       })),
     };
 
