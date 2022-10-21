@@ -324,6 +324,9 @@ export const CoursesEditForm = () => {
                         InputLabelProps={{
                           shrink: true,
                         }}
+                        inputProps={{
+                          max: '9999-12-31T23:59',
+                        }}
                       />
                     )}
                   />
@@ -351,6 +354,9 @@ export const CoursesEditForm = () => {
                         helperText={fieldState.error?.message}
                         InputLabelProps={{
                           shrink: true,
+                        }}
+                        inputProps={{
+                          max: '9999-12-31T23:59',
                         }}
                       />
                     )}

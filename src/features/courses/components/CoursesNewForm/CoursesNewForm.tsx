@@ -302,6 +302,9 @@ export const CoursesNewForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      inputProps={{
+                        max: '9999-12-31T23:59',
+                      }}
                     />
                   )}
                 />
@@ -329,6 +332,9 @@ export const CoursesNewForm = () => {
                       {...field}
                       InputLabelProps={{
                         shrink: true,
+                      }}
+                      inputProps={{
+                        max: '9999-12-31T23:59',
                       }}
                     />
                   )}
