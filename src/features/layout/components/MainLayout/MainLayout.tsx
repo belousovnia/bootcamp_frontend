@@ -1,15 +1,16 @@
+import { Container } from '@mui/material';
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { Header } from './Header';
 
 export const MainLayout = () => {
   return (
     <>
-      <header>
-        <Link to={'/'}>Главная</Link>
-        <Link to={'/test'}>Тест</Link>
-      </header>
+      <Header />
       <main>
-        <Outlet />
+        <Container sx={{ pt: 5, pb: 3 }}>
+          <Outlet />
+        </Container>
       </main>
       <footer></footer>
     </>

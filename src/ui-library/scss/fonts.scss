@@ -1,0 +1,113 @@
+@import './mixins/font-face.scss';
+
+// Light
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Light',
+  300,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-LightItalic',
+  300,
+  italic,
+  woff2 woff
+);
+
+// Regular
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Regular',
+  400,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Italic',
+  400,
+  italic,
+  woff2 woff
+);
+
+// Medium
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Medium',
+  500,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-MediumItalic',
+  500,
+  italic,
+  woff2 woff
+);
+
+// SemiBold
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-SemiBold',
+  600,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-SemiBoldItalic',
+  600,
+  italic,
+  woff2 woff
+);
+
+// Bold
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Bold',
+  700,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-BoldItalic',
+  700,
+  italic,
+  woff2 woff
+);
+
+// ExtraBold
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-ExtraBold',
+  800,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-ExtraBoldItalic',
+  800,
+  italic,
+  woff2 woff
+);
+
+// Black
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-Black',
+  900,
+  normal,
+  woff2 woff
+);
+@include font-face(
+  'Inter Tight',
+  '/fonts/subset-InterTight-BlackItalic',
+  900,
+  italic,
+  woff2 woff
+);
