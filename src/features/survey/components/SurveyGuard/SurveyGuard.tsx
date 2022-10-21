@@ -29,17 +29,15 @@ export const SurveyGuard = ({ children }: SurveyGuardProps) => {
     //   return;
     // }
 
-    if (step && surveyState === 'in-progress' && parseInt(step) > currentStep) {
-      navigate(`/survey/step/${currentStep}`, { replace: true });
+    if (step && surveyState === 'in-progress' && parseInt(step) > currentStep + 1) {
+      navigate(`/survey/step/${currentStep + 1}`, { replace: true });
       return;
     }
 
     if (!step && surveyState === 'in-progress') {
-      navigate(`/survey/step/${currentStep}`, { replace: true });
+      navigate(`/survey`, { replace: true });
     }
   }, [currentStep, navigate, step, isAuth]);
-
-  console.log('isAuth', isAuth);
 
   return isAuth ? children : <Navigate to="/registration" state={{ from: '/survey' }} />;
 };

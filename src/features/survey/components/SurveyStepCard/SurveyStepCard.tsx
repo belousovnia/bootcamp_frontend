@@ -20,22 +20,28 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { ContainerLoader } from '@ui-library/components/ContainerLoader';
 import { MouseEventHandler, useCallback, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SurveyCard } from '../SurveyCard';
 import { SurveyProgress } from '../SurveyProgress';
 import { SurveyStepBody } from './SurveyStepBody';
 
 export const SurveyStepCard = () => {
   const navigate = useNavigate();
+  const { step } = useParams();
+
+  if (!step) {
+    return null;
+  }
+
+  // В url указан номер шага, который начинается с 1, а в массиве с вопросами с 0
+  const stepAsIndex = parseInt(step) - 1;
+
   const { data, error, isLoading } = useSurvey();
   const [currentAnswerId, setCurrentAnswerId] = useState<number | null>(null);
 
   const resetSurveyResultsStore = useSurveyResultsStore((state) => state.reset);
 
-  const [currentStep, setCurrentStep] = useSurveyResultsStore((state) => [
-    state.currentStep,
-    state.setCurrentStep,
-  ]);
+  const setCurrentStep = useSurveyResultsStore((state) => state.setCurrentStep);
 
   const [answers, setAnswer] = useSurveyResultsStore((state) => [
     state.answers,
@@ -45,16 +51,16 @@ export const SurveyStepCard = () => {
   const setSurveyState = useSurveyResultsStore((state) => state.setSurveyState);
 
   const totalSteps = useMemo(() => data?.survey.length, [data]);
-  const currentQuestion = data?.survey[currentStep];
+  const currentQuestion = data?.survey[parseInt(step, 10) - 1];
 
   const backButtonText = useMemo(
-    () => (currentStep === 0 ? 'Назад' : 'Предыдущий вопрос'),
-    [currentStep],
+    () => (stepAsIndex === 0 ? 'Назад' : 'Предыдущий вопрос'),
+    [stepAsIndex],
   );
 
   const isLastStep = useMemo(
-    () => currentStep + 1 === totalSteps,
-    [currentStep, totalSteps],
+    () => stepAsIndex + 1 === totalSteps,
+    [stepAsIndex, totalSteps],
   );
 
   const nextButtonText = useMemo(
@@ -75,7 +81,7 @@ export const SurveyStepCard = () => {
       navigate('/user/recommendations');
       setTimeout(() => {
         resetSurveyResultsStore();
-      }, 100);
+      }, 200);
     });
   }, [data, answers]);
 
@@ -88,23 +94,13 @@ export const SurveyStepCard = () => {
 
   const handleBackButtonClick: MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
-    if (currentStep === 0) {
-      setCurrentAnswerId(null);
-      setSurveyState('not-active');
+    setCurrentAnswerId(null);
+    if (stepAsIndex === 0) {
+      resetSurveyResultsStore();
       navigate(`/survey`);
     } else {
-      setCurrentStep(currentStep - 1);
-
-      if (currentAnswerId) {
-        const questionId = data?.survey[currentStep].questionId as number;
-        setAnswer(questionId, currentAnswerId);
-      }
-
-      const prevQuestionId = data?.survey[currentStep - 1].questionId;
-      if (prevQuestionId) {
-        setCurrentAnswerId(answers[prevQuestionId]);
-      }
-      navigate(`/survey/step/${currentStep - 1}`);
+      setCurrentStep(stepAsIndex - 1);
+      navigate(`/survey/step/${parseInt(step) - 1}`);
     }
   };
 
@@ -115,23 +111,23 @@ export const SurveyStepCard = () => {
       return;
     }
 
-    const questionId = data?.survey[currentStep].questionId as number;
+    const questionId = data?.survey[stepAsIndex].questionId as number;
     setAnswer(questionId, currentAnswerId);
 
     if (isLastStep) {
       setSurveyState('completed');
       setTimeout(() => {
         mutate();
-      }, 100);
+      }, 200);
       return;
     }
 
-    const nextQuestionId = data?.survey[currentStep + 1].questionId;
+    const nextQuestionId = data?.survey[stepAsIndex + 1].questionId;
 
     if (nextQuestionId) {
-      setCurrentStep(currentStep + 1);
-      setCurrentAnswerId(answers[nextQuestionId] || null);
-      navigate(`/survey/step/${currentStep + 1}`);
+      setCurrentStep(stepAsIndex + 1);
+      navigate(`/survey/step/${parseInt(step) + 1}`);
+      setCurrentAnswerId(null);
     }
   };
 
@@ -173,7 +169,7 @@ export const SurveyStepCard = () => {
       {data && (
         <ContainerLoader isLoading={isSubmitting}>
           <CardContent>
-            <SurveyProgress currentStep={currentStep + 1} totalSteps={totalSteps || 10} />
+            <SurveyProgress currentStep={stepAsIndex + 1} totalSteps={totalSteps || 10} />
             {currentQuestion && (
               <SurveyStepBody
                 question={currentQuestion}

@@ -74,7 +74,7 @@ export const Header = () => {
 
   const surveyPath = useMemo(() => {
     if (surveyState === 'in-progress') {
-      return `/survey/step/${currentStep}`;
+      return `/survey/step/${currentStep + 1}`;
     }
     return '/survey';
   }, [currentStep, surveyState]);
