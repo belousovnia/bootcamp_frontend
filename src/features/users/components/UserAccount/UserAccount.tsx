@@ -19,6 +19,7 @@ const StyledListItemTitle = styled(Typography)(({ theme }) => ({
 
 export const UserAccount = () => {
   const { user, isLoading, error } = useCurrentUser();
+  console.log(user);
 
   return (
     <>
@@ -39,10 +40,10 @@ export const UserAccount = () => {
             <ListItem>
               <FormGroup>
                 <StyledListItemTitle>Email</StyledListItemTitle>
-                <Typography>{user.auth.email}</Typography>
+                <Typography>{user.email}</Typography>
               </FormGroup>
             </ListItem>
-            <ListItem>
+            {/* <ListItem>
               <FormGroup>
                 <StyledListItemTitle>Имя</StyledListItemTitle>
                 <Typography>{user.name ?? 'Не указано'}</Typography>
@@ -59,7 +60,7 @@ export const UserAccount = () => {
                 <StyledListItemTitle>Отчество</StyledListItemTitle>
                 <Typography>{user.patronymic ?? 'Не указано'}</Typography>
               </FormGroup>
-            </ListItem>
+            </ListItem> */}
           </List>
         </Card>
       )}

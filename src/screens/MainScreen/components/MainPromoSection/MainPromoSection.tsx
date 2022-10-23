@@ -31,7 +31,7 @@ export const MainPromoSection = () => {
             рекомендаций на основе ваших предпочтений
           </Typography>
           <Stack
-            direction="row"
+            direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, md: 2 }}
             marginTop={{ xs: 3 }}
             sx={{ textAlign: 'center' }}
@@ -60,7 +60,7 @@ export const MainPromoSection = () => {
         </Grid>
         <Grid display={{ xs: 'none', md: 'flex' }} item md={5}>
           <ImageWrapper>
-            <PromoImage src="/images/promo.jpeg" />
+            <PromoImage src="/images/promo.jpg" />
           </ImageWrapper>
         </Grid>
       </Grid>

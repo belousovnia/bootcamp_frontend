@@ -20,21 +20,23 @@ export const SurveyStepBody = ({
   onAnswerChange,
   answer,
 }: SurveyStepBodyProps) => {
+  console.log('answer', answer);
+
   return (
     <Box sx={{ my: 2 }}>
       <form>
         <Typography variant="h6" component="h3" sx={{ mb: 2 }}>
-          {question.text}
+          {question.question}
         </Typography>
 
         <RadioGroup onChange={(e, val) => onAnswerChange(parseInt(val))} value={answer}>
-          {question.variants.map((answer, index) => (
+          {question.answers.map((a, index) => (
             <FormControlLabel
               key={index + 1}
-              label={answer.text}
-              value={index + 1}
+              label={a.text}
+              value={a.answerId}
               name={'question-answer'}
-              control={<Radio color="primary" />}
+              control={<Radio color="primary" checked={answer === a.answerId} />}
               sx={{ mb: 1 }}
             />
           ))}

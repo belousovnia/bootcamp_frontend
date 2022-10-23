@@ -5,17 +5,22 @@ export type SurveyAnswerTag =
   | 'testing'
   | 'administering';
 
-type VariantQuestion = {
+type SurveyQuestionAnswer = {
+  answerId: number;
   text: string;
-  variants: Array<{ text: string; tag: SurveyAnswerTag }>;
+};
+
+type VariantQuestion = {
+  questionId: number;
+  question: string;
+  answers: SurveyQuestionAnswer[];
 };
 
 export type SurveyQuestion = VariantQuestion;
 
 export type Survey = {
-  id: number;
+  surveyId: number;
   title: string;
   description: string;
-  updatedAt: string;
-  questions: SurveyQuestion[];
+  survey: SurveyQuestion[];
 };

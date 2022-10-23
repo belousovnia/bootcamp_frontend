@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { registration } from '@features/auth/auth.service';
-import axios from 'axios';
 import { useAuthStore } from '@features/auth/auth.hooks';
 import {
   Button,
@@ -13,14 +12,22 @@ import {
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
 import { StyledBox } from '@features/auth/components';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-interface RegistrationProps {
-  title?: string;
-}
-
-export const Registration = ({ title }: RegistrationProps) => {
+export const Registration = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [warningMessage, setWarningMessage] = useState<string>('');
+
+  const titleText = useMemo(() => {
+    if (location.state?.from === '/survey') {
+      return 'Для прохождения теста, пожалуйста, зарегистрируйтесь';
+    }
+    return 'Регистрация';
+  }, [location.state]);
 
   const {
     register,
@@ -33,30 +40,34 @@ export const Registration = ({ title }: RegistrationProps) => {
     commitRegistration(data);
   };
 
+  const goToLogin = () => {
+    navigate('/login', { state: { from: location.state?.from } });
+  };
+
   const commitRegistration = async (user: FieldValues) => {
     try {
       await registration({
         email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        middleName: user.middleName,
         password: user.password,
+        name: user.name,
+        surname: user.surname,
       })
         .then((response) => {
           localStorage.setItem('accessToken', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('refreshToken', response.data?.refreshToken);
           setWarningMessage('');
           setAuth(true);
+          if (location.state?.from) navigate(location.state.from);
+          else navigate('/');
         })
-        .catch(() => {
-          setWarningMessage('Пользователь с таким email уже существует!');
+        .catch((error) => {
+          if (error.response?.data.code === 'ITD_UEC_2')
+            setWarningMessage('Пользователь с таким email уже существует!');
         });
     } catch (e) {
-      if (axios.isAxiosError(e)) console.log(e.response?.data?.message);
-      else console.log(e);
+      console.log(e);
     }
   };
-
   return (
     <Container
       maxWidth={'sm'}
@@ -69,8 +80,8 @@ export const Registration = ({ title }: RegistrationProps) => {
         alignItems: 'center',
       }}
     >
-      <Typography variant={'h4'} textAlign="center" maxWidth={470}>
-        {title ?? 'Регистрация'}
+      <Typography variant={'h4'} textAlign="center" maxWidth={570}>
+        {titleText}
       </Typography>
       <Paper
         sx={{
@@ -86,8 +97,10 @@ export const Registration = ({ title }: RegistrationProps) => {
         <StyledBox>
           <InputLabel htmlFor={'email'}>Email</InputLabel>
           <Input
-            type={'email'}
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: true,
+              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+            })}
             placeholder={'Ваша электронная почта'}
           />
           {errors.email && (
@@ -97,41 +110,34 @@ export const Registration = ({ title }: RegistrationProps) => {
           )}
         </StyledBox>
         <StyledBox>
-          <InputLabel htmlFor={'lastName'}>Фамилия</InputLabel>
+          <InputLabel htmlFor={'surname'}>Фамилия</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('lastName', { required: true })}
+            {...register('surname', {
+              required: true,
+              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
+            })}
             placeholder={'Ваша фамилия'}
           />
-          {errors.lastName && (
+          {errors.surname && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
               Вы должны ввести свою фамилию
             </FormHelperText>
           )}
         </StyledBox>
         <StyledBox>
-          <InputLabel htmlFor={'firstName'}>Имя</InputLabel>
+          <InputLabel htmlFor={'name'}>Имя</InputLabel>
           <Input
             inputProps={{ number: 50 }}
-            {...register('firstName', { required: true })}
+            {...register('name', {
+              required: true,
+              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
+            })}
             placeholder={'Ваше имя'}
           />
-          {errors.firstName && (
+          {errors.name && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
               Вы должны ввести своё имя
-            </FormHelperText>
-          )}
-        </StyledBox>
-        <StyledBox>
-          <InputLabel htmlFor={'middleName'}>Отчество</InputLabel>
-          <Input
-            inputProps={{ number: 50 }}
-            {...register('middleName', { required: true })}
-            placeholder={'Ваше отчество'}
-          />
-          {errors.middleName && (
-            <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Вы должны ввести своё отчество
             </FormHelperText>
           )}
         </StyledBox>
@@ -141,7 +147,7 @@ export const Registration = ({ title }: RegistrationProps) => {
             type={'password'}
             {...register('password', {
               required: true,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
             })}
             placeholder={'Ваш пароль'}
             title={
@@ -162,6 +168,9 @@ export const Registration = ({ title }: RegistrationProps) => {
         )}
         <Button variant={'contained'} size={'large'} type={'submit'}>
           Зарегистрироваться
+        </Button>
+        <Button size={'small'} onClick={() => goToLogin()}>
+          {'Уже зарегистрированы?'}
         </Button>
       </Paper>
     </Container>

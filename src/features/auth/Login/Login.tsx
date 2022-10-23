@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { login } from '@features/auth/auth.service';
-import axios from 'axios';
 import { useAuthStore } from '@features/auth/auth.hooks';
 import {
   Button,
@@ -12,17 +11,28 @@ import {
   Typography,
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { StyledBox } from '../components';
 
 export const Login = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [warningMessage, setWarningMessage] = useState<string>('');
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (data: FieldValues) => {
     auth(data.email, data.password);
+  };
+  const goToRegistration = () => {
+    navigate('/registration', { state: { from: location.state?.from } });
   };
 
   const auth = async (email: string, password: string) => {
@@ -30,16 +40,21 @@ export const Login = () => {
       await login(email, password)
         .then((response) => {
           localStorage.setItem('accessToken', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data.refreshToken);
+          if (response.data.refreshToken)
+            localStorage.setItem('refreshToken', response.data.refreshToken);
           setWarningMessage('');
           setAuth(true);
+          if (location.state?.from) navigate(location.state.from);
+          else navigate('/');
         })
-        .catch(() => {
-          setWarningMessage('Логин и пароль не совпадают!');
+        .catch((error) => {
+          if (error.response.data.code === 'ITD_AEC_1')
+            setWarningMessage('Логин и пароль не совпадают!');
+          else if (error.response.data.code === 'ITD_UEC_1')
+            setWarningMessage('Такого пользователя не существует!');
         });
     } catch (e) {
-      if (axios.isAxiosError(e)) console.log(e.response?.data?.message);
-      else console.log(e);
+      console.log(e);
     }
   };
 
@@ -70,10 +85,17 @@ export const Login = () => {
         <StyledBox>
           <InputLabel htmlFor={'email'}>Email</InputLabel>
           <Input
-            type={'email'}
-            {...register('email', { required: true })}
+            {...register('email', {
+              required: true,
+              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
+            })}
             placeholder={'Ваша электронная почта'}
           />
+          {errors.email && (
+            <FormHelperText error sx={{ fontSize: '1rem' }}>
+              Проверьте почту
+            </FormHelperText>
+          )}
         </StyledBox>
         <StyledBox>
           <InputLabel
@@ -86,9 +108,17 @@ export const Login = () => {
           </InputLabel>
           <Input
             type={'password'}
-            {...register('password', { required: true })}
+            {...register('password', {
+              required: true,
+              pattern: /^.{8,20}$/,
+            })}
             placeholder={'Ваш пароль'}
           />
+          {errors.password && (
+            <FormHelperText error sx={{ fontSize: '1rem' }}>
+              Проверьте пароль
+            </FormHelperText>
+          )}
         </StyledBox>
         {warningMessage && (
           <FormHelperText error sx={{ fontSize: '1rem' }}>
@@ -103,9 +133,7 @@ export const Login = () => {
         >
           Войти
         </Button>
-        <Button to={'/registration'} component={Link}>
-          {'Зарегистрироваться'}
-        </Button>
+        <Button onClick={() => goToRegistration()}>{'Зарегистрироваться'}</Button>
       </Paper>
     </Container>
   );

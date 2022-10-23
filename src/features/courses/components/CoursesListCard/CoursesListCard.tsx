@@ -1,4 +1,4 @@
-import { CourseShort } from '@features/courses/cources.entity';
+import { CourseFull, CourseShort } from '@features/courses/cources.entity';
 import {
   Box,
   Button,
@@ -12,27 +12,25 @@ import {
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
-interface CoursesListCardProps extends CourseShort {
-  onClick?: () => void;
-}
+type CoursesListCardProps = CourseFull;
 
 export const CoursesListCard = ({
   id,
-  name,
+  title,
   coverUrl,
-  provider,
-  startMskDateTime,
-  endMskDateTime,
+  providerName,
+  startsAt,
+  endsAt,
 }: CoursesListCardProps) => {
-  const formattedDateStart = dayjs(startMskDateTime).format('DD.MM.YYYY');
-  const formattedDateEnd = dayjs(endMskDateTime).format('DD.MM.YYYY');
+  const formattedDateStart = dayjs(startsAt).format('DD.MM.YYYY');
+  const formattedDateEnd = dayjs(endsAt).format('DD.MM.YYYY');
   return (
     <Card>
       <CardActionArea component={Link} to={`/courses/${id}`}>
         <CardMedia
           component={'img'}
           image={coverUrl}
-          alt={name}
+          alt={title}
           width={672}
           height={320}
           sx={{ maxHeight: 160 }}
@@ -40,13 +38,13 @@ export const CoursesListCard = ({
       </CardActionArea>
       <CardContent sx={{ p: { md: 3 } }}>
         <Typography component="p" variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          {provider.name}
+          {providerName}
         </Typography>
         <Box sx={{ mb: 1 }} typography={'body2'}>
           {formattedDateStart} – {formattedDateEnd}
         </Box>
         <Typography variant="h5" component="h3">
-          {name}
+          {title}
         </Typography>
       </CardContent>
       <CardActions sx={{ p: { md: 2 } }}>

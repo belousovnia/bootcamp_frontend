@@ -5,5 +5,5 @@ import { UserInfoFull } from './users.entity';
 export type GetUserInfoResponse = UserInfoFull;
 
 export const fetchCurrentUser = async (): Promise<AxiosResponse<GetUserInfoResponse>> => {
-  return requestService.get(`user/me`);
+  return requestService.get(`v1/users/me`);
 };

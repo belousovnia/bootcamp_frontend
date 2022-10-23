@@ -6,7 +6,7 @@ export const AdminLayout = () => {
   const navItems = [
     { path: '/admin/courses', title: 'Курсы' },
     { path: '/admin/professions', title: 'Профессии' },
-    { path: '/admin/course-providers', title: 'Создатели курсов' },
+    { path: '/admin/providers', title: 'Создатели курсов' },
   ];
 
   return (
