@@ -25,7 +25,7 @@ export const CoursesListCard = ({
   const formattedDateStart = dayjs(startsAt).format('DD.MM.YYYY');
   const formattedDateEnd = dayjs(endsAt).format('DD.MM.YYYY');
   return (
-    <Card>
+    <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <CardActionArea component={Link} to={`/courses/${id}`}>
         <CardMedia
           component={'img'}
@@ -47,7 +47,7 @@ export const CoursesListCard = ({
           {title}
         </Typography>
       </CardContent>
-      <CardActions sx={{ p: { md: 2 } }}>
+      <CardActions sx={{ p: { md: 2 }, mt: 'auto' }}>
         <Button variant="outlined" component={Link} to={`/courses/${id}`} fullWidth>
           Открыть курс
         </Button>
