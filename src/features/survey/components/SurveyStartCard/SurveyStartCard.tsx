@@ -34,9 +34,9 @@ export const SurveyStartCard = () => {
   const [isSurveyRepeatConfirmed, setIsSurveyRepeatConfirmed] = useSurveyResultsStore(
     (state) => [state.isSurveyRepeatConfirmed, state.setSurveyRepeatConfirmed],
   );
+  console.log(profile?.professionId);
 
-  const alreadyHasRecommendations =
-    profile?.professionId !== null && !isSurveyRepeatConfirmed;
+  const alreadyHasRecommendations = profile?.professionId && !isSurveyRepeatConfirmed;
 
   useEffect(() => {
     if (alreadyHasRecommendations) {
