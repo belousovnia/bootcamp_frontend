@@ -27,6 +27,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { REQUIRED_DEFAULT_RULE, URL_PATTERN_RULE } from '@utils/formValidationUtils';
 
 export const CoursesNewForm = () => {
   const [providerSearch, setProviderSearch] = useState('');
@@ -35,7 +36,7 @@ export const CoursesNewForm = () => {
     undefined,
   );
   const { courseProviders } = useAllProviders();
-  const { data: professions, isLoading: isLoadingProfessions } = useAllProfessions();
+  const { data: professions } = useAllProfessions();
 
   const { control, handleSubmit, reset, setValue } = useForm<CourseCreateArgs>();
 
@@ -50,6 +51,8 @@ export const CoursesNewForm = () => {
   } = useMutation<void, Error, CourseCreateArgs>((data: CourseCreateArgs) => {
     return createCourse(data).then(() => {
       setSnackbarVisible(true);
+      setProviderSearch('');
+      setSelectedProvider(undefined);
       reset({
         title: '',
         description: '',
@@ -60,7 +63,6 @@ export const CoursesNewForm = () => {
         isAdvanced: false,
         tags: [],
       });
-      setSelectedProvider(undefined);
       queryClient.invalidateQueries(['courses']);
       queryClient.invalidateQueries(['all-courses']);
     });
@@ -93,10 +95,7 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <TextField
@@ -118,15 +117,8 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                    pattern: {
-                      message: 'Неверный формат ссылки',
-                      value:
-                        /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
+                    pattern: URL_PATTERN_RULE,
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <TextField
@@ -148,15 +140,8 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                    pattern: {
-                      message: 'Неверный формат ссылки',
-                      value:
-                        /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
+                    pattern: URL_PATTERN_RULE,
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <TextField
@@ -177,23 +162,25 @@ export const CoursesNewForm = () => {
                   name="providerId"
                   control={control}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
-                  render={({ field: { value, ...otherFields }, fieldState }) => (
+                  render={({ fieldState }) => (
                     <Autocomplete
                       options={courseProviders ?? []}
                       getOptionLabel={(option) => option?.name ?? ''}
                       noOptionsText={'Ничего не найдено'}
-                      onInputChange={(event, newInputValue) => {
-                        setProviderSearch(newInputValue);
+                      value={selectedProvider}
+                      onInputChange={(event, newInputValue, reason) => {
+                        if (reason === 'input') {
+                          setProviderSearch(newInputValue);
+                        }
                       }}
                       onChange={(event, newValue) => {
                         setValue('providerId', newValue?.id as number);
                         setSelectedProvider(newValue ?? undefined);
+                        setProviderSearch(newValue?.name ?? '');
                       }}
+                      inputValue={providerSearch}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -201,6 +188,7 @@ export const CoursesNewForm = () => {
                           variant="outlined"
                           error={!!fieldState.error}
                           helperText={fieldState.error?.message}
+                          value={providerSearch}
                         />
                       )}
                     />
@@ -213,10 +201,7 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={undefined}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <FormControl fullWidth>
@@ -249,7 +234,7 @@ export const CoursesNewForm = () => {
                   name="tags"
                   control={control}
                   defaultValue={[] as string[]}
-                  render={({ field: { value, ...otherFields }, fieldState }) => (
+                  render={({ field: { value, ...otherFields } }) => (
                     <Autocomplete
                       multiple
                       id="tags-filled"
@@ -285,10 +270,7 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -316,10 +298,7 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -348,10 +327,7 @@ export const CoursesNewForm = () => {
                   control={control}
                   defaultValue={''}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field: { value, ...otherFields }, fieldState }) => (
                     <TextField

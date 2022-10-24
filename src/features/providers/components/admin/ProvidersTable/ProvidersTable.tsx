@@ -15,8 +15,6 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -29,9 +27,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 export const ProvidersTable = () => {
-  const [page, setPage] = useState(1);
-  const client = useQueryClient();
-
   const { courseProviders, isLoading, error } = useAllProviders();
 
   return (

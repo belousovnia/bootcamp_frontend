@@ -17,6 +17,7 @@ import { useParams } from 'react-router-dom';
 import { useProfession } from '@features/professions/professions.hooks';
 import { ProfessionEntity } from '@features/professions/professions.entity';
 import { updateProfession } from '@features/professions/professions.service';
+import { REQUIRED_DEFAULT_RULE, URL_PATTERN_RULE } from '@utils/formValidationUtils';
 
 export const ProfessionsEditForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,10 +80,7 @@ export const ProfessionsEditForm = () => {
                     control={control}
                     defaultValue={profession.data.name}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -103,10 +101,7 @@ export const ProfessionsEditForm = () => {
                     defaultValue={profession.data.description}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -129,15 +124,8 @@ export const ProfessionsEditForm = () => {
                     defaultValue={profession.data.coverUrl}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                      pattern: {
-                        message: 'Неверный формат ссылки',
-                        value:
-                          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
+                      pattern: URL_PATTERN_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField

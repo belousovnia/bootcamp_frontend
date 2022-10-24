@@ -65,7 +65,7 @@ export const CoursesFilter = ({
     onChange({ ...options, search: event.target.value });
   };
 
-  const handleProfessionChange = (event: SelectChangeEvent<string>) => {
+  const handleProfessionChange = (event: SelectChangeEvent) => {
     onChange({
       ...options,
       professionId: event.target.value ? parseInt(event.target.value) : undefined,
@@ -83,7 +83,7 @@ export const CoursesFilter = ({
     onChange({ ...options, isAdvanced: result });
   };
 
-  const handleSortbyChange = (event: SelectChangeEvent<string>) => {
+  const handleSortbyChange = (event: SelectChangeEvent) => {
     onChange({ ...options, sortBy: event.target.value as CoursesSortBy });
   };
 

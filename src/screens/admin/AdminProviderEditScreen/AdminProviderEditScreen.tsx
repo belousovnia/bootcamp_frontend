@@ -1,4 +1,4 @@
-import { ProviderEditForm } from '@features/providers/components/ProviderEditForm';
+import { ProviderEditForm } from '@features/providers/components/admin/ProviderEditForm';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';

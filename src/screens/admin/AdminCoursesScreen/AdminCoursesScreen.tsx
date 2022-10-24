@@ -1,4 +1,4 @@
-import { CoursesTable } from '@features/courses/components/CoursesTable';
+import { CoursesTable } from '@features/courses/components/admin/CoursesTable';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';

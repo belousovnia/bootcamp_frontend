@@ -28,7 +28,6 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 export const CoursesTable = () => {
   const { courses, isLoading, error } = useAllCourses();
-  console.log(courses);
 
   return (
     <>

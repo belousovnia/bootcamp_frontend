@@ -8,18 +8,16 @@ import {
   CircularProgress,
   Grid,
   Snackbar,
-  styled,
   TextField,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
 import { createProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
+import { REQUIRED_DEFAULT_RULE, URL_PATTERN_RULE } from '@utils/formValidationUtils';
 
 export const ProviderNewForm = () => {
-  const { id } = useParams<{ id: string }>();
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const { control, handleSubmit, reset } = useForm<ProviderFull>();
   const queryClient = useQueryClient();
@@ -64,10 +62,7 @@ export const ProviderNewForm = () => {
                   name="name"
                   control={control}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -86,15 +81,8 @@ export const ProviderNewForm = () => {
                   name="url"
                   control={control}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                    pattern: {
-                      message: 'Неверный формат ссылки',
-                      value:
-                        /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
+                    pattern: URL_PATTERN_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -113,10 +101,7 @@ export const ProviderNewForm = () => {
                   name="description"
                   control={control}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField
@@ -137,15 +122,8 @@ export const ProviderNewForm = () => {
                   name="coverUrl"
                   control={control}
                   rules={{
-                    required: {
-                      value: true,
-                      message: 'Поле обязательно для заполнения',
-                    },
-                    pattern: {
-                      message: 'Неверный формат ссылки',
-                      value:
-                        /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                    },
+                    required: REQUIRED_DEFAULT_RULE,
+                    pattern: URL_PATTERN_RULE,
                   }}
                   render={({ field, fieldState }) => (
                     <TextField

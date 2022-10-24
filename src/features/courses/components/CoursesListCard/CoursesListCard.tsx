@@ -1,4 +1,4 @@
-import { CourseFull, CourseShort } from '@features/courses/cources.entity';
+import { CourseFull } from '@features/courses/cources.entity';
 import {
   Box,
   Button,

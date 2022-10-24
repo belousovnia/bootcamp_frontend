@@ -1,7 +1,7 @@
 import { requestService } from '@infrastructure/request';
 import { PaginatedResult } from '@infrastructure/types';
 import { AxiosResponse } from 'axios';
-import { CourseFull, CourseShort } from './cources.entity';
+import { CourseFull } from './cources.entity';
 
 export type CoursesSortBy = 'date-start' | 'date-end';
 

@@ -1,4 +1,3 @@
-import { requestService } from '@infrastructure/request';
 import { useQuery } from '@tanstack/react-query';
 import { Survey } from '../survey.entity';
 import { fetchSurvey } from '../survey.service';
