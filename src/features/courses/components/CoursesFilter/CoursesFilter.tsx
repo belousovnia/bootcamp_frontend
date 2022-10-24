@@ -73,7 +73,14 @@ export const CoursesFilter = ({
   };
 
   const handleIsForAdvancedChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, isAdvanced: event.target.value === 'yes' });
+    let result = undefined;
+    if (event.target.value === 'yes') {
+      result = true;
+    } else if (event.target.value === 'no') {
+      result = false;
+    }
+
+    onChange({ ...options, isAdvanced: result });
   };
 
   const handleSortbyChange = (event: SelectChangeEvent<string>) => {
