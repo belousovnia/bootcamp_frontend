@@ -52,11 +52,11 @@ export const CoursesFilter = ({
       return '';
     }
 
-    if (options.isAdvanced === true) {
+    if (options.isAdvanced) {
       return 'yes';
     }
 
-    if (options.isAdvanced === false) {
+    if (!options.isAdvanced) {
       return 'no';
     }
   }, [options.isAdvanced]);
@@ -93,7 +93,7 @@ export const CoursesFilter = ({
       <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />
       <CardContent sx={{ p: { md: 3 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <TextField
               variant="outlined"
               label="Поиск по названию курса"
@@ -104,7 +104,7 @@ export const CoursesFilter = ({
             />
           </Grid>
           {!isProfessionsDisabled && (
-            <Grid item xs={12} sm={4} lg={gridColumnSize}>
+            <Grid item xs={12} sm={6} lg={gridColumnSize}>
               <FormControl fullWidth>
                 <InputLabel id="course-profession">Профессия</InputLabel>
                 <Select
@@ -128,7 +128,7 @@ export const CoursesFilter = ({
             </Grid>
           )}
 
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-for-advanced">Сложность</InputLabel>
               <Select
@@ -147,7 +147,7 @@ export const CoursesFilter = ({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-sortby">Сортировать по:</InputLabel>
               <Select
