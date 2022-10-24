@@ -1,15 +1,7 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, CardActions, CardContent, Typography } from '@mui/material';
 import { MouseEventHandler } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SurveyCard } from '../SurveyCard';
 
 export const SurveyStartCard = () => {
@@ -25,11 +17,11 @@ export const SurveyStartCard = () => {
 
   return (
     <SurveyCard component="section">
-      <CardHeader
-        title="Подобрать IT направление"
-        titleTypographyProps={{ component: 'h1', variant: 'h3' }}
-        component="header"
-      />
+      <Box component="header" p={3}>
+        <Typography variant="h3" component="h1">
+          Пройти тест <br />и подобрать IT профессию
+        </Typography>
+      </Box>
       <CardContent style={{ paddingTop: 0 }}>
         <Typography variant="body1" component="p" style={{ maxWidth: 400 }}>
           Ответьте на 10 вопросов и узнайте наиболее подходящее для вас IT направление
