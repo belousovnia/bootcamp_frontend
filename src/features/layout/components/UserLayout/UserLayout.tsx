@@ -1,5 +1,5 @@
 import { RecommendRounded, Settings } from '@mui/icons-material';
-import { Grid, IconPropsSizeOverrides } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { UserSidebar } from './UserSidebar';
 

@@ -1,4 +1,4 @@
-import { CoursesEditForm } from '@features/courses/components/CoursesEditForm';
+import { CoursesEditForm } from '@features/courses/components/admin/CoursesEditForm';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';

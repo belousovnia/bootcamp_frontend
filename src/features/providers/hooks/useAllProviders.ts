@@ -1,4 +1,4 @@
-import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   fetchAllProviders,
   ProvidersAllResponse,

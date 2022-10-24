@@ -1,12 +1,12 @@
 import { CoursesView } from '@features/courses/components/CoursesView';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { useSearchParams } from 'react-router-dom';
 
 export const CoursesScreen = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const professionId = useMemo(() => {
     const professionId = searchParams.get('professionId');

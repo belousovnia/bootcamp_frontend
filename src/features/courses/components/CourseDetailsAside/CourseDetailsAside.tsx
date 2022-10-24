@@ -1,13 +1,5 @@
 import { useCourse } from '@features/courses/hooks/useCourse';
-import {
-  Box,
-  Button,
-  Card,
-  CircularProgress,
-  Stack,
-  styled,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Card, Stack, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 interface CourseDetailsAsideProps {

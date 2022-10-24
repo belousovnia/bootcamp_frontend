@@ -1,4 +1,3 @@
-import { faker } from '@faker-js/faker';
 import { Survey } from '../survey.entity';
 
 export const surveyFixture: Survey = {

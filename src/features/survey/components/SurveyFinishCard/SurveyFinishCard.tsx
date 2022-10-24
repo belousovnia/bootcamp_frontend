@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from '@mui/material';
+import { CardContent, CardHeader } from '@mui/material';
 import { SurveyCard } from '../SurveyCard';
 
 export const SurveyFinishCard = () => {

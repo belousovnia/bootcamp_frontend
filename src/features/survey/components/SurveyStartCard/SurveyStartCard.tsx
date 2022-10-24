@@ -1,15 +1,7 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Button, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import { MouseEventHandler } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { SurveyCard } from '../SurveyCard';
 
 export const SurveyStartCard = () => {

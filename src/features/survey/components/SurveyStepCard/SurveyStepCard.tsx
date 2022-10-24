@@ -1,8 +1,4 @@
-import {
-  SurveyResultsState,
-  useSurvey,
-  useSurveyResultsStore,
-} from '@features/survey/hooks';
+import { useSurvey, useSurveyResultsStore } from '@features/survey/hooks';
 import {
   createSurveyResults,
   CreateSurveyResultsArgs,
@@ -88,7 +84,6 @@ export const SurveyStepCard = () => {
   const {
     mutate,
     isLoading: isSubmitting,
-    isError: isSubmitError,
     error: submitError,
   } = useMutation<void, Error, void>(mutationCallback);
 

@@ -1,5 +1,4 @@
-import { CourseFull, CourseShort } from '@features/courses/cources.entity';
-import { CoursesSortBy } from '@features/courses/courses.service';
+import { CourseFull } from '@features/courses/cources.entity';
 import { Grid } from '@mui/material';
 import { ForwardedRef, forwardRef } from 'react';
 import { CoursesListCard } from '../CoursesListCard';

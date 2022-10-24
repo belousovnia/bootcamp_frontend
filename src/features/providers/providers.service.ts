@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { requestService } from '@infrastructure/request';
 import { CourseDetailsArgs } from '@features/courses/courses.service';
-import { ProviderFull, ProviderShort } from '@features/providers/providers.entity';
+import { ProviderFull } from '@features/providers/providers.entity';
 
 export type ProvidersListArgs = {
   page: string;

@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, Stack, styled, Typography } from '@mui/material';
+import { Button, Card, Grid, Stack, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const ImageWrapper = styled('div')`

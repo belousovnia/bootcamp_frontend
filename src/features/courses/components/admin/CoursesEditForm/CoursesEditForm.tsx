@@ -1,4 +1,3 @@
-import { CourseFull } from '@features/courses/cources.entity';
 import { CourseCreateArgs, updateCourse } from '@features/courses/courses.service';
 import { useCourse } from '@features/courses/hooks/useCourse';
 import { useAllProviders } from '@features/providers/hooks/useAllProviders';
@@ -21,36 +20,14 @@ import {
   MenuItem,
   Select,
   Snackbar,
-  styled,
   TextField,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
-import { updateProvider } from '@features/providers/providers.service';
-import { ProviderFull } from '@features/providers';
-import {
-  useAllProfessions,
-  useProfessions,
-} from '@features/professions/professions.hooks';
-
-const LogoWrapper = styled('div')`
-  max-width: 220px;
-  height: 120px;
-  border-radius: ${({ theme }) => theme.shape.borderRadius}px;
-  overflow: hidden;
-  position: relative;
-`;
-
-const Logo = styled('img')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-`;
+import { useAllProfessions } from '@features/professions/professions.hooks';
+import { REQUIRED_DEFAULT_RULE, URL_PATTERN_RULE } from '@utils/formValidationUtils';
 
 export const CoursesEditForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -60,11 +37,7 @@ export const CoursesEditForm = () => {
 
   const queryClient = useQueryClient();
 
-  const {
-    data: professions,
-    isLoading: isLoadingProfessions,
-    error: professionsError,
-  } = useAllProfessions();
+  const { data: professions, error: professionsError } = useAllProfessions();
 
   const {
     mutate,
@@ -118,10 +91,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.title}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -142,15 +112,8 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.url}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                      pattern: {
-                        message: 'Неверный формат ссылки',
-                        value:
-                          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
+                      pattern: URL_PATTERN_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -171,15 +134,8 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.coverUrl}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                      pattern: {
-                        message: 'Неверный формат ссылки',
-                        value:
-                          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
+                      pattern: URL_PATTERN_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -200,10 +156,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.providerId}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value }, fieldState }) => (
                       <Autocomplete
@@ -233,10 +186,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.professionId}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <FormControl fullWidth>
@@ -270,7 +220,7 @@ export const CoursesEditForm = () => {
                     name="tags"
                     control={control}
                     defaultValue={course.tags}
-                    render={({ field: { value, ...otherFields }, fieldState }) => (
+                    render={({ field: { value, ...otherFields } }) => (
                       <Autocomplete
                         multiple
                         id="tags-filled"
@@ -306,10 +256,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.startsAt}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...restProps }, fieldState }) => (
                       <TextField
@@ -337,10 +284,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.endsAt}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...restProps }, fieldState }) => (
                       <TextField
@@ -369,10 +313,7 @@ export const CoursesEditForm = () => {
                     control={control}
                     defaultValue={course.description}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField

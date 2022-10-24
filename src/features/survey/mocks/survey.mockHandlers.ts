@@ -1,6 +1,6 @@
 import { rest } from 'msw';
 import { Survey } from '../survey.entity';
-import { surveyFixture } from './survey.fixtures';
+import { surveyFixture } from '@features/survey';
 
 type MockSurveyResponse = Survey;
 
