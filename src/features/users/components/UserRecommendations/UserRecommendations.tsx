@@ -29,14 +29,6 @@ export const UserRecommendations = () => {
 
   return (
     <>
-      {(isProfileLoading || professionsLoading || isProfileLoading) && (
-        <CircularProgress />
-      )}
-      {(profileError || professionsError || coursesError) && (
-        <Alert severity="error">
-          Ой! Кажется произошла ошибка при загрузке рекомендаций
-        </Alert>
-      )}
       {profile && !profile?.professionId && (
         <>
           <Alert severity="info">
@@ -53,6 +45,14 @@ export const UserRecommendations = () => {
             Пройти тест
           </Button>
         </>
+      )}
+
+      {!allDataLoaded && profile?.professionId && <CircularProgress />}
+
+      {(profileError || professionsError || coursesError) && (
+        <Alert severity="error">
+          Ой! Кажется произошла ошибка при загрузке рекомендаций
+        </Alert>
       )}
       {allDataLoaded && profile && profile?.professionId && (
         <>
