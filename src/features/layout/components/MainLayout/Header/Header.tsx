@@ -1,23 +1,23 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
+  AppBar,
+  Box,
   Button,
   Container,
   Drawer,
   IconButton,
   List,
   ListItem,
-  Stack,
-  Toolbar,
-  AppBar,
-  Box,
   Menu,
   MenuItem,
+  Stack,
+  Toolbar,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CurrentUserRoles, useAuthStore, useCurrentUser } from '@features/auth';
 import { logOut } from '@features/auth/components';
 
@@ -48,7 +48,7 @@ const StyledLeftStack = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledLogoLink = styled(Link)(({ theme }) => ({
+const StyledLogoLink = styled(Link)(() => ({
   textDecoration: 'none',
   transition: 'all 0.3s ease',
   color: 'inherit',
@@ -66,6 +66,7 @@ export const Header = () => {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const resetSurveyResultsStore = useSurveyResultsStore((state) => state.reset);
   const currentUser = useCurrentUser();
+  const location = useLocation();
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -131,6 +132,7 @@ export const Header = () => {
                     to={link.path.includes('survey') ? surveyPath : link.path}
                     variant={link.variant}
                     sx={{ py: 1 }}
+                    disabled={location.pathname === link.path}
                   >
                     {link.title}
                   </Button>
