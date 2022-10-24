@@ -176,6 +176,15 @@ export const Header = () => {
                   >
                     Мой аккаунт
                   </MenuItem>
+                  {currentUser && (
+                    <MenuItem
+                      onClick={handleUserMenuClose}
+                      component={Link}
+                      to="/user/recommendations"
+                    >
+                      Мои рекомендации
+                    </MenuItem>
+                  )}
                   {(currentUser?.data?.role === CurrentUserRoles.ROLE_MODERATOR ||
                     currentUser?.data?.role === CurrentUserRoles.ROLE_ADMIN) && (
                     <MenuItem
