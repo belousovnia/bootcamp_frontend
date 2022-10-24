@@ -1,8 +1,4 @@
-import {
-  SurveyResultsState,
-  useSurvey,
-  useSurveyResultsStore,
-} from '@features/survey/hooks';
+import { useSurvey, useSurveyResultsStore } from '@features/survey/hooks';
 import {
   createSurveyResults,
   CreateSurveyResultsArgs,
@@ -78,17 +74,14 @@ export const SurveyStepCard = () => {
     };
 
     return createSurveyResults(args).then(() => {
-      navigate('/user/recommendations');
-      setTimeout(() => {
-        resetSurveyResultsStore();
-      }, 200);
+      setSurveyState('completed');
+      navigate(`/survey/finish`);
     });
   }, [data, answers]);
 
   const {
     mutate,
     isLoading: isSubmitting,
-    isError: isSubmitError,
     error: submitError,
   } = useMutation<void, Error, void>(mutationCallback);
 
@@ -115,7 +108,6 @@ export const SurveyStepCard = () => {
     setAnswer(questionId, currentAnswerId);
 
     if (isLastStep) {
-      setSurveyState('completed');
       setTimeout(() => {
         mutate();
       }, 200);

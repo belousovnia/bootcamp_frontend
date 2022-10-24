@@ -77,6 +77,10 @@ export const Header = () => {
     if (surveyState === 'in-progress') {
       return `/survey/step/${currentStep + 1}`;
     }
+
+    if (surveyState === 'completed') {
+      return `/survey/finish`;
+    }
     return '/survey';
   }, [currentStep, surveyState]);
 
