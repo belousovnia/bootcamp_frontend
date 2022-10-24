@@ -93,8 +93,6 @@ export const CoursesFilter = ({
     }
   }, [searchInputRef, options]);
 
-  console.log(isAdvancedValue);
-
   return (
     <Card>
       <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />

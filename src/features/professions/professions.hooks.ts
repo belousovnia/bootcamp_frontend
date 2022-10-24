@@ -3,7 +3,7 @@ import {
   getProfession,
   getProfessions,
 } from '@features/professions/professions.service';
-import { useQuery } from '@tanstack/react-query';
+import { QueryKey, useQuery, UseQueryOptions } from '@tanstack/react-query';
 import {
   ProfessionEntity,
   ProfessionsAllResponse,
@@ -23,9 +23,19 @@ export const useAllProfessions = () => {
   });
 };
 
-export const useProfession = (id: string) => {
-  return useQuery<ProfessionEntity, Error>(['profession', id], async () => {
-    const { data } = await getProfession(id);
-    return data;
-  });
+export const useProfession = (
+  id: string,
+  queryOptions?: Omit<
+    UseQueryOptions<ProfessionEntity, Error, ProfessionEntity, QueryKey>,
+    'queryKey' | 'queryFn' | 'initialData'
+  > & { initialData?: () => undefined },
+) => {
+  return useQuery<ProfessionEntity, Error>(
+    ['profession', id],
+    async () => {
+      const { data } = await getProfession(id);
+      return data;
+    },
+    queryOptions,
+  );
 };

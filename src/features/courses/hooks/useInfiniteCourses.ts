@@ -1,8 +1,15 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, UseInfiniteQueryOptions } from '@tanstack/react-query';
 import { FilterOptions } from '../components/CoursesFilter';
-import { CoursesListArgs, CoursesListResponse, fetchCourses } from '../courses.service';
+import { CoursesListResponse, fetchCourses } from '../courses.service';
 
-export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
+export const useInfiniteCourses = (
+  page: number,
+  opts: FilterOptions,
+  queryOpts?: Omit<
+    UseInfiniteQueryOptions<any, Error, CoursesListResponse, any, any>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
   const {
     data,
     error,
@@ -19,6 +26,7 @@ export const useInfiniteCourses = (page: number, opts: FilterOptions) => {
       return data;
     },
     {
+      ...queryOpts,
       getNextPageParam: (data) =>
         data.content.length === 0 || data.pageNumber >= data.totalPages
           ? undefined
