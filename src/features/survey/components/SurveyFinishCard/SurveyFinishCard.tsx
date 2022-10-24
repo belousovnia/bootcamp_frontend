@@ -18,7 +18,7 @@ export const SurveyFinishCard = () => {
     <SurveyCard component="section">
       <Box component="header" p={3} pb={0}>
         <Typography variant="h3" component="h1">
-          Поздравляем! <br /> вы успешно прошли тест
+          Поздравляем! <br /> Вы успешно прошли тест 🦖
         </Typography>
       </Box>
       <CardContent>Результаты теста ждут вас на странице рекомендаций</CardContent>
