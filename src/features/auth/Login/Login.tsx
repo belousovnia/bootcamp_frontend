@@ -5,7 +5,9 @@ import {
   Button,
   Container,
   FormHelperText,
+  IconButton,
   Input,
+  InputAdornment,
   InputLabel,
   Paper,
   Typography,
@@ -13,6 +15,7 @@ import {
 import { FieldValues, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { StyledBox } from '../components';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export const Login = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -21,6 +24,7 @@ export const Login = () => {
   const location = useLocation();
 
   const [warningMessage, setWarningMessage] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const {
     register,
@@ -107,12 +111,23 @@ export const Login = () => {
             {/*<Link component={'button'}>{'Забыли пароль?'}</Link>{' '}*/}
           </InputLabel>
           <Input
-            type={'password'}
+            type={showPassword ? 'text' : 'password'}
             {...register('password', {
               required: true,
               pattern: /^.{8,20}$/,
             })}
             placeholder={'Ваш пароль'}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
           {errors.password && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>

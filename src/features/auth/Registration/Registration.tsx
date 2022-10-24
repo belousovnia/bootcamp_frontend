@@ -5,14 +5,19 @@ import {
   Button,
   Container,
   FormHelperText,
+  IconButton,
   Input,
+  InputAdornment,
   InputLabel,
   Paper,
   Typography,
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { StyledBox } from '@features/auth/components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export const Registration = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -21,6 +26,8 @@ export const Registration = () => {
   const location = useLocation();
 
   const [warningMessage, setWarningMessage] = useState<string>('');
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
 
   const titleText = useMemo(() => {
     if (location.state?.from === '/survey') {
@@ -29,11 +36,43 @@ export const Registration = () => {
     return 'Регистрация';
   }, [location.state]);
 
+  const registrationSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email('Проверьте свою почту!')
+      .required('Вы должны ввести свою почту!'),
+    surname: yup
+      .string()
+      .required('Вы не ввели фамилию!')
+      .matches(
+        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
+        'Фамилия должна начинаться с большой буквы.',
+      ),
+    name: yup
+      .string()
+      .required('Вы не ввели имя!')
+      .matches(
+        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
+        'Имя должно начинаться с большой буквы.',
+      ),
+    password: yup
+      .string()
+      .required('Вы не ввели пароль!')
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
+        'Пароль должен содержать от 8 до 20 символов, состоять из латинских букв, содержать как минимум 1 прописную и 1 заглавную буквы, 1 цифру.',
+      ),
+    passwordRepeat: yup
+      .string()
+      .required('Вы не ввели пароль!')
+      .oneOf([yup.ref('password')], 'Пароли не совпадают!'),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(registrationSchema) });
 
   const onSubmit = (data: FieldValues) => {
     setWarningMessage('');
@@ -99,13 +138,12 @@ export const Registration = () => {
           <Input
             {...register('email', {
               required: true,
-              pattern: /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/,
             })}
             placeholder={'Ваша электронная почта'}
           />
           {errors.email && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Вы должны ввести свою почту
+              {errors.email.message?.toString()}
             </FormHelperText>
           )}
         </StyledBox>
@@ -115,13 +153,12 @@ export const Registration = () => {
             inputProps={{ number: 50 }}
             {...register('surname', {
               required: true,
-              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
             })}
             placeholder={'Ваша фамилия'}
           />
           {errors.surname && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Вы должны ввести свою фамилию
+              {errors.surname.message?.toString()}
             </FormHelperText>
           )}
         </StyledBox>
@@ -131,33 +168,70 @@ export const Registration = () => {
             inputProps={{ number: 50 }}
             {...register('name', {
               required: true,
-              pattern: /^([А-Я][а-яё]{1,50}|[A-Z][a-z]{1,50})$/,
             })}
             placeholder={'Ваше имя'}
           />
           {errors.name && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Вы должны ввести своё имя
+              {errors.name.message?.toString()}
             </FormHelperText>
           )}
         </StyledBox>
         <StyledBox>
           <InputLabel htmlFor={'password'}>Пароль</InputLabel>
           <Input
-            type={'password'}
+            type={showPassword ? 'text' : 'password'}
             {...register('password', {
               required: true,
-              pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/,
             })}
             placeholder={'Ваш пароль'}
             title={
               'Пароль должен содержать от 8 до 20 символов, состоять из латинских букв, содержать как минимум 1 прописную и 1 заглавную буквы, 1 цифру.'
             }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
           />
           {errors.password && (
             <FormHelperText error sx={{ fontSize: '1rem' }}>
-              Пароль должен содержать от 8 до 20 символов, состоять из латинских букв и
-              содержать как минимум 1 прописную и 1 заглавную буквы и 1 цифру.
+              {errors.password.message?.toString()}
+            </FormHelperText>
+          )}
+        </StyledBox>
+        <StyledBox>
+          <InputLabel htmlFor={'passwordRepeat'}>Повторите пароль</InputLabel>
+          <Input
+            type={showRepeatPassword ? 'text' : 'password'}
+            {...register('passwordRepeat', {
+              required: true,
+            })}
+            placeholder={'Ваш пароль'}
+            title={
+              'Пароль должен содержать от 8 до 20 символов, состоять из латинских букв, содержать как минимум 1 прописную и 1 заглавную буквы, 1 цифру.'
+            }
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                  edge="end"
+                >
+                  {showRepeatPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+          {errors.passwordRepeat && (
+            <FormHelperText error sx={{ fontSize: '1rem' }}>
+              {errors.passwordRepeat.message?.toString()}
             </FormHelperText>
           )}
         </StyledBox>
