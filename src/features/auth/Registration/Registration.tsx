@@ -39,8 +39,8 @@ export const Registration = () => {
   const registrationSchema = yup.object().shape({
     email: yup
       .string()
-      .email('Проверьте свою почту!')
-      .required('Вы должны ввести свою почту!'),
+      .email('Вы не ввели почту!')
+      .required('Вы должны ввести действительную почту.'),
     surname: yup
       .string()
       .required('Вы не ввели фамилию!')
