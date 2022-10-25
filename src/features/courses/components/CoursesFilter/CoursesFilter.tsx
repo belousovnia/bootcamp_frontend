@@ -162,10 +162,10 @@ export const CoursesFilter = ({
                 label="Сортировать по:"
                 value={options.sortBy}
                 onChange={handleSortbyChange}
-                defaultValue="date-start"
+                defaultValue="startsAt"
               >
-                <MenuItem value={'date-start'}>Дате начала</MenuItem>
-                <MenuItem value={'date-end'}>Дате окончания</MenuItem>
+                <MenuItem value={'startsAt'}>Дате начала</MenuItem>
+                <MenuItem value={'endsAt'}>Дате окончания</MenuItem>
               </Select>
             </FormControl>
           </Grid>

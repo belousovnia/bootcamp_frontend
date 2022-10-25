@@ -17,7 +17,7 @@ export const CoursesView = ({
 }: CoursesViewProps) => {
   const [options, setOptions] = useState<FilterOptions>({
     ...filterOptions,
-    sortBy: 'date-start',
+    sortBy: 'startsAt',
     search: '',
   });
 
@@ -30,7 +30,7 @@ export const CoursesView = ({
 
   const clearFilters: MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
-    setOptions({ ...filterOptions, sortBy: 'date-start', search: '' });
+    setOptions({ ...filterOptions, sortBy: 'startsAt', search: '' });
   };
 
   return (
