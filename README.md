@@ -118,4 +118,4 @@ TODO: Написать про mock API и MSW
 
 ## Артефакт об имеющемся техническом долге
 Доступен по адресу
- [docs/technical-debt.md](/docs/technical-debt.md)
+ [docs/technical-debt.md](docs/technical-debt.md)
