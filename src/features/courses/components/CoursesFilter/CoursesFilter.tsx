@@ -102,6 +102,7 @@ export const CoursesFilter = ({
             <TextField
               variant="outlined"
               label="Поиск по названию курса"
+              placeholder="Название курса"
               onChange={debounce(handleSearchChange, 300)}
               defaultValue={options.search}
               inputRef={searchInputRef}
