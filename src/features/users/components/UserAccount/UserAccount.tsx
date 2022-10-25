@@ -29,11 +29,6 @@ const StyledListItemTitle = styled(Typography)(({ theme }) => ({
 
 export const UserAccount = () => {
   const redactUserSchema = yup.object().shape({
-    email: yup
-      .string()
-      .email('Вы не ввели почту!')
-      .max(100, 'Слишком много символов.')
-      .required('Вы должны ввести действительную почту.'),
     surname: yup
       .string()
       .required('Вы не ввели фамилию!')
@@ -62,17 +57,12 @@ export const UserAccount = () => {
   const queryClient = useQueryClient();
 
   interface RedactUser {
-    email: string;
     name: string;
     surname: string;
   }
 
   const onSubmit = async (user: RedactUser) => {
-    if (
-      user.name !== profile?.name ||
-      user.surname !== profile?.surname ||
-      user.email !== profile?.email
-    ) {
+    if (user.name !== profile?.name || user.surname !== profile?.surname) {
       profile && (await changeCurrentUserProfile({ ...profile, ...user }));
       await queryClient.invalidateQueries(['currentUserProfile']);
     }
@@ -137,21 +127,6 @@ export const UserAccount = () => {
           <Card sx={{ p: { xs: 3 } }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <List>
-                <ListItem>
-                  <FormGroup>
-                    <StyledListItemTitle>Email:</StyledListItemTitle>
-                    <TextField
-                      size={'small'}
-                      defaultValue={profile.email}
-                      {...register('email')}
-                    />
-                    {errors.email && (
-                      <FormHelperText error sx={{ fontSize: '1rem' }}>
-                        {errors.email.message?.toString()}
-                      </FormHelperText>
-                    )}
-                  </FormGroup>
-                </ListItem>
                 <ListItem>
                   <FormGroup>
                     <StyledListItemTitle>Имя:</StyledListItemTitle>
