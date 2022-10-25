@@ -65,11 +65,13 @@ yarn dev
 * [Dayjs](https://day.js.org/) - библиотека для работы с датами
 
 ### Общая инфраструктура
+* [Vite](https://vitejs.dev/) - сборщик проекта
 * [ESLint](https://eslint.org/) - линтер для статического анализа кода
 * [Prettier](https://prettier.io/) - форматтер для единого стиля кода
 * [Husky](https://typicode.github.io/husky/#/) - библиотека для работы с git hooks
 * [MSW](https://mswjs.io/) - библиотека для работы с моковыми API
 * [Faker.js](https://fakerjs.dev/) - библиотека для генерации фейковых данных
+* [Github](https://github.com/) – для хранения кода
 * [Github Actions](https://github.com/features/actions) - CI/CD
 * [Heroku](https://www.heroku.com/) - хостинг
 * [Docker](https://www.docker.com/) - контейнеризация
