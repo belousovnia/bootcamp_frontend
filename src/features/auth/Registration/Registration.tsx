@@ -39,9 +39,12 @@ export const Registration = () => {
   const registrationSchema = yup.object().shape({
     email: yup
       .string()
-      .email('Вы не ввели почту!')
+      .matches(
+        /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/,
+        'Вы должны ввести действительную почту.',
+      )
       .max(50, 'Слишком много символов.')
-      .required('Вы должны ввести действительную почту.'),
+      .required('Вы не ввели почту!'),
     surname: yup
       .string()
       .required('Вы не ввели фамилию!')
