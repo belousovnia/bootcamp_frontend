@@ -261,30 +261,32 @@ export const Header = () => {
             </ListItem>
           ))}
         </List>
-        <Stack direction={'column'} sx={{ p: 2, mt: 'auto' }} spacing={2}>
-          <Button
-            size={'large'}
-            component={Link}
-            to={'/login'}
-            variant={'outlined'}
-            fullWidth
-            sx={{ py: 1 }}
-            onClick={() => setMobileDrawerOpen(false)}
-          >
-            Войти
-          </Button>
-          <Button
-            size={'large'}
-            component={Link}
-            to={'/registration'}
-            variant={'outlined'}
-            fullWidth
-            sx={{ py: 1 }}
-            onClick={() => setMobileDrawerOpen(false)}
-          >
-            Регистрация
-          </Button>
-        </Stack>
+        {!isLogged && (
+          <Stack direction={'column'} sx={{ p: 2, mt: 'auto' }} spacing={2}>
+            <Button
+              size={'large'}
+              component={Link}
+              to={'/login'}
+              variant={'outlined'}
+              fullWidth
+              sx={{ py: 1 }}
+              onClick={() => setMobileDrawerOpen(false)}
+            >
+              Войти
+            </Button>
+            <Button
+              size={'large'}
+              component={Link}
+              to={'/registration'}
+              variant={'outlined'}
+              fullWidth
+              sx={{ py: 1 }}
+              onClick={() => setMobileDrawerOpen(false)}
+            >
+              Регистрация
+            </Button>
+          </Stack>
+        )}
       </Drawer>
     </AppBar>
   );
