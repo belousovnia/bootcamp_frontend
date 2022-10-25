@@ -39,6 +39,10 @@ export const SurveyStepCard = () => {
 
   const setCurrentStep = useSurveyResultsStore((state) => state.setCurrentStep);
 
+  const [isSurveyRepeatConfirmed, setIsSurveyRepeatConfirmed] = useSurveyResultsStore(
+    (state) => [state.isSurveyRepeatConfirmed, state.setSurveyRepeatConfirmed],
+  );
+
   const [answers, setAnswer] = useSurveyResultsStore((state) => [
     state.answers,
     state.setStepAnswer,
@@ -89,7 +93,9 @@ export const SurveyStepCard = () => {
     e.preventDefault();
     setCurrentAnswerId(null);
     if (stepAsIndex === 0) {
+      const isConfirmed = isSurveyRepeatConfirmed;
       resetSurveyResultsStore();
+      setIsSurveyRepeatConfirmed(isConfirmed);
       navigate(`/survey`);
     } else {
       setCurrentStep(stepAsIndex - 1);

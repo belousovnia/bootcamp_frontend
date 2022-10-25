@@ -20,6 +20,7 @@ import { useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CurrentUserRoles, useAuthStore, useCurrentUser } from '@features/auth';
 import { logOut } from '@features/auth/components';
+import { useQueryClient } from '@tanstack/react-query';
 
 type NavLink = {
   title: string;
@@ -61,6 +62,7 @@ const StyledLogoLink = styled(Link)(() => ({
 }));
 
 export const Header = () => {
+  const queryClient = useQueryClient();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -200,6 +202,9 @@ export const Header = () => {
                       handleUserMenuClose();
                       resetSurveyResultsStore();
                       logOut();
+                      queryClient.invalidateQueries(['currentUser']);
+                      queryClient.invalidateQueries(['currentUserProfile']);
+                      queryClient.clear();
                     }}
                   >
                     Выход
