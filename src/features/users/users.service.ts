@@ -15,3 +15,9 @@ export const fetchCurrentUserProfile = async (): Promise<
 > => {
   return requestService.get(`v1/profiles/my`);
 };
+
+export const changeCurrentUserProfile = async (
+  userProfile: UserProfileFull,
+): Promise<AxiosResponse<GetCurrentUserProfileResponse>> => {
+  return requestService.post(`v1/profiles/my`, userProfile);
+};

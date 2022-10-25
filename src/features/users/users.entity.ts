@@ -14,8 +14,8 @@ export type UserProfileFull = {
   name?: string;
   surname?: string;
   isConfirmed: boolean;
-  registreredAt: string;
-  confirmedAt?: string;
+  registeredAt: string;
+  archivedAt: string;
   userId: number;
   professionId?: number;
 };
