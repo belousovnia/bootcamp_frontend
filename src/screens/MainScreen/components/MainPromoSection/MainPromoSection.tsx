@@ -64,7 +64,7 @@ export const MainPromoSection = () => {
         </Grid>
         <Grid display={{ xs: 'none', md: 'flex' }} item md={5}>
           <ImageWrapper>
-            <PromoImage src="/images/promo.jpg" />
+            <PromoImage src="/images/promo.jpg" alt="Пенсионеры смотрят в ноутбук" />
           </ImageWrapper>
         </Grid>
       </Grid>
