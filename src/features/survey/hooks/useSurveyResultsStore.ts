@@ -6,6 +6,7 @@ export interface SurveyResultsState {
   surveyId: Survey['surveyId'] | null;
   error: string | null;
   surveyState: 'not-active' | 'in-progress' | 'completed';
+  isSurveyRepeatConfirmed: boolean;
   answers: {
     // Ключи - это questionId, а значения answerId
     [key: number]: number;
@@ -19,6 +20,7 @@ const initialState: SurveyResultsState = {
   error: null,
   surveyState: 'not-active',
   answers: [],
+  isSurveyRepeatConfirmed: false,
   currentStep: 0,
 };
 
@@ -26,6 +28,7 @@ interface Actions {
   setSurveyState: (surveyState: SurveyResultsState['surveyState']) => void;
   setCurrentStep: (step: SurveyResultsState['currentStep']) => void;
   setStepAnswer: (questionId: number, answerId: number) => void;
+  setSurveyRepeatConfirmed: (isConfirmed: boolean) => void;
   reset: () => void;
 }
 
@@ -44,6 +47,8 @@ export const useSurveyResultsStore = create<SurveyResultsState & Actions>()(
             },
           }));
         },
+        setSurveyRepeatConfirmed: (isConfirmed) =>
+          set({ isSurveyRepeatConfirmed: isConfirmed }),
         reset: () => set(initialState),
       }),
       {

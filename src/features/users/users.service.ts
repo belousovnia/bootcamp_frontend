@@ -1,9 +1,23 @@
 import { requestService } from '@infrastructure/request';
 import { AxiosResponse } from 'axios';
-import { UserInfoFull } from './users.entity';
+import { UserInfoFull, UserProfileFull } from './users.entity';
 
 export type GetUserInfoResponse = UserInfoFull;
 
 export const fetchCurrentUser = async (): Promise<AxiosResponse<GetUserInfoResponse>> => {
   return requestService.get(`v1/users/me`);
+};
+
+export type GetCurrentUserProfileResponse = UserProfileFull;
+
+export const fetchCurrentUserProfile = async (): Promise<
+  AxiosResponse<GetCurrentUserProfileResponse>
+> => {
+  return requestService.get(`v1/profiles/my`);
+};
+
+export const changeCurrentUserProfile = async (
+  userProfile: UserProfileFull,
+): Promise<AxiosResponse<GetCurrentUserProfileResponse>> => {
+  return requestService.post(`v1/profiles/my`, userProfile);
 };

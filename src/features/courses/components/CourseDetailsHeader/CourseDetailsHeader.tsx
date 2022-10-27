@@ -1,4 +1,3 @@
-import { CourseProfession } from '@features/courses/cources.entity';
 import { Grid, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 

@@ -10,11 +10,15 @@ export const providerFullFixture: ProviderFull = {
   description: 'Описание',
 };
 
-export const generateShortProviders = (count: number): ProviderShort[] => {
+export const generateProviders = (count: number): ProviderFull[] => {
   return Array.from({ length: count }, () => {
     return {
-      id: faker.datatype.uuid(),
-      title: faker.lorem.words(2),
+      id: faker.datatype.number(),
+      name: faker.lorem.words(2),
+      url: faker.internet.url(),
+      coverUrl:
+        'https://www.silvermedia.ru/upload/resize_cache/iblock/196/75_75_1/2800374.jpg',
+      description: faker.lorem.words(10),
     };
   });
 };

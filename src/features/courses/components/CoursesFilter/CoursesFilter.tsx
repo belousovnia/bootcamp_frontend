@@ -52,11 +52,11 @@ export const CoursesFilter = ({
       return '';
     }
 
-    if (options.isAdvanced === true) {
+    if (options.isAdvanced) {
       return 'yes';
     }
 
-    if (options.isAdvanced === false) {
+    if (!options.isAdvanced) {
       return 'no';
     }
   }, [options.isAdvanced]);
@@ -65,7 +65,7 @@ export const CoursesFilter = ({
     onChange({ ...options, search: event.target.value });
   };
 
-  const handleProfessionChange = (event: SelectChangeEvent<string>) => {
+  const handleProfessionChange = (event: SelectChangeEvent) => {
     onChange({
       ...options,
       professionId: event.target.value ? parseInt(event.target.value) : undefined,
@@ -73,10 +73,17 @@ export const CoursesFilter = ({
   };
 
   const handleIsForAdvancedChange = (event: SelectChangeEvent<string>) => {
-    onChange({ ...options, isAdvanced: event.target.value === 'yes' });
+    let result = undefined;
+    if (event.target.value === 'yes') {
+      result = true;
+    } else if (event.target.value === 'no') {
+      result = false;
+    }
+
+    onChange({ ...options, isAdvanced: result });
   };
 
-  const handleSortbyChange = (event: SelectChangeEvent<string>) => {
+  const handleSortbyChange = (event: SelectChangeEvent) => {
     onChange({ ...options, sortBy: event.target.value as CoursesSortBy });
   };
 
@@ -86,17 +93,16 @@ export const CoursesFilter = ({
     }
   }, [searchInputRef, options]);
 
-  console.log(isAdvancedValue);
-
   return (
     <Card>
       <CardHeader title="Фильтры" sx={{ p: { md: 3 }, pb: { md: 1 } }} />
       <CardContent sx={{ p: { md: 3 } }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <TextField
               variant="outlined"
               label="Поиск по названию курса"
+              placeholder="Название курса"
               onChange={debounce(handleSearchChange, 300)}
               defaultValue={options.search}
               inputRef={searchInputRef}
@@ -104,7 +110,7 @@ export const CoursesFilter = ({
             />
           </Grid>
           {!isProfessionsDisabled && (
-            <Grid item xs={12} sm={4} lg={gridColumnSize}>
+            <Grid item xs={12} sm={6} lg={gridColumnSize}>
               <FormControl fullWidth>
                 <InputLabel id="course-profession">Профессия</InputLabel>
                 <Select
@@ -128,7 +134,7 @@ export const CoursesFilter = ({
             </Grid>
           )}
 
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-for-advanced">Сложность</InputLabel>
               <Select
@@ -147,7 +153,7 @@ export const CoursesFilter = ({
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={4} lg={gridColumnSize}>
+          <Grid item xs={12} sm={6} lg={gridColumnSize}>
             <FormControl fullWidth>
               <InputLabel id="course-sortby">Сортировать по:</InputLabel>
               <Select
@@ -156,10 +162,10 @@ export const CoursesFilter = ({
                 label="Сортировать по:"
                 value={options.sortBy}
                 onChange={handleSortbyChange}
-                defaultValue="date-start"
+                defaultValue="startsAt"
               >
-                <MenuItem value={'date-start'}>Дате начала</MenuItem>
-                <MenuItem value={'date-end'}>Дате окончания</MenuItem>
+                <MenuItem value={'startsAt'}>Дате начала</MenuItem>
+                <MenuItem value={'endsAt'}>Дате окончания</MenuItem>
               </Select>
             </FormControl>
           </Grid>

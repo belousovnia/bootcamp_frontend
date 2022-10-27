@@ -9,7 +9,6 @@ import {
   CircularProgress,
   Grid,
   Snackbar,
-  styled,
   TextField,
 } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -18,6 +17,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { updateProvider } from '@features/providers/providers.service';
 import { ProviderFull } from '@features/providers';
+import { REQUIRED_DEFAULT_RULE, URL_PATTERN_RULE } from '@utils/formValidationUtils';
 
 export const ProviderEditForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -80,10 +80,7 @@ export const ProviderEditForm = () => {
                     control={control}
                     defaultValue={provider.name}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -104,15 +101,8 @@ export const ProviderEditForm = () => {
                     control={control}
                     defaultValue={provider.url}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                      pattern: {
-                        message: 'Неверный формат ссылки',
-                        value:
-                          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
+                      pattern: URL_PATTERN_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -133,10 +123,7 @@ export const ProviderEditForm = () => {
                     defaultValue={provider.description}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField
@@ -159,15 +146,8 @@ export const ProviderEditForm = () => {
                     defaultValue={provider.coverUrl}
                     control={control}
                     rules={{
-                      required: {
-                        value: true,
-                        message: 'Поле обязательно для заполнения',
-                      },
-                      pattern: {
-                        message: 'Неверный формат ссылки',
-                        value:
-                          /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)$/,
-                      },
+                      required: REQUIRED_DEFAULT_RULE,
+                      pattern: URL_PATTERN_RULE,
                     }}
                     render={({ field: { value, ...otherFields }, fieldState }) => (
                       <TextField

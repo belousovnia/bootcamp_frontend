@@ -37,14 +37,7 @@ export const Routing = () => {
         <Route path={'/'} element={<MainLayout />}>
           <Route index element={<MainScreen />} />
           <Route path={'courses'} element={<CoursesScreen />} />
-          <Route
-            path={'courses/:id'}
-            element={
-              <ProtectedRoute role={CurrentUserRoles.ROLE_REGULAR}>
-                <CourseScreen />
-              </ProtectedRoute>
-            }
-          />
+          <Route path={'courses/:id'} element={<CourseScreen />} />
           <Route path={'/professions'} element={<ProfessionsScreen />} />
           <Route path={'professions/:id'} element={<ProfessionScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />

@@ -1,25 +1,26 @@
 import { useSurveyResultsStore } from '@features/survey/hooks';
 import { AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import {
+  AppBar,
+  Box,
   Button,
   Container,
   Drawer,
   IconButton,
   List,
   ListItem,
-  Stack,
-  Toolbar,
-  AppBar,
-  Box,
   Menu,
   MenuItem,
+  Stack,
+  Toolbar,
 } from '@mui/material';
 import { styled } from '@mui/system';
 import { Logo } from '@ui-library/components/Logo';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CurrentUserRoles, useAuthStore, useCurrentUser } from '@features/auth';
 import { logOut } from '@features/auth/components';
+import { useQueryClient } from '@tanstack/react-query';
 
 type NavLink = {
   title: string;
@@ -48,7 +49,7 @@ const StyledLeftStack = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledLogoLink = styled(Link)(({ theme }) => ({
+const StyledLogoLink = styled(Link)(() => ({
   textDecoration: 'none',
   transition: 'all 0.3s ease',
   color: 'inherit',
@@ -61,11 +62,13 @@ const StyledLogoLink = styled(Link)(({ theme }) => ({
 }));
 
 export const Header = () => {
+  const queryClient = useQueryClient();
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const resetSurveyResultsStore = useSurveyResultsStore((state) => state.reset);
   const currentUser = useCurrentUser();
+  const location = useLocation();
 
   const [currentStep, surveyState] = useSurveyResultsStore((state) => [
     state.currentStep,
@@ -75,6 +78,10 @@ export const Header = () => {
   const surveyPath = useMemo(() => {
     if (surveyState === 'in-progress') {
       return `/survey/step/${currentStep + 1}`;
+    }
+
+    if (surveyState === 'completed') {
+      return `/survey/finish`;
     }
     return '/survey';
   }, [currentStep, surveyState]);
@@ -131,6 +138,7 @@ export const Header = () => {
                     to={link.path.includes('survey') ? surveyPath : link.path}
                     variant={link.variant}
                     sx={{ py: 1 }}
+                    disabled={location.pathname === link.path}
                   >
                     {link.title}
                   </Button>
@@ -170,6 +178,15 @@ export const Header = () => {
                   >
                     Мой аккаунт
                   </MenuItem>
+                  {currentUser && (
+                    <MenuItem
+                      onClick={handleUserMenuClose}
+                      component={Link}
+                      to="/user/recommendations"
+                    >
+                      Мои рекомендации
+                    </MenuItem>
+                  )}
                   {(currentUser?.data?.role === CurrentUserRoles.ROLE_MODERATOR ||
                     currentUser?.data?.role === CurrentUserRoles.ROLE_ADMIN) && (
                     <MenuItem
@@ -185,6 +202,9 @@ export const Header = () => {
                       handleUserMenuClose();
                       resetSurveyResultsStore();
                       logOut();
+                      queryClient.invalidateQueries(['currentUser']);
+                      queryClient.invalidateQueries(['currentUserProfile']);
+                      queryClient.clear();
                     }}
                   >
                     Выход
@@ -241,30 +261,32 @@ export const Header = () => {
             </ListItem>
           ))}
         </List>
-        <Stack direction={'column'} sx={{ p: 2, mt: 'auto' }} spacing={2}>
-          <Button
-            size={'large'}
-            component={Link}
-            to={'/login'}
-            variant={'outlined'}
-            fullWidth
-            sx={{ py: 1 }}
-            onClick={() => setMobileDrawerOpen(false)}
-          >
-            Войти
-          </Button>
-          <Button
-            size={'large'}
-            component={Link}
-            to={'/registration'}
-            variant={'outlined'}
-            fullWidth
-            sx={{ py: 1 }}
-            onClick={() => setMobileDrawerOpen(false)}
-          >
-            Регистрация
-          </Button>
-        </Stack>
+        {!isLogged && (
+          <Stack direction={'column'} sx={{ p: 2, mt: 'auto' }} spacing={2}>
+            <Button
+              size={'large'}
+              component={Link}
+              to={'/login'}
+              variant={'outlined'}
+              fullWidth
+              sx={{ py: 1 }}
+              onClick={() => setMobileDrawerOpen(false)}
+            >
+              Войти
+            </Button>
+            <Button
+              size={'large'}
+              component={Link}
+              to={'/registration'}
+              variant={'outlined'}
+              fullWidth
+              sx={{ py: 1 }}
+              onClick={() => setMobileDrawerOpen(false)}
+            >
+              Регистрация
+            </Button>
+          </Stack>
+        )}
       </Drawer>
     </AppBar>
   );

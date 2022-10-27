@@ -1,4 +1,4 @@
-import { Box, Button, Card, Grid, Stack, styled, Typography } from '@mui/material';
+import { Button, Card, Grid, Stack, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const ImageWrapper = styled('div')`
@@ -26,14 +26,18 @@ export const MainPromoSection = () => {
           <Typography variant={'h2'} component="h1" sx={{ mb: 3 }}>
             Помогаем в выборе IT профессии
           </Typography>
-          <Typography variant={'subtitle1'} component="h2">
-            Подбираем IT специальность, а также составляем индивидуальную систему
-            рекомендаций на основе ваших предпочтений
+          <Typography
+            variant={'h6'}
+            component="h2"
+            sx={{ maxWidth: '600px', fontWeight: 'normal' }}
+          >
+            Тест позволит определить, какая IT профессия подходит вам больше всего. Мы
+            верим, что какую бы профессию вы ни выбрали - вас обязательно ждет успех!
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, md: 2 }}
-            marginTop={{ xs: 3 }}
+            marginTop={{ xs: 5 }}
             sx={{ textAlign: 'center' }}
           >
             <Button
@@ -42,7 +46,7 @@ export const MainPromoSection = () => {
               size="large"
               component={Link}
               to="/professions"
-              sx={{ flexGrow: 1, py: { xs: 2, md: 3 } }}
+              sx={{ flexGrow: 1, py: { xs: 2, md: 3 }, fontSize: { lg: 'larger' } }}
             >
               Список профессий
             </Button>
@@ -52,7 +56,7 @@ export const MainPromoSection = () => {
               size="large"
               component={Link}
               to="/survey"
-              sx={{ flexGrow: 1, py: { xs: 2, md: 3 } }}
+              sx={{ flexGrow: 1, py: { xs: 2, md: 3 }, fontSize: { lg: 'larger' } }}
             >
               Подобрать IT профессию
             </Button>
@@ -60,7 +64,7 @@ export const MainPromoSection = () => {
         </Grid>
         <Grid display={{ xs: 'none', md: 'flex' }} item md={5}>
           <ImageWrapper>
-            <PromoImage src="/images/promo.jpg" />
+            <PromoImage src="/images/promo.jpg" alt="Пенсионеры смотрят в ноутбук" />
           </ImageWrapper>
         </Grid>
       </Grid>

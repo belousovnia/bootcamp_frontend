@@ -1,4 +1,4 @@
-import { ProvidersTable } from '@features/providers/components/ProvidersTable';
+import { ProvidersTable } from '@features/providers/components/admin/ProvidersTable';
 import { Box, Typography } from '@mui/material';
 import { APP_TITLE_WITH_SEPARATOR } from '@utils/constants';
 import { Helmet } from 'react-helmet';

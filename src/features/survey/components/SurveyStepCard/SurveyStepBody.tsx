@@ -1,13 +1,5 @@
 import { SurveyQuestion } from '@features/survey/survey.entity';
-import { CheckBox, CheckBoxOutlined } from '@mui/icons-material';
-import {
-  Box,
-  FormControlLabel,
-  FormGroup,
-  Radio,
-  RadioGroup,
-  Typography,
-} from '@mui/material';
+import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material';
 
 interface SurveyStepBodyProps {
   question: SurveyQuestion;

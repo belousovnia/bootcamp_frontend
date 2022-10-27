@@ -1,4 +1,4 @@
-import { ProviderNewForm } from '@features/providers/components/ProviderNewForm';
+import { ProviderNewForm } from '@features/providers/components/admin/ProviderNewForm';
 import { Box, Typography } from '@mui/material';
 
 export const AdminProviderNewScreen = () => {
