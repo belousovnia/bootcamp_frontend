@@ -1,31 +1,40 @@
 import { faker } from '@faker-js/faker';
 import { CourseFull, CourseShort } from '../cources.entity';
 
-export const shortCourseFixtures: CourseShort[] = [
+export const coursesFixtures: CourseFull[] = [
   {
-    id: faker.datatype.uuid(),
+    id: faker.datatype.number(),
     title: 'Курс по React',
+    description: 'Курс по React',
     url: faker.internet.url(),
     coverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
     startsAt: '2022-10-29T00:00:00.000Z',
     endsAt: '2023-02-05T00:00:00.000Z',
-    profession: 'Программирование',
-    provider: 'Skillbox',
+    isAdvanced: false,
+    professionName: 'Разработчик',
+    professionId: faker.datatype.number(),
+    providerName: 'Skillbox',
+    providerId: faker.datatype.number(),
     providerUrl: faker.internet.url(),
     providerCoverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
+    tags: ['React', 'JavaScript', 'Frontend'],
   },
   {
-    id: faker.datatype.uuid(),
-    title: 'Веб-дизайнер',
+    id: faker.datatype.number(),
+    title: 'Курс по React',
+    description: 'Курс по React',
     url: faker.internet.url(),
-    coverUrl:
-      'https://unti-prod-cat.s3.dtln.ru/cover/%D0%9D%D0%91_%D0%92%D0%B5%D0%B1_%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD%D0%B5%D1%80.png',
-    startsAt: '2022-10-28T00:00:00.000Z',
-    endsAt: '2023-02-11T00:00:00.000Z',
-    profession: 'Программирование',
-    provider: 'Skillbox',
+    coverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
+    startsAt: '2022-10-29T00:00:00.000Z',
+    endsAt: '2023-02-05T00:00:00.000Z',
+    isAdvanced: false,
+    professionName: 'Разработчик',
+    professionId: faker.datatype.number(),
+    providerName: 'Skillbox',
+    providerId: faker.datatype.number(),
     providerUrl: faker.internet.url(),
     providerCoverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
+    tags: ['React', 'JavaScript', 'Frontend'],
   },
 ];
 
@@ -49,11 +58,12 @@ export const fullCourseFixture: CourseFull = {
   tags: ['Python', 'JavaScript', 'React'],
 };
 
-export const generateShortCourses = (count: number): CourseShort[] => {
+export const generateCourses = (count: number): CourseFull[] => {
   return Array.from({ length: count }, () => {
     return {
-      id: faker.datatype.uuid(),
+      id: faker.datatype.number(),
       title: faker.lorem.words(2),
+      description: faker.lorem.paragraphs(2),
       url: faker.internet.url(),
       coverUrl: 'http://placekitten.com/g/672/320',
       startsAt: faker.date
@@ -62,10 +72,14 @@ export const generateShortCourses = (count: number): CourseShort[] => {
       endsAt: faker.date
         .between('2023-02-28T00:00:00.000Z', '2023-08-11T00:00:00.000Z')
         .toISOString(),
-      profession: 'Программирование',
-      provider: 'Skillbox',
+      professionName: 'Программирование',
+      professionId: 1,
+      isAdvanced: faker.datatype.boolean(),
+      providerId: faker.datatype.number(),
+      providerName: 'Skillbox',
       providerUrl: faker.internet.url(),
       providerCoverUrl: 'https://via.placeholder.com/672x320.png?text=Image',
+      tags: ['Python', 'JavaScript', 'React'],
     };
   });
 };
