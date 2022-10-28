@@ -11,7 +11,7 @@ export const ConfirmPage = () => {
       <Helmet>
         <title>Подтверждение почты {APP_TITLE_WITH_SEPARATOR}</title>
       </Helmet>
-      <ConfirmEmail token={token as string} />;
+      <ConfirmEmail token={token as string} />
     </>
   );
 };

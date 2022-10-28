@@ -251,7 +251,7 @@ export const Registration = () => {
       </Paper>
       <Snackbar
         open={snackbarVisible}
-        autoHideDuration={6000}
+        autoHideDuration={10000}
         onClick={() => setSnackbarVisible(false)}
         onClose={() => setSnackbarVisible(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
