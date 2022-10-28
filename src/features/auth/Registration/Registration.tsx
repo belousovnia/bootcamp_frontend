@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { registration } from '@features/auth/auth.service';
-import { useAuthStore } from '@features/auth/auth.hooks';
 import {
+  Alert,
   Button,
   Container,
   FormHelperText,
@@ -10,6 +10,7 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import { FieldValues, useForm } from 'react-hook-form';
@@ -20,14 +21,14 @@ import * as yup from 'yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export const Registration = () => {
-  const setAuth = useAuthStore((state) => state.setAuth);
-
   const navigate = useNavigate();
   const location = useLocation();
 
   const [warningMessage, setWarningMessage] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
 
   const titleText = useMemo(() => {
     if (location.state?.from === '/survey') {
@@ -39,27 +40,26 @@ export const Registration = () => {
   const registrationSchema = yup.object().shape({
     email: yup
       .string()
+      .max(255, 'Слишком много символов.')
       .matches(
         /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/,
         'Вы должны ввести действительную почту.',
-      )
-      .max(255, 'Слишком много символов.')
-      .required('Вы не ввели почту!'),
+      ),
     surname: yup
       .string()
       .required('Вы не ввели фамилию!')
-      .max(256, 'Слишком много символов.')
+      .max(50, 'Вы превысили максимальное количество символов.')
       .matches(
-        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
-        'Фамилия должна начинаться с большой буквы.',
+        /^([А-Я]([а-яё]*[\s-]?[А-Я]?[а-яё]+){0,49}|[A-Z]([a-z]*[\s-]?[A-Z]?[a-z]+){0,49})$/,
+        'Проверьте фамилию. Она должна начинаться с большой буквы.',
       ),
     name: yup
       .string()
       .required('Вы не ввели имя!')
-      .max(256, 'Слишком много символов.')
+      .max(50, 'Вы превысили максимальное количество символов.')
       .matches(
-        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
-        'Имя должно начинаться с большой буквы.',
+        /^([А-Я]([а-яё]*[\s-]?[А-Я]?[а-яё]+){0,49}|[A-Z]([a-z]*[\s-]?[A-Z]?[a-z]+){0,49})$/,
+        'Проверьте имя. Оно должно начинаться с большой буквы.',
       ),
     password: yup
       .string()
@@ -98,12 +98,8 @@ export const Registration = () => {
         surname: user.surname,
       })
         .then((response) => {
-          localStorage.setItem('accessToken', response.data.accessToken);
-          localStorage.setItem('refreshToken', response.data?.refreshToken);
-          setWarningMessage('');
-          setAuth(true);
-          if (location.state?.from) navigate(location.state.from);
-          else navigate('/');
+          setEmail(response.data.email);
+          setSnackbarVisible(true);
         })
         .catch((error) => {
           if (error.response?.data.code === 'ITD_UEC_2')
@@ -253,6 +249,21 @@ export const Registration = () => {
           {'Уже зарегистрированы?'}
         </Button>
       </Paper>
+      <Snackbar
+        open={snackbarVisible}
+        autoHideDuration={6000}
+        onClick={() => setSnackbarVisible(false)}
+        onClose={() => setSnackbarVisible(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <Alert
+          severity="success"
+          sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
+        >
+          {`Вы успешно зарегистрировались. Мы отправили вам письмо на ${email} для
+          подтверждения аккаунта.`}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
