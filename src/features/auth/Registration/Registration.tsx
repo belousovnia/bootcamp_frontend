@@ -254,11 +254,12 @@ export const Registration = () => {
         autoHideDuration={10000}
         onClick={() => setSnackbarVisible(false)}
         onClose={() => setSnackbarVisible(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        sx={{ height: '40%' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
           severity="success"
-          sx={{ width: '100%', border: 1, borderColor: 'primary.main' }}
+          sx={{ width: '200%', border: 1, borderColor: 'primary.main' }}
         >
           {`Вы успешно зарегистрировались. Мы отправили вам письмо на ${email} для
           подтверждения аккаунта.`}

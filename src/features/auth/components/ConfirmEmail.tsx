@@ -22,9 +22,8 @@ export const ConfirmEmail: React.FC<ConfirmEmailProps> = ({ token }) => {
           setAuth(true);
           navigate('/');
         })
-        .catch((error) => {
-          if (error.response.data.code === 'ITD_TCEC_2')
-            setErrorMessage('Токен просрочен.');
+        .catch(() => {
+          setErrorMessage('Токен просрочен.');
         });
     } catch (e) {
       setErrorMessage('Токен просрочен.');
