@@ -28,6 +28,8 @@ export const Registration = () => {
   const [warningMessage, setWarningMessage] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState<boolean>(false);
+  const [snackbarVisible, setSnackbarVisible] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
 
   const titleText = useMemo(() => {
     if (location.state?.from === '/survey') {
@@ -39,27 +41,26 @@ export const Registration = () => {
   const registrationSchema = yup.object().shape({
     email: yup
       .string()
+      .max(255, 'Слишком много символов.')
       .matches(
         /^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$/,
         'Вы должны ввести действительную почту.',
-      )
-      .max(255, 'Слишком много символов.')
-      .required('Вы не ввели почту!'),
+      ),
     surname: yup
       .string()
       .required('Вы не ввели фамилию!')
-      .max(256, 'Слишком много символов.')
+      .max(50, 'Вы превысили максимальное количество символов.')
       .matches(
-        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
-        'Фамилия должна начинаться с большой буквы.',
+        /^([А-Я]([а-яё]*[\s-]?[А-Я]?[а-яё]+){0,49}|[A-Z]([a-z]*[\s-]?[A-Z]?[a-z]+){0,49})$/,
+        'Проверьте фамилию. Она должна начинаться с большой буквы.',
       ),
     name: yup
       .string()
       .required('Вы не ввели имя!')
-      .max(256, 'Слишком много символов.')
+      .max(50, 'Вы превысили максимальное количество символов.')
       .matches(
-        /^([А-Я][а-яё]{0,50}|[A-Z][a-z]{0,50})$/,
-        'Имя должно начинаться с большой буквы.',
+        /^([А-Я]([а-яё]*[\s-]?[А-Я]?[а-яё]+){0,49}|[A-Z]([a-z]*[\s-]?[A-Z]?[a-z]+){0,49})$/,
+        'Проверьте имя. Оно должно начинаться с большой буквы.',
       ),
     password: yup
       .string()
