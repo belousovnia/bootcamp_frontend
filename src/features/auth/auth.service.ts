@@ -11,16 +11,10 @@ export const login = async (
 
 export const registration = async (
   user: RegistrationUser,
-): Promise<AxiosResponse<RegistrationUser>> => {
+): Promise<AxiosResponse<AuthResponse>> => {
   return await requestService.post('/v1/auth/signup', {
     ...user,
   });
-};
-
-export const confirmEmail = async (
-  token: string,
-): Promise<AxiosResponse<AuthResponse>> => {
-  return await requestService.post(`/v1/auth/signup/${token}`);
 };
 
 export const getUserInfo = async (): Promise<AxiosResponse<CurrentUser>> => {
