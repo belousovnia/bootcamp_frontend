@@ -29,7 +29,6 @@ import { AdminProfessionsEditScreen } from '@screens/admin/AdminProfessionsEditS
 import { AdminProfessionsScreen } from '@screens/admin/AdminProfessionsScreen';
 import { AdminProfessionsNewScreen } from '@screens/admin/AdminProfessionsNewScreen';
 import { NotFound } from '@screens/NotFound';
-import { ConfirmPage } from '@screens/ConfirmPage';
 
 export const Routing = () => {
   return (
@@ -42,7 +41,6 @@ export const Routing = () => {
           <Route path={'/professions'} element={<ProfessionsScreen />} />
           <Route path={'professions/:id'} element={<ProfessionScreen />} />
           <Route path={'pages/:slug'} element={<PageScreen />} />
-          <Route path={'confirm/:token'} element={<ConfirmPage />} />
           <Route
             path={'survey'}
             element={
